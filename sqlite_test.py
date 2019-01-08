@@ -1,4 +1,5 @@
 import sqlite3
+import os
 from sqlite3 import Error
 
 conn = None
@@ -30,3 +31,4 @@ def create_connection():
 
 
 create_connection()
+print(os.getcwd())
