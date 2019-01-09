@@ -41,8 +41,9 @@ def search_winedb(wine_id=None, winery=None, region=None, name=None, varietal=No
 
 def enter_winedb(wine_id=None, winery=None, region=None, name=None, varietal=None, wtype=None, vintage=None, msrp=None, value=None):
     # enters a wine into the database
-    entry_input = [wine_id, winery, region,
+    entry_input = (wine_id, winery, region,
                    name, varietal, wtype,
-                   vintage, msrp, value]
-
-
+                   vintage, msrp, value)
+    
+    db_enter = DatabaseManager()
+    db_enter.db_execute('INSERT INTO winedata (wine_id, winery, region, name, varietal, wtype, vintage, msrp, value) VALUES (?,?,?,?,?,?,?,?,?)', entry_input)
