@@ -102,7 +102,7 @@ def update_table(update_input, table='userinventory'):
     # entry_input = [wine_id, winery, region,
     #                name, varietal, wtype,
     #                vintage, msrp, value]
-    terms = cleanup_wine_input(update_input)
+    terms = cleanup_dbinput(update_input)
     arg = 'UPDATE ' + table + ' SET '
     for term in terms:
         arg += term + ' = :' + term + ', '
