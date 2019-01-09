@@ -5,9 +5,9 @@ from sqlite3 import Error
 
 class DatabaseManager:
 
-    def __init__(self, db_filename='wininv-data'):
+    def __init__(self, db_filename='wineinv_data.db'):
         self.db_filename = db_filename
-        self.db_path = os.getcwd() + db_filename
+        self.db_path = os.getcwd() + '\\' + db_filename
 
     def get_version(self):
         conn = None
