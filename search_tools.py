@@ -1,9 +1,4 @@
 from db_man import DatabaseManager
-# import sqlite3
-# import os
-# cwd = os.getcwd() + '\wineinv_data.db'
-# print(cwd)
-
 
 def in_database(wine_id=None, winery=None, region=None, name=None, varietal=None, wtype=None, vintage=None, msrp=None, value=None):
     # searches for a wine in the database that resembles the input
@@ -23,16 +18,8 @@ def in_database(wine_id=None, winery=None, region=None, name=None, varietal=None
         if search_input[skey] is not None:
             terms[skey] = search_input[skey]
 
-    # make a tuple to contain the placeholders for the sql query
-    # placeholder = [None] * (2 * len(terms))
-    # placeholder[::2] = list(terms.keys())
-    # placeholder[1::2] = list(terms.values())
-    # placeholder = tuple(placeholder)
-
     # craft the sql query string
     arg = 'SELECT * FROM winedata WHERE '
-    # for i in range(int(len(placeholder) / 2)):
-    #     arg += '{} LIKE ? AND '.format
     for term in terms:
         arg += '{0} LIKE {1} AND '.format(term, ':' + term)
     arg = arg.rstrip(' AND ') + ';'
@@ -42,8 +29,3 @@ def in_database(wine_id=None, winery=None, region=None, name=None, varietal=None
     # finally, call the search function from the db_man object
     db_search = DatabaseManager()
     return db_search.db_fetch(arg, terms, 'all')
-    # db_fetch(arg, placeholder, 'all')
-
-
-result = in_database(wine_id=1, winery="burnt", vintage=2008)
-print(result)
