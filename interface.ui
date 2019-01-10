@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Vinny </string>
   </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Triangular</enum>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
@@ -51,6 +54,9 @@
                <property name="placeholderText">
                 <string>Wine ID</string>
                </property>
+               <property name="clearButtonEnabled">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
              <item>
@@ -71,6 +77,13 @@
               <widget class="QPushButton" name="search">
                <property name="text">
                 <string>Search</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resources/icons/icons.qrc">
+                 <normaloff>:/Actions/actions/search.svg</normaloff>:/Actions/actions/search.svg</iconset>
+               </property>
+               <property name="checkable">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -139,6 +152,10 @@
               <widget class="QPushButton" name="refresh">
                <property name="text">
                 <string>Refresh Inventory</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resources/icons/icons.qrc">
+                 <normaloff>:/Actions/actions/stock_refresh.svg</normaloff>:/Actions/actions/stock_refresh.svg</iconset>
                </property>
               </widget>
              </item>
@@ -219,17 +236,27 @@
    </property>
   </action>
   <action name="actionImport">
+   <property name="icon">
+    <iconset resource="resources/icons/icons.qrc">
+     <normaloff>:/Actions/actions/document-save-as.svg</normaloff>:/Actions/actions/document-save-as.svg</iconset>
+   </property>
    <property name="text">
     <string>Import...</string>
    </property>
   </action>
   <action name="actionExport">
+   <property name="icon">
+    <iconset resource="resources/icons/icons.qrc">
+     <normaloff>:/Mimetypes/mimetypes/x-office-spreadsheet.svg</normaloff>:/Mimetypes/mimetypes/x-office-spreadsheet.svg</iconset>
+   </property>
    <property name="text">
     <string>Export...</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="9"/>
- <resources/>
+ <resources>
+  <include location="resources/icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
