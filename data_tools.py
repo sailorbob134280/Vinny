@@ -116,3 +116,4 @@ def update_table(update_input, table='userinventory'):
 #                None, 'cab', 'Table',
 #                2008, None, None]
 
+ 
