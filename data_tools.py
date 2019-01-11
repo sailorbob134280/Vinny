@@ -7,12 +7,11 @@ def cleanup_dbinput(input_list, table):
         input_dict = {"transaction_id":input_list[0],
                       "wine_id":input_list[1],
                       "user_id":input_list[2],
-                      "qty":input_list[3],
-                      "bottle_size":input_list[4],
-                      "location":input_list[5],
-                      "comments":input_list[6],
-                      "date_in":input_list[7],
-                      "date_out":input_list[8]}
+                      "bottle_size":input_list[3],
+                      "location":input_list[4],
+                      "comments":input_list[5],
+                      "date_in":input_list[6],
+                      "date_out":input_list[7]}
     elif table is 'winedata':
         input_dict = {"wine_id":input_list[0],
                       "winery":input_list[1],

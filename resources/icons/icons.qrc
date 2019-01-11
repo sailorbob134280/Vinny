@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="Actions">
+    <file>actions/icons8-barcode-52.png</file>
     <file>actions/add.svg</file>
     <file>actions/address-book-new.svg</file>
     <file>actions/appointment.svg</file>
@@ -521,6 +522,10 @@
     <file>devices/yast_mouse.svg</file>
     <file>devices/yast_printer.svg</file>
     <file>devices/yast_soundcard.svg</file>
+  </qresource>
+  <qresource prefix="Wine">
+    <file>wine/icons8-wine-bottle-52.png</file>
+    <file>wine/icons8-bar-52.png</file>
   </qresource>
   <qresource prefix="Emblems">
     <file>emblems/emblem-favorite.svg</file>

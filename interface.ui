@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Vinny </string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources/icons/icons.qrc">
+    <normaloff>:/Wine/wine/icons8-bar-52.png</normaloff>:/Wine/wine/icons8-bar-52.png</iconset>
+  </property>
   <property name="tabShape">
    <enum>QTabWidget::Triangular</enum>
   </property>
@@ -24,7 +28,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="inventory">
        <attribute name="title">
@@ -172,19 +176,320 @@
           <property name="text">
            <string>Check Out</string>
           </property>
+          <property name="icon">
+           <iconset resource="resources/icons/icons.qrc">
+            <normaloff>:/Wine/wine/icons8-wine-bottle-52.png</normaloff>:/Wine/wine/icons8-wine-bottle-52.png</iconset>
+          </property>
          </widget>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="check_inout">
-       <attribute name="title">
-        <string>Add to Cellar</string>
-       </attribute>
-      </widget>
       <widget class="QWidget" name="find">
        <attribute name="title">
-        <string>Find</string>
+        <string>Add Bottle</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="1" rowspan="2">
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Matches</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableView" name="tableView_2"/>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="title">
+           <string>Actions</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <widget class="QRadioButton" name="radioButton_3">
+             <property name="text">
+              <string>Location</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_10"/>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="radioButton_4">
+             <property name="text">
+              <string>Quantity</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_11"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="text">
+              <string>Add to Cellar</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_4">
+             <property name="text">
+              <string>Generate Barcode</string>
+             </property>
+             <property name="icon">
+              <iconset resource="resources/icons/icons.qrc">
+               <normaloff>:/Actions/actions/icons8-barcode-52.png</normaloff>:/Actions/actions/icons8-barcode-52.png</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="title">
+           <string>Wine Information</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="2" column="1">
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_7">
+               <property name="text">
+                <string>American Viticulture Area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_5">
+               <property name="placeholderText">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>Varietal</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_3">
+               <property name="placeholderText">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_12">
+               <property name="text">
+                <string>Wine ID (SKU if available)</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_9"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_8">
+               <property name="text">
+                <string>Type</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBox">
+               <item>
+                <property name="text">
+                 <string>Table</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Dessert</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Sparkling</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>Current Value</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_8"/>
+             </item>
+            </layout>
+           </item>
+           <item row="2" column="0">
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Winery</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit">
+               <property name="placeholderText">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>Blend Name</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_2"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>Vintage</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_7"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_14">
+               <property name="text">
+                <string>Bottle Size</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBox_2">
+               <property name="currentIndex">
+                <number>2</number>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Split (187.5 mL)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Half (375 mL)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Standard (750 mL)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Magnum (1.5 L)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Double Magnum (3.0 L)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Jeroboam (4.5 L)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Imperial (6.0 L)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Salmanazar (9.0 L)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Other...</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>MSRP</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_4"/>
+             </item>
+            </layout>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>Comments</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QTextEdit" name="textEdit">
+             <property name="placeholderText">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <layout class="QVBoxLayout" name="verticalLayout_7">
+             <item>
+              <widget class="QCheckBox" name="checkBox">
+               <property name="text">
+                <string>Limit Search to My Cellar</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>Search</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_3">
+               <property name="text">
+                <string>Update Bottle</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="history">
        <attribute name="title">
@@ -195,6 +500,11 @@
          <widget class="QTableView" name="tableView"/>
         </item>
        </layout>
+      </widget>
+      <widget class="QWidget" name="info">
+       <attribute name="title">
+        <string>Bottle Information</string>
+       </attribute>
       </widget>
      </widget>
     </item>
