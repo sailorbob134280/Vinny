@@ -1,4 +1,6 @@
 import db_man
+from barcode import generate
+
 
 class Bottle:
     '''
@@ -15,3 +17,6 @@ class Bottle:
         self.vintage = vintage
         self.msrp = msrp
         self.value = value
+
+    def generate_barcode(self):
+        name = generate('ITF', str(self.wine_id), output=str(self.wine_id))
