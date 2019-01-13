@@ -1,4 +1,5 @@
 import db_man
+import os
 from barcode import generate
 
 
@@ -20,8 +21,13 @@ class Bottle:
 
     def generate_label(self):
         tag_num = (12 - len(str(self.wine_id))) * '0' + str(self.wine_id)
-        #tag_num = str(self.wine_id)
-        new_label = generate('ITF', tag_num, output=str(self.wine_id))
+        options = {'dpi': 200,
+                   'module_height': 5,
+                   'quiet_zone': 0,
+                   'text_distance': 3}
+        new_label = generate('ITF', tag_num, output=str(self.wine_id), writer_options = options)
 
-new_bottle = Bottle(wine_id=6)
-new_bottle.generate_label()
+    # def __del__(self):
+    #     svg_filename = str(self.wine_id) + '.svg'
+    #     os.remove(svg_filename)
+

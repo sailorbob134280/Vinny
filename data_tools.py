@@ -62,7 +62,7 @@ def search_db(search_input, table='userinventory'):
     db_search = DatabaseManager()
     return db_search.db_fetch(arg, terms, 'all')
 
-def fetch_db(fetch_input, table='userinventory'):
+def fetch_db(fetch_input, table='userinventory', disallowed_id=None):
     # fetches a row from the database
     # shoud be faster than searching, but only returns one row 
     # (so should only be used when one value is expected to be returned)
@@ -103,7 +103,7 @@ def enter_db(entry_input, table='userinventory'):
             move_entry[0] = None
             print(move_entry)
             db_enter.db_execute('INSERT INTO winedata (wine_id, winery, region, name, varietal, vintage, wtype, msrp, value) VALUES (?,?,?,?,?,?,?,?,?)', tuple(move_entry))
-            relocated_entry = fetch_db(move_entry, 'winedata')
+            relocated_entry = fetch_db(move_entry, 'winedata', terms['wine_id'])
             print('''WARNING: This wine_id is currently in use! The old bottle, {0} {1} {2} {3},
              has been assigned a new wine_id of {4}. Please print a new barcode now.'''.format(relocated_entry[1],
              relocated_entry[6], relocated_entry[3], relocated_entry[4], relocated_entry[0]))
