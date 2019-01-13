@@ -18,5 +18,10 @@ class Bottle:
         self.msrp = msrp
         self.value = value
 
-    def generate_barcode(self):
-        name = generate('ITF', str(self.wine_id), output=str(self.wine_id))
+    def generate_label(self):
+        #tag_num = (12 - len(str(self.wine_id))) * '0' + str(self.wine_id)
+        tag_num = str(self.wine_id)
+        new_label = generate('ITF', tag_num, output=str(self.wine_id))
+
+new_bottle = Bottle(wine_id='123456789101')
+new_bottle.generate_label()

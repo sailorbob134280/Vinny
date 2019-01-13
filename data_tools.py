@@ -52,12 +52,29 @@ def search_db(search_input, table='userinventory'):
     # craft the sql query string
     arg = 'SELECT * FROM ' + table + ' WHERE '
     for term in terms:
-        arg += '{0} LIKE {1} AND '.format(term, ':' + term)
+        if term is 'wine_id':
+            arg += 'wine_id LIKE '
+        else:
+            arg += '{0} LIKE %{1}% AND '.format(term, ':' + term)
     arg = arg.rstrip(' AND ')
 
     # finally, call the search function from the db_man object
     db_search = DatabaseManager()
     return db_search.db_fetch(arg, terms, 'all')
+
+def fetch_db(fetch_input, table='userinventory'):
+    # fetches a row from the database
+    # shoud be faster than searching, but only returns one row 
+    # (so should only be used when one value is expected to be returned)
+    terms = cleanup_dbinput(fetch_input, table)
+
+    arg = 'SELECT * FROM ' + table + ' WHERE '
+    for term in terms:
+        arg += '{0}={1} AND '.format(term, ':' + term)
+    arg = arg.rstrip(' AND ')
+
+    fetch = DatabaseManager()
+    return fetch.db_fetch(arg, terms, 'one')
 
 def enter_db(entry_input, table='userinventory'):
     # enters a wine into the database
@@ -67,7 +84,30 @@ def enter_db(entry_input, table='userinventory'):
     #                vintage, msrp, value]
     # it is critical that the list is complete, even if some
     # of the values are null
+    db_enter = DatabaseManager()
     terms = cleanup_dbinput(entry_input, table)
+
+    # we need to check if the specific requested wine_id is 
+    # currently in use. If it is, we need to reassign the old
+    # one to something new. (This is so that we don't risk a
+    # collision when entering a UPC code as an asset tag)
+    # this checks for a collision and if one exists, it reenters
+    # the old row as a new one to get a new wine_id assigned. 
+    # THIS WILL ALSO NEED TO WARN THE USER TO UPDATE THE OLD
+    # BARCODE ONCE THE UI IS IMPLIMENTED
+    if table is 'winedata' and 'wine_id' in terms:
+        old_row = fetch_db([terms['wine_id'], None, None, None, None, None, None, None, None], 'winedata')
+        print(old_row)
+        if old_row is not None:
+            move_entry = list(old_row)
+            move_entry[0] = None
+            print(move_entry)
+            db_enter.db_execute('INSERT INTO winedata (wine_id, winery, region, name, varietal, vintage, wtype, msrp, value) VALUES (?,?,?,?,?,?,?,?,?)', tuple(move_entry))
+            relocated_entry = fetch_db(move_entry, 'winedata')
+            print('''WARNING: This wine_id is currently in use! The old bottle, {0} {1} {2} {3},
+             has been assigned a new wine_id of {4}. Please print a new barcode now.'''.format(relocated_entry[1],
+             relocated_entry[6], relocated_entry[3], relocated_entry[4], relocated_entry[0]))
+            drop_row(terms['wine_id'], 'winedata')
 
     #arg = 'INSERT INTO ' + table + ' (wine_id, winery, region, name, varietal, wtype, vintage, msrp, value) VALUES (?,?,?,?,?,?,?,?,?)'
     arg = 'INSERT INTO ' + table + ' ('
@@ -78,8 +118,7 @@ def enter_db(entry_input, table='userinventory'):
     values = values.rstrip(', ') + ')'
     arg = arg.rstrip(', ') + ') VALUES ' + values
 
-    db_enter = DatabaseManager()
-    db_enter.db_execute(arg, entry_input)
+    db_enter.db_execute(arg, terms)
 
 def drop_row(wine_id, table='userinventory'):
     # drops a row from the database, if for example it is 
@@ -111,7 +150,12 @@ def update_table(update_input, table='userinventory'):
     db_update = DatabaseManager()
     db_update.db_execute(arg, terms)
 
-# entry_input = [6, 'burnt', None,
-#                None, 'cab', 'Table',
-#                2008, None, None]
 
+entry_input = ['000000000006', 'burnt', None,
+               None, 'cab', 'Table',
+               2008, None, None]
+
+
+# enter_db(entry_input, 'winedata')
+
+print(fetch_db(entry_input, 'winedata'))
