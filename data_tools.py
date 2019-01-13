@@ -149,13 +149,3 @@ def update_table(update_input, table='userinventory'):
 
     db_update = DatabaseManager()
     db_update.db_execute(arg, terms)
-
-
-entry_input = ['000000000006', 'burnt', None,
-               None, 'cab', 'Table',
-               2008, None, None]
-
-
-# enter_db(entry_input, 'winedata')
-
-print(fetch_db(entry_input, 'winedata'))
