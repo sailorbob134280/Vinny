@@ -27,7 +27,8 @@ class Bottle:
                    'text_distance': 3}
         new_label = generate('ITF', tag_num, output=str(self.wine_id), writer_options = options)
 
-    # def __del__(self):
-    #     svg_filename = str(self.wine_id) + '.svg'
-    #     os.remove(svg_filename)
+    def __del__(self):
+        svg_filename = str(self.wine_id) + '.svg'
+        if os.path.exists(svg_filename):
+            os.remove(svg_filename)
 
