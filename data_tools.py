@@ -1,34 +1,34 @@
 from db_man import DatabaseManager
 
-def cleanup_dbinput(input_list, table):
+def cleanup_dbinput(input_dict, table):
     # first, figure out which table the input is for 
     # and assign the inputs to a dictionary (including none)
-    if table is 'userinventory':
-        input_dict = {"wine_id":input_list[0],
-                      "user_id":input_list[1],
-                      "bottle_size":input_list[2],
-                      "location":input_list[3],
-                      "comments":input_list[4],
-                      "date_in":input_list[5],
-                      "date_out":input_list[6]}
-    elif table is 'winedata':
-        input_dict = {"wine_id":input_list[0],
-                      "upc":input_list[1],
-                      "winery":input_list[2],
-                      "region":input_list[3],
-                      "name":input_list[4],
-                      "varietal":input_list[5],
-                      "wtype":input_list[6],
-                      "vintage":input_list[7],
-                      "msrp":input_list[8],
-                      "value":input_list[9]}
-    elif table is 'userdata':
-        input_dict = {"user_id":input_list[0],
-                      "username":input_list[1],
-                      "password":input_list[2],
-                      "cellar_space":input_list[3]}
-    else:
-        raise Exception('''Table does not exist! Please contact the devs about this... You really shouldn't see this.''')
+    # if table is 'userinventory':
+    #     input_dict = {"wine_id":input_list[0],
+    #                   "user_id":input_list[1],
+    #                   "bottle_size":input_list[2],
+    #                   "location":input_list[3],
+    #                   "comments":input_list[4],
+    #                   "date_in":input_list[5],
+    #                   "date_out":input_list[6]}
+    # elif table is 'winedata':
+    #     input_dict = {"wine_id":input_list[0],
+    #                   "upc":input_list[1],
+    #                   "winery":input_list[2],
+    #                   "region":input_list[3],
+    #                   "name":input_list[4],
+    #                   "varietal":input_list[5],
+    #                   "wtype":input_list[6],
+    #                   "vintage":input_list[7],
+    #                   "msrp":input_list[8],
+    #                   "value":input_list[9]}
+    # elif table is 'userdata':
+    #     input_dict = {"user_id":input_list[0],
+    #                   "username":input_list[1],
+    #                   "password":input_list[2],
+    #                   "cellar_space":input_list[3]}
+    # else:
+    #     raise Exception('''Table does not exist! Please contact the devs about this... You really shouldn't see this.''')
 
     # if the term is not used, it is discarded from the dictionary
     terms = {}
@@ -143,15 +143,32 @@ def update_table(update_input, table='userinventory'):
 ############################ Test Code #############################
 ####################################################################
 
-# search_input = [None, None, 'Burnt Bridge Cellars', 'Walla Walla',
-#                 None, 'Merlot', 'Table',
-#                 2013, '$30', '$30']
-# search_input = [None, None, 'Burnt Bridge Cellars', None,
-#                 None, 'Merlot', None,
-#                 None, None, None]
+# userinv_dict = {"wine_id":input_list[0],
+#                 "user_id":input_list[1],
+#                 "bottle_size":input_list[2],
+#                 "location":input_list[3],
+#                 "comments":input_list[4],
+#                 "date_in":input_list[5],
+#                 "date_out":input_list[6]}
 
-# enter_db(search_input, 'winedata')
-# drop_row(20, 'winedata')
-# print(search_db(search_input, 'winedata'))
-# find_bottle = input('Enter a bottle ID: ')
-# print(lookup_db(find_bottle, 'winedata'))
+winedata_dict = {"wine_id":None,
+                 "upc":'791863140506',
+                 "winery":'Burnt Bridge Cellars',
+                 "region":'Walla Walla',
+                 "name":None,
+                 "varietal":'Merlot',
+                 "wtype":'Table',
+                 "vintage":2013,
+                 "msrp":'$30',
+                 "value":'$30'}
+  
+# userdata_dict = {"user_id":input_list[0],
+#                  "username":input_list[1],
+#                  "password":input_list[2],
+#                  "cellar_space":input_list[3]}
+
+# enter_db(winedata_dict, 'winedata')
+# drop_row(winedata_dict['wine_id'], 'winedata')
+print(search_db(winedata_dict, 'winedata'))
+find_bottle = input('Enter a bottle ID: ')
+print(lookup_db(find_bottle, 'winedata'))

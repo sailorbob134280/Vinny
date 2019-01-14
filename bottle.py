@@ -1,5 +1,5 @@
-import db_man
 import os
+import data_tools
 from barcode import generate
 
 
@@ -8,17 +8,26 @@ class Bottle:
     A generic object to handle bottles and the associated methods
     that may be useful to them
     '''
-    def __init__(self, wine_id=None, upc=None, winery=None, region=None, name=None, varietal=None, wtype=None, vintage=None, msrp=None, value=None):
-        self.wine_id = wine_id
-        self.upc = upc
-        self.winery = winery
-        self.region = region
-        self.name = name
-        self.varietal = varietal
-        self.wtype = wtype
-        self.vintage = vintage
-        self.msrp = msrp
-        self.value = value
+    # def __init__(self, wine_id=None, upc=None, winery=None, region=None, name=None, varietal=None, wtype=None, vintage=None, msrp=None, value=None):
+    def __init__(self, bottle_info):
+        # self.wine_id = wine_id
+        # self.upc = upc
+        # self.winery = winery
+        # self.region = region
+        # self.name = name
+        # self.varietal = varietal
+        # self.wtype = wtype
+        # self.vintage = vintage
+        # self.msrp = msrp
+        # self.value = value
+
+        self.bottle_info = bottle_info
+
+
+    def add_to_cellar(self, user):
+        # This function adds a bottle to the user's cellar. 
+        # First, it checks for an existing bottle in the main db
+        if 
 
     def generate_label(self):
         tag_num = (12 - len(str(self.wine_id))) * '0' + str(self.wine_id)
