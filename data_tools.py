@@ -52,10 +52,10 @@ def search_db(search_input, table='userinventory'):
     # craft the sql query string
     arg = 'SELECT * FROM ' + table + ' WHERE '
     for term in terms:
-        if term is 'wine_id':
-            arg += 'wine_id LIKE '
-        else:
-            arg += '{0} LIKE %{1}% AND '.format(term, ':' + term)
+        # if term is 'wine_id':
+        #     arg += 'wine_id LIKE '
+        # else:
+            arg += '{0} LIKE {1} AND '.format(term, ':' + term)
     arg = arg.rstrip(' AND ')
 
     # finally, call the search function from the db_man object
@@ -149,3 +149,21 @@ def update_table(update_input, table='userinventory'):
 
     db_update = DatabaseManager()
     db_update.db_execute(arg, terms)
+
+
+####################################################################
+############################ Test Code #############################
+####################################################################
+
+# search_input = ['791863140506', 'Burnt Bridge Cellars', 'Walla Walla',
+#                 None, 'Merlot', 'Table',
+#                 2013, '$30', '$30']
+# search_input = [None, 'Burnt Bridge Cellars', None,
+#                 None, 'Merlot', None,
+#                 None, None, None]
+
+#enter_db(search_input, 'winedata')
+#drop_row(20, 'winedata')
+#print(search_db(search_input, 'winedata'))
+# find_bottle = input('Enter a bottle ID: ')
+# print(fetch_db([find_bottle, None, None, None, None, None, None, None, None], 'winedata'))
