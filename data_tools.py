@@ -151,16 +151,16 @@ def update_table(update_input, table='userinventory'):
 #                 "date_in":input_list[5],
 #                 "date_out":input_list[6]}
 
-winedata_dict = {"wine_id":None,
-                 "upc":'791863140506',
-                 "winery":'Burnt Bridge Cellars',
-                 "region":'Walla Walla',
-                 "name":None,
-                 "varietal":'Merlot',
-                 "wtype":'Table',
-                 "vintage":2013,
-                 "msrp":'$30',
-                 "value":'$30'}
+# winedata_dict = {"wine_id":None,
+#                  "upc":'791863140506',
+#                  "winery":'Burnt Bridge Cellars',
+#                  "region":'Walla Walla',
+#                  "name":None,
+#                  "varietal":'Merlot',
+#                  "wtype":'Table',
+#                  "vintage":2013,
+#                  "msrp":'$30',
+#                  "value":'$30'}
   
 # userdata_dict = {"user_id":input_list[0],
 #                  "username":input_list[1],
@@ -169,6 +169,6 @@ winedata_dict = {"wine_id":None,
 
 # enter_db(winedata_dict, 'winedata')
 # drop_row(winedata_dict['wine_id'], 'winedata')
-print(search_db(winedata_dict, 'winedata'))
-find_bottle = input('Enter a bottle ID: ')
-print(lookup_db(find_bottle, 'winedata'))
+# print(search_db(winedata_dict, 'winedata'))
+# find_bottle = input('Enter a bottle ID: ')
+# print(lookup_db(find_bottle, 'winedata'))

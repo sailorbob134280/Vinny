@@ -22,13 +22,30 @@ class Bottle:
         # self.value = value
 
         self.bottle_info = bottle_info
+    # userinv_dict = {"wine_id":input_list[0],
+    #                 "user_id":input_list[1],
+    #                 "bottle_size":input_list[2],
+    #                 "location":input_list[3],
+    #                 "comments":input_list[4],
+    #                 "date_in":input_list[5],
+    #                 "date_out":input_list[6]}
 
-
-    def add_to_cellar(self, user):
-        # This function adds a bottle to the user's cellar. 
-        # First, it checks for an existing bottle in the main db
-        if 
-
+    # winedata_dict = {"wine_id":None,
+    #                  "upc":'791863140506',
+    #                  "winery":'Burnt Bridge Cellars',
+    #                  "region":'Walla Walla',
+    #                  "name":None,
+    #                  "varietal":'Merlot',
+    #                  "wtype":'Table',
+    #                  "vintage":2013,
+    #                  "msrp":'$30',
+    #                  "value":'$30'}
+  
+    # userdata_dict = {"user_id":input_list[0],
+    #                  "username":input_list[1],
+    #                  "password":input_list[2],
+    #                  "cellar_space":input_list[3]}
+    
     def generate_label(self):
         tag_num = (12 - len(str(self.wine_id))) * '0' + str(self.wine_id)
         options = {'dpi': 200,
