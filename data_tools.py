@@ -4,24 +4,24 @@ def cleanup_dbinput(input_list, table):
     # first, figure out which table the input is for 
     # and assign the inputs to a dictionary (including none)
     if table is 'userinventory':
-        input_dict = {"transaction_id":input_list[0],
-                      "wine_id":input_list[1],
-                      "user_id":input_list[2],
-                      "bottle_size":input_list[3],
-                      "location":input_list[4],
-                      "comments":input_list[5],
-                      "date_in":input_list[6],
-                      "date_out":input_list[7]}
+        input_dict = {"wine_id":input_list[0],
+                      "user_id":input_list[1],
+                      "bottle_size":input_list[2],
+                      "location":input_list[3],
+                      "comments":input_list[4],
+                      "date_in":input_list[5],
+                      "date_out":input_list[6]}
     elif table is 'winedata':
         input_dict = {"wine_id":input_list[0],
-                      "winery":input_list[1],
-                      "region":input_list[2],
-                      "name":input_list[3],
-                      "varietal":input_list[4],
-                      "wtype":input_list[5],
-                      "vintage":input_list[6],
-                      "msrp":input_list[7],
-                      "value":input_list[8]}
+                      "upc":input_list[1],
+                      "winery":input_list[2],
+                      "region":input_list[3],
+                      "name":input_list[4],
+                      "varietal":input_list[5],
+                      "wtype":input_list[6],
+                      "vintage":input_list[7],
+                      "msrp":input_list[8],
+                      "value":input_list[9]}
     elif table is 'userdata':
         input_dict = {"user_id":input_list[0],
                       "username":input_list[1],
@@ -41,7 +41,7 @@ def search_db(search_input, table='userinventory'):
     # searches for a wine in the database that resembles the input
     # first, assign the inputs to a list to be cleaned up
     # this function takes a list of the following format:
-    # search_input = [wine_id, winery, region,
+    # search_input = [wine_id, upc, winery, region,
     #                 name, varietal, wtype,
     #                 vintage, msrp, value]
     # it is critical that the list is complete, even if some
@@ -52,17 +52,14 @@ def search_db(search_input, table='userinventory'):
     # craft the sql query string
     arg = 'SELECT * FROM ' + table + ' WHERE '
     for term in terms:
-        # if term is 'wine_id':
-        #     arg += 'wine_id LIKE '
-        # else:
-            arg += '{0} LIKE {1} AND '.format(term, ':' + term)
+        arg += '{0} LIKE {1} AND '.format(term, ':' + term)
     arg = arg.rstrip(' AND ')
 
     # finally, call the search function from the db_man object
     db_search = DatabaseManager()
     return db_search.db_fetch(arg, terms, 'all')
 
-def fetch_db(fetch_input, table='userinventory', disallowed_id=None):
+def fetch_db(fetch_input, table='userinventory'):
     # fetches a row from the database
     # shoud be faster than searching, but only returns one row 
     # (so should only be used when one value is expected to be returned)
@@ -76,10 +73,23 @@ def fetch_db(fetch_input, table='userinventory', disallowed_id=None):
     fetch = DatabaseManager()
     return fetch.db_fetch(arg, terms, 'one')
 
+def lookup_db(lookup_number, table='userinventory'):
+    # This is a function to quickly lookup based on either a upc or wine_id
+    # This is really similar to the fetch_db function (and may end up
+    # replacing it).
+    lookup = DatabaseManager()
+    arg = 'SELECT * FROM ' + table + ' WHERE upc=?'
+    result = lookup.db_fetch(arg, (lookup_number,), 'one')
+    if result is None:
+        arg = 'SELECT * FROM ' + table + ' WHERE wine_id=?'
+        return lookup.db_fetch(arg, (lookup_number,), 'one')
+    else:
+        return result
+
 def enter_db(entry_input, table='userinventory'):
     # enters a wine into the database
     # this function takes a list of the following format:
-    # entry_input = [wine_id, winery, region,
+    # entry_input = [wine_id, upc, winery, region,
     #                name, varietal, wtype,
     #                vintage, msrp, value]
     # it is critical that the list is complete, even if some
@@ -87,29 +97,7 @@ def enter_db(entry_input, table='userinventory'):
     db_enter = DatabaseManager()
     terms = cleanup_dbinput(entry_input, table)
 
-    # we need to check if the specific requested wine_id is 
-    # currently in use. If it is, we need to reassign the old
-    # one to something new. (This is so that we don't risk a
-    # collision when entering a UPC code as an asset tag)
-    # this checks for a collision and if one exists, it reenters
-    # the old row as a new one to get a new wine_id assigned. 
-    # THIS WILL ALSO NEED TO WARN THE USER TO UPDATE THE OLD
-    # BARCODE ONCE THE UI IS IMPLIMENTED
-    if table is 'winedata' and 'wine_id' in terms:
-        old_row = fetch_db([terms['wine_id'], None, None, None, None, None, None, None, None], 'winedata')
-        print(old_row)
-        if old_row is not None:
-            move_entry = list(old_row)
-            move_entry[0] = None
-            print(move_entry)
-            db_enter.db_execute('INSERT INTO winedata (wine_id, winery, region, name, varietal, vintage, wtype, msrp, value) VALUES (?,?,?,?,?,?,?,?,?)', tuple(move_entry))
-            relocated_entry = fetch_db(move_entry, 'winedata', terms['wine_id'])
-            print('''WARNING: This wine_id is currently in use! The old bottle, {0} {1} {2} {3},
-             has been assigned a new wine_id of {4}. Please print a new barcode now.'''.format(relocated_entry[1],
-             relocated_entry[6], relocated_entry[3], relocated_entry[4], relocated_entry[0]))
-            drop_row(terms['wine_id'], 'winedata')
-
-    #arg = 'INSERT INTO ' + table + ' (wine_id, winery, region, name, varietal, wtype, vintage, msrp, value) VALUES (?,?,?,?,?,?,?,?,?)'
+    #arg = 'INSERT INTO ' + table + ' (upc, winery, region, name, varietal, wtype, vintage, msrp, value) VALUES (?,?,?,?,?,?,?,?,?)'
     arg = 'INSERT INTO ' + table + ' ('
     values = '('
     for term in terms:
@@ -137,7 +125,7 @@ def drop_row(wine_id, table='userinventory'):
 def update_table(update_input, table='userinventory'):
     # updates a specific row in a specified table
     # this function takes a list of the following format:
-    # entry_input = [wine_id, winery, region,
+    # entry_input = [wine_id, upc, winery, region,
     #                name, varietal, wtype,
     #                vintage, msrp, value]
     terms = cleanup_dbinput(update_input)
@@ -155,15 +143,15 @@ def update_table(update_input, table='userinventory'):
 ############################ Test Code #############################
 ####################################################################
 
-# search_input = ['791863140506', 'Burnt Bridge Cellars', 'Walla Walla',
+# search_input = [None, None, 'Burnt Bridge Cellars', 'Walla Walla',
 #                 None, 'Merlot', 'Table',
 #                 2013, '$30', '$30']
-# search_input = [None, 'Burnt Bridge Cellars', None,
+# search_input = [None, None, 'Burnt Bridge Cellars', None,
 #                 None, 'Merlot', None,
 #                 None, None, None]
 
-#enter_db(search_input, 'winedata')
-#drop_row(20, 'winedata')
-#print(search_db(search_input, 'winedata'))
+# enter_db(search_input, 'winedata')
+# drop_row(20, 'winedata')
+# print(search_db(search_input, 'winedata'))
 # find_bottle = input('Enter a bottle ID: ')
-# print(fetch_db([find_bottle, None, None, None, None, None, None, None, None], 'winedata'))
+# print(lookup_db(find_bottle, 'winedata'))

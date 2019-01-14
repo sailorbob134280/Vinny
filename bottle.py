@@ -8,8 +8,9 @@ class Bottle:
     A generic object to handle bottles and the associated methods
     that may be useful to them
     '''
-    def __init__(self, wine_id=None, winery=None, region=None, name=None, varietal=None, wtype=None, vintage=None, msrp=None, value=None):
+    def __init__(self, wine_id=None, upc=None, winery=None, region=None, name=None, varietal=None, wtype=None, vintage=None, msrp=None, value=None):
         self.wine_id = wine_id
+        self.upc = upc
         self.winery = winery
         self.region = region
         self.name = name
