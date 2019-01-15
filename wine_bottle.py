@@ -10,6 +10,7 @@ class Wine:
     '''
     def __init__(self, wine_info):
         self.wine_info = wine_info
+        self.wine_search_flag = False
         # wine_info = {"wine_id":None,
         #              "upc":'791863140506',
         #              "winery":'Burnt Bridge Cellars',
@@ -34,12 +35,12 @@ class Wine:
         # return multiple entries, so we have to return them all (long-ass list)
         else:
             result = search_db(self.wine_info, 'winedata')
-        
         # Now we need to format it. Due to the way the output is formatted, we need
         # to ensure that it becomes a list of tuples, regardless of how many entries
         # there actually are. We also need to handle the case that there may not be 
         # any matches at all.
         if result is not None:
+            wine_search_flag = True
             if isinstance(result, tuple):
                 result = [result]
             res_list = []
@@ -55,9 +56,44 @@ class Wine:
                                  "msrp":result[i][8],
                                  "value":result[i][9]})
         
+            if len(res_list) is 1:
+                self.wine_info = res_list[0]
             return res_list
         else:
             return None
+
+    def get_wine_id(self):
+        # Returns just the wine_id, or a list of wine_ids if there
+        # are multiple. Useful for stitching together the inv and data
+        # tables. If the bottle doesn't have a wine_id attached, it'll
+        # try to find it
+        if 'wine_id' in self.wine_info and self.wine_info['wine_id'] is not None:
+            return self.wine_info['wine_id']
+        else:
+            result = self.search_wine()
+            if len(result) is 1:
+                return self.wine_info['wine_id']
+            elif result is not None:
+                id_list = []
+                for i in range(len(result)):
+                    id_list.append(result[i]['wine_id'])
+                return id_list
+            else:
+                return None
+
+    def add_wine_to_db(self):
+        # Adds a wine to the database after checking if
+        # it's already there. If the search flag is true,
+        # the database has already been searched and there's
+        # no need to do it again
+        result = None
+        if self.wine_search_flag is False:
+            result = self.search_wine()
+        if result is None:
+            enter_db(self.wine_info, 'winedata')
+
+    def update_wine_db(self):
+        update_row(self.wine_info, 'winedata')
 
     def generate_label(self):
         tag_num = (12 - len(str(self.wine_id))) * '0' + str(self.wine_id)
@@ -73,15 +109,29 @@ class Wine:
     #         os.remove(svg_filename)
 
 
-# winedata_dict = {"wine_id":None,
-#                  "upc":'12345',
-#                  "winery":None,
-#                  "region":None,
-#                  "name":None,
-#                  "varietal":None,
-#                  "wtype":None,
-#                  "vintage":None,
-#                  "msrp":None,
-#                  "value":None}
-# new_bottle = Wine(winedata_dict)
-# print(new_bottle.search_wine())
+class Bottle(Wine):
+    def __init__(self, wine_info, bottle_info):
+        return super().__init__(wine_info)
+        self.bottle_info = bottle_info
+
+wine_dict = {"wine_id":'000000000002',
+                 "upc":None,
+                 "winery":'Burnt Bridge Cellars',
+                 "region":'Walla Walla',
+                 "name":None,
+                 "varietal":'Grenache',
+                 "wtype":'Table',
+                 "vintage":2013,
+                 "msrp":'$35',
+                 "value":'$35'}
+
+bottle_dict = {"wine_id":'000000000003',
+               "user_id":'000000000001',
+               "bottle_size":input_list[2],
+               "location":input_list[3],
+               "comments":input_list[4],
+               "date_in":input_list[5],
+               "date_out":input_list[6]}
+
+new_bottle = Bottle(wine_dict, bottle_dict)
+

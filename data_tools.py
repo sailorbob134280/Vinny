@@ -57,7 +57,11 @@ def search_db(search_input, table='userinventory'):
 
     # finally, call the search function from the db_man object
     db_search = DatabaseManager()
-    return db_search.db_fetch(arg, terms, 'all')
+    result = db_search.db_fetch(arg, terms, 'all')
+    if len(result) is not 0:
+        return result
+    else:
+        return None
 
 def fetch_db(fetch_input, table='userinventory'):
     # fetches a row from the database
@@ -122,13 +126,13 @@ def drop_row(wine_id, table='userinventory'):
     db_drop = DatabaseManager()
     db_drop.db_execute(arg, (wine_id,))
 
-def update_table(update_input, table='userinventory'):
+def update_row(update_input, table='userinventory'):
     # updates a specific row in a specified table
     # this function takes a list of the following format:
     # entry_input = [wine_id, upc, winery, region,
     #                name, varietal, wtype,
     #                vintage, msrp, value]
-    terms = cleanup_dbinput(update_input)
+    terms = cleanup_dbinput(update_input, table)
     arg = 'UPDATE ' + table + ' SET '
     for term in terms:
         arg += term + ' = :' + term + ', '
