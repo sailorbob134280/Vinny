@@ -152,15 +152,15 @@ def update_table(update_input, table='userinventory'):
 #                 "date_out":input_list[6]}
 
 # winedata_dict = {"wine_id":None,
-#                  "upc":'791863140506',
+#                  "upc":'081128011680',
 #                  "winery":'Burnt Bridge Cellars',
 #                  "region":'Walla Walla',
 #                  "name":None,
-#                  "varietal":'Merlot',
+#                  "varietal":'Cabernet Sauvignon',
 #                  "wtype":'Table',
-#                  "vintage":2013,
-#                  "msrp":'$30',
-#                  "value":'$30'}
+#                  "vintage":2012,
+#                  "msrp":'$35',
+#                  "value":'$35'}
   
 # userdata_dict = {"user_id":input_list[0],
 #                  "username":input_list[1],
