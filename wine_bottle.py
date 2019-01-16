@@ -157,7 +157,7 @@ class Bottle(Wine):
                 raise Exception('Multiple wine entries found. Please be more specific.')
             else:
                 self.bottle_info['wine_id'] = bottle_id
-        if fetch_db({'location':new_location}) is not None:
+        while fetch_db({'location':new_location}) is not None:
             print('Error: Location is already occupied.')
             new_location = input('Please enter a new location: ')
         self.bottle_info['location'] = new_location
