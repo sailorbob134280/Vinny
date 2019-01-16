@@ -1,4 +1,5 @@
 import os
+import datetime
 from data_tools import *
 from barcode import generate
 
@@ -40,7 +41,7 @@ class Wine:
         # there actually are. We also need to handle the case that there may not be 
         # any matches at all.
         if result is not None:
-            wine_search_flag = True
+            self.wine_search_flag = True
             if isinstance(result, tuple):
                 result = [result]
             res_list = []
@@ -70,8 +71,9 @@ class Wine:
         if 'wine_id' in self.wine_info and self.wine_info['wine_id'] is not None:
             return self.wine_info['wine_id']
         else:
-            result = self.search_wine()
+            result = self.search_wine(table='winedata')
             if len(result) is 1:
+                self.wine_info['wine_id'] = result[0]
                 return self.wine_info['wine_id']
             elif result is not None:
                 id_list = []
@@ -111,27 +113,90 @@ class Wine:
 
 class Bottle(Wine):
     def __init__(self, wine_info, bottle_info):
-        return super().__init__(wine_info)
+        super().__init__(wine_info)
         self.bottle_info = bottle_info
+        self.bottle_search_flag = False
+    
+    def search_bottle(self):
+        if self.wine_search_flag is False:
+            super().search_wine()
 
-wine_dict = {"wine_id":'000000000002',
-                 "upc":None,
-                 "winery":'Burnt Bridge Cellars',
-                 "region":'Walla Walla',
-                 "name":None,
-                 "varietal":'Grenache',
-                 "wtype":'Table',
-                 "vintage":2013,
-                 "msrp":'$35',
-                 "value":'$35'}
+        if 'wine_id' in self.bottle_info and self.bottle_info['wine_id'] is not None:
+            result = fetch_db({'wine_id':self.bottle_info['wine_id']})
+        elif 'location' in self.bottle_info and self.bottle_info['location'] is not None:
+            result = fetch_db({'location':self.bottle_info['location']})
+        else:
+            result = search_db(self.bottle_info)
+        
+        if result is not None:
+            self.bottle_search_flag = True
+            if isinstance(result, tuple):
+                result = [result]
+            res_list = []
+            for i in range(len(result)):
+                res_list.append({"wine_id":result[i][0],
+                                 "user_id":result[i][1],
+                                 "bottle_size":result[i][2],
+                                 "location":result[i][3],
+                                 "comments":result[i][4],
+                                 "date_in":result[i][5],
+                                 "date_out":result[i][6]})
+            
+            if len(res_list) is 1:
+                self.bottle_info = res_list[0]
+            return res_list
+        else:
+            return None
+    
+    def check_in(self, new_location, new_bottle_size=None):
+        if self.bottle_search_flag is False:
+            existing_botttles = self.search_bottle()
+        if 'wine_id' not in self.bottle_info or self.bottle_info['wine_id'] is None:
+            bottle_id = self.get_wine_id()
+            if isinstance(bottle_id, list):
+                raise Exception('Multiple wine entries found. Please be more specific.')
+            else:
+                self.bottle_info['wine_id'] = bottle_id
+        if fetch_db({'location':new_location}) is not None:
+            print('Error: Location is already occupied.')
+            new_location = input('Please enter a new location: ')
+        self.bottle_info['location'] = new_location
+        if new_bottle_size is not None:
+            self.bottle_info['bottle_size'] = new_bottle_size
+        self.bottle_info['date_in'] = '{date:%Y-%m-%d %H:%M:%S}'.format(date=datetime.datetime.now())
+        enter_db(self.bottle_info)
 
-bottle_dict = {"wine_id":'000000000003',
+                 
+
+# wine_dict = {"wine_id":'000000000002',
+#              "upc":None,
+#              "winery":'Burnt Bridge Cellars',
+#              "region":'Walla Walla',
+#              "name":None,
+#              "varietal":'Grenache',
+#              "wtype":'Table',
+#              "vintage":2013,
+#              "msrp":'$35',
+#              "value":'$35'}
+
+wine_dict = {"wine_id":'000000000003',
+             "upc":None,
+             "winery":None,
+             "region":None,
+             "name":None,
+             "varietal":None,
+             "wtype":None,
+             "vintage":None,
+             "msrp":None,
+             "value":None}
+
+bottle_dict = {"wine_id":None,
                "user_id":'000000000001',
-               "bottle_size":input_list[2],
-               "location":input_list[3],
-               "comments":input_list[4],
-               "date_in":input_list[5],
-               "date_out":input_list[6]}
+               "bottle_size":'Standard (750 mL)',
+               "location":None,
+               "comments":None,
+               "date_in":None,
+               "date_out":None}
 
 new_bottle = Bottle(wine_dict, bottle_dict)
-
+new_bottle.check_in(new_location='A7')
