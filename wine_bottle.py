@@ -177,7 +177,8 @@ class Bottle(Wine):
 #              "wtype":'Table',
 #              "vintage":2013,
 #              "msrp":'$35',
-#              "value":'$35'}
+#              "value":'$35'
+#              "comments":None}
 
 wine_dict = {"wine_id":'000000000003',
              "upc":None,
@@ -194,7 +195,6 @@ bottle_dict = {"wine_id":None,
                "user_id":'000000000001',
                "bottle_size":'Standard (750 mL)',
                "location":None,
-               "comments":None,
                "date_in":None,
                "date_out":None}
 

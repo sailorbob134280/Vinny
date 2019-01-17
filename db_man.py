@@ -58,6 +58,21 @@ class DatabaseManager:
             if conn is not None:
                 conn.close()
         
+    def db_getcolnames(self, table='winedata'):
+        conn = None
+        try:
+            conn = sqlite3.connect(self.db_path)
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM ' + table)
+            row = cursor.fetchone()
+            return row.keys()
+        except Error as e:
+            print(e)
+            print('Transaction failed due to an error')
+        finally:
+            if conn is not None:
+                conn.close()  
 
 ########
 #Errors#

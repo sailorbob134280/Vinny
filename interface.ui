@@ -28,7 +28,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="inventory">
        <attribute name="title">
@@ -175,6 +175,17 @@
          <widget class="QTableView" name="invTable"/>
         </item>
         <item>
+         <widget class="QPushButton" name="check_out">
+          <property name="text">
+           <string>Check Out</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources/icons/icons.qrc">
+            <normaloff>:/Wine/wine/icons8-wine-bottle-52.png</normaloff>:/Wine/wine/icons8-wine-bottle-52.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
            <widget class="QPushButton" name="pushButton_6">
@@ -184,13 +195,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="check_out">
+           <widget class="QPushButton" name="pushButton_8">
             <property name="text">
-             <string>Check Out</string>
-            </property>
-            <property name="icon">
-             <iconset resource="resources/icons/icons.qrc">
-              <normaloff>:/Wine/wine/icons8-wine-bottle-52.png</normaloff>:/Wine/wine/icons8-wine-bottle-52.png</iconset>
+             <string>Edit Bottle</string>
             </property>
            </widget>
           </item>
