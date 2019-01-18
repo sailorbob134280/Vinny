@@ -30,31 +30,44 @@ def export_db(path):
     inv_rows = db_export.db_fetch('SELECT * FROM userinventory ORDER BY wine_id', rows='all')
 
 
-    # Finally works goddammit that sucked
+    # Add everything to the excel file sequentially
+    # First, initialize the variables that may not exist 
+    # until later in the loop
     old_id = None
     qty = 0
     dup_row = None
     old_row = None
+
+    # Iterate through each of the entries in the inventory
+    # For each entry, look it up in the winedata table and
+    # add create one long list which the relevant data. Write
+    # that to the extended page
     for i in range(len(inv_rows)):
         write_row = list(db_export.db_fetch('SELECT * FROM winedata WHERE wine_id=?', (inv_rows[i][0],)))
         write_row.extend(inv_rows[i][2:])
         exp_full.append(write_row)
-        write_row[qty_index] = qty
+        # Remove the date in/out entries
         del write_row[date_index:date_index+2]
+        # The condensed row will run one iteration behind in order
+        # to check for another of the same bottle. It is initialized
+        # as none to avoid a definition error in the first loop
         if old_row != None:
+            # if the wine id is the same, increment the counter
             if old_id == inv_rows[i][0]:
                 qty += 1
-                print('dup')
+            # if it's not, incriment the counter to account for the
+            # last bottle, write it, and reset qty counter
             else:
                 qty += 1
                 old_row[qty_index] = qty
                 exp_condensed.append(old_row)
                 qty = 0
-                print('not dup')
-            print('condensed')
+        # set old row and old id so we can check it against the 
+        # next index on the next cycle
         old_row = write_row.copy()
         old_id = inv_rows[i][0]
-        print(old_row)
+    # Because the condensed table runs one cycle behind, we have to
+    # run the write command one more time to finish the last entry
     qty += 1
     old_row[qty_index] = qty
     exp_condensed.append(old_row)
