@@ -38,10 +38,10 @@ def export_db(path):
     dup_row = None
     old_row = None
 
-    # Iterate through each of the entries in the inventory
-    # For each entry, look it up in the winedata table and
-    # add create one long list which the relevant data. Write
-    # that to the extended page
+    # Iterate through each of the entries in the inventory For each
+    # entry, look it up in the winedata table and add create one 
+    # long list which the relevant data. This is a little slower,
+    # but more memory efficient. Write that to the extended page. 
     for i in range(len(inv_rows)):
         write_row = list(db_export.db_fetch('SELECT * FROM winedata WHERE wine_id=?', (inv_rows[i][0],)))
         write_row.extend(inv_rows[i][2:])
@@ -76,7 +76,16 @@ def export_db(path):
     # Save the file
     exp_wb.save(path)
 
+def import_db(path):
+    # This function imports an excel file (from a specified format),
+    # checks for duplicates, and enters the non-duplicates into the
+    # database. (Note: duplicates refer to the winedata table, not
+    # the inventory. That will allow any)
+    import_wb = load_workbook(path)
+    import_ws = import_wb.active
+    
+
+
 path = 'test.xlsx'
-export_db(path)
-
-
+#export_db(path)
+import_db(path)
