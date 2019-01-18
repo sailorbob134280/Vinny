@@ -30,31 +30,34 @@ def export_db(path):
     inv_rows = db_export.db_fetch('SELECT * FROM userinventory ORDER BY wine_id', rows='all')
 
 
-    # Ok, shits fucked here. Not sure why. Time for dinner
+    # Finally works goddammit that sucked
     old_id = None
     qty = 0
     dup_row = None
+    old_row = None
     for i in range(len(inv_rows)):
         write_row = list(db_export.db_fetch('SELECT * FROM winedata WHERE wine_id=?', (inv_rows[i][0],)))
         write_row.extend(inv_rows[i][2:])
         exp_full.append(write_row)
         write_row[qty_index] = qty
         del write_row[date_index:date_index+2]
-        if old_id == inv_rows[i][0]:
-            qty += 1
-            dup_row = write_row.copy()
-        else:
-            qty += 1
-            if dup_row == None:
-                write_row[qty_index] = qty
-                exp_condensed.append(write_row)
+        if old_row != None:
+            if old_id == inv_rows[i][0]:
+                qty += 1
+                print('dup')
             else:
-                dup_row[qty_index] = qty
-                exp_condensed.append(dup_row)
-                dup_row = None
-            qty = 0
+                qty += 1
+                old_row[qty_index] = qty
+                exp_condensed.append(old_row)
+                qty = 0
+                print('not dup')
+            print('condensed')
+        old_row = write_row.copy()
         old_id = inv_rows[i][0]
-
+        print(old_row)
+    qty += 1
+    old_row[qty_index] = qty
+    exp_condensed.append(old_row)
 
 
     # Save the file
