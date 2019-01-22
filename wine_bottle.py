@@ -71,8 +71,8 @@ class Wine:
         if 'wine_id' in self.wine_info and self.wine_info['wine_id'] is not None:
             return self.wine_info['wine_id']
         else:
-            result = self.search_wine(table='winedata')
-            if len(result) is 1:
+            result = self.search_wine()
+            if isinstance(result, list):
                 self.wine_info['wine_id'] = result[0]
                 return self.wine_info['wine_id']
             elif result is not None:
@@ -155,6 +155,9 @@ class Bottle(Wine):
             bottle_id = self.get_wine_id()
             if isinstance(bottle_id, list):
                 raise Exception('Multiple wine entries found. Please be more specific.')
+            elif bottle_id == None:
+                self.add_wine_to_db()
+                bottle_id = self.get_wine_id()
             else:
                 self.bottle_info['wine_id'] = bottle_id
         while fetch_db({'location':new_location}) is not None:
@@ -168,28 +171,28 @@ class Bottle(Wine):
 
                  
 
-# wine_dict = {"wine_id":'000000000002',
-#              "upc":None,
-#              "winery":'Burnt Bridge Cellars',
-#              "region":'Walla Walla',
-#              "name":None,
-#              "varietal":'Grenache',
-#              "wtype":'Table',
-#              "vintage":2013,
-#              "msrp":'$35',
-#              "value":'$35'
-#              "comments":None}
-
-wine_dict = {"wine_id":'000000000003',
+wine_dict = {"wine_id":'000000000005',
              "upc":None,
-             "winery":None,
-             "region":None,
+             "winery":'Burnt Bridge Cellars',
+             "region":'Walla Walla',
              "name":None,
-             "varietal":None,
-             "wtype":None,
-             "vintage":None,
-             "msrp":None,
-             "value":None}
+             "varietal":'Syrah',
+             "wtype":'Table',
+             "vintage":2014,
+             "msrp":'$35',
+             "value":'$35',
+             "comments":None}
+
+# wine_dict = {"wine_id":'000000000003',
+#              "upc":None,
+#              "winery":None,
+#              "region":None,
+#              "name":None,
+#              "varietal":None,
+#              "wtype":None,
+#              "vintage":None,
+#              "msrp":None,
+#              "value":None}
 
 bottle_dict = {"wine_id":None,
                "user_id":'000000000001',
@@ -199,4 +202,4 @@ bottle_dict = {"wine_id":None,
                "date_out":None}
 
 new_bottle = Bottle(wine_dict, bottle_dict)
-new_bottle.check_in(new_location='A7')
+new_bottle.check_in(new_location=None)

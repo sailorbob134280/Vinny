@@ -81,9 +81,21 @@ def import_db(path):
     # checks for duplicates, and enters the non-duplicates into the
     # database. (Note: duplicates refer to the winedata table, not
     # the inventory. That will allow any)
+    # First, get the names of columns in the database
+    # db_import = DatabaseManager()
+    # winedata_names = db_import.db_getcolnames('winedata')
+    # userinventory_names = db_import.db_getcolnames('userinventory')
+    
     import_wb = load_workbook(path)
     import_ws = import_wb.active
-    
+
+    # Grab all rows from the spreadsheet and make a dictionary with
+    # them. This will be used to add the entries to the db
+    import_rows = tuple(import_ws.rows)
+    input_dict = {}
+    for key in import_rows[0]:
+        input_dict[key.value] = None
+    print(input_dict)
 
 
 path = 'test.xlsx'
