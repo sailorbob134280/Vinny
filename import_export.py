@@ -1,4 +1,4 @@
-from openpyxl import *
+from openpyxl import Workbook, load_workbook
 from db_man import DatabaseManager
 import os
 
@@ -35,8 +35,7 @@ def export_db(path):
     # until later in the loop
     old_id = None
     qty = 0
-    dup_row = None
-    old_row = None
+    old_row = []
 
     # Iterate through each of the entries in the inventory For each
     # entry, look it up in the winedata table and add create one 
@@ -51,7 +50,7 @@ def export_db(path):
         # The condensed row will run one iteration behind in order
         # to check for another of the same bottle. It is initialized
         # as none to avoid a definition error in the first loop
-        if old_row != None:
+        if old_row != []:
             # if the wine id is the same, increment the counter
             if old_id == inv_rows[i][0]:
                 qty += 1
@@ -99,5 +98,5 @@ def import_db(path):
 
 
 path = 'test.xlsx'
-#export_db(path)
-import_db(path)
+export_db(path)
+# import_db(path)

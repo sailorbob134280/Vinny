@@ -1,7 +1,8 @@
 from db_man import DatabaseManager
 import datetime
 
-def cleanup_dbinput(input_dict, table):
+# TODO: Remove references to table from cleanup_dbinput - https://trello.com/c/9u1RUzUC/8-remove-references-to-table-from-cleanupdbinput
+def cleanup_dbinput(input_dict, table=None):
     # first, figure out which table the input is for 
     # and assign the inputs to a dictionary (including none)
     # if table is 'userinventory':
@@ -34,7 +35,7 @@ def cleanup_dbinput(input_dict, table):
     # if the term is not used, it is discarded from the dictionary
     terms = {}
     for wkey in input_dict:
-        if input_dict[wkey] is not None:
+        if input_dict[wkey] != None:
             terms[wkey] = input_dict[wkey]
     return terms
 
@@ -91,7 +92,7 @@ def lookup_db(lookup_number, table='userinventory'):
     else:
         return result
 
-def enter_db(entry_input, table='userinventory'):
+def enter_db(entry_input, table='userinventory',ret_id=False):
     # enters a wine into the database
     # this function takes a list of the following format:
     # entry_input = [wine_id, upc, winery, region,
@@ -111,7 +112,7 @@ def enter_db(entry_input, table='userinventory'):
     values = values.rstrip(', ') + ')'
     arg = arg.rstrip(', ') + ') VALUES ' + values
 
-    db_enter.db_execute(arg, terms)
+    return db_enter.db_execute(arg, terms, ret_id)
 
 def drop_row(wine_id, table='userinventory'):
     # drops a row from the database, if for example it is 
@@ -127,14 +128,14 @@ def drop_row(wine_id, table='userinventory'):
     db_drop = DatabaseManager()
     db_drop.db_execute(arg, (wine_id,))
 
-def update_row(update_input, table='userinventory'):
+def update_winedata_row(update_input):
     # updates a specific row in a specified table
     # this function takes a list of the following format:
     # entry_input = [wine_id, upc, winery, region,
     #                name, varietal, wtype,
     #                vintage, msrp, value]
-    terms = cleanup_dbinput(update_input, table)
-    arg = 'UPDATE ' + table + ' SET '
+    terms = cleanup_dbinput(update_input)
+    arg = 'UPDATE winedata SET '
     for term in terms:
         arg += term + ' = :' + term + ', '
     arg = arg.rstrip(', ')

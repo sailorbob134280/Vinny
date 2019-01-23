@@ -21,12 +21,15 @@ class DatabaseManager:
             if conn is not None:
                 conn.close()
     
-    def db_execute(self, command, placeholders=()):
+    def db_execute(self, command, placeholders=(), ret_id=False):
         conn = None
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
             cursor.execute(command, placeholders)
+            if ret_id == True:
+                last_id = cursor.lastrowid
+                print(last_id)
             conn.commit()
         except Error as e:
             print(e)
@@ -35,6 +38,8 @@ class DatabaseManager:
         finally:
             if conn is not None:
                 conn.close()
+            if ret_id == True:
+                return last_id
 
     def db_fetch(self, command, placeholders=(), rows='one'):
         conn = None
@@ -77,9 +82,9 @@ class DatabaseManager:
 ########
 #Errors#
 ########
-class Error(Exception):
-    '''Base class for custom error handling during database operations'''
-    pass
+# class Error(Exception):
+#     '''Base class for custom error handling during database operations'''
+#     pass
 
 class FetchError(Error):
     '''Error to be raised if rows argument is out of range'''
