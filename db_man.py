@@ -29,7 +29,6 @@ class DatabaseManager:
             cursor.execute(command, placeholders)
             if ret_id == True:
                 last_id = cursor.lastrowid
-                print(last_id)
             conn.commit()
         except Error as e:
             print(e)

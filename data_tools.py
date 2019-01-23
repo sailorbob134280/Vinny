@@ -1,37 +1,8 @@
 from db_man import DatabaseManager
 import datetime
 
-# TODO: Remove references to table from cleanup_dbinput - https://trello.com/c/9u1RUzUC/8-remove-references-to-table-from-cleanupdbinput
-def cleanup_dbinput(input_dict, table=None):
-    # first, figure out which table the input is for 
-    # and assign the inputs to a dictionary (including none)
-    # if table is 'userinventory':
-    #     input_dict = {"wine_id":input_list[0],
-    #                   "user_id":input_list[1],
-    #                   "bottle_size":input_list[2],
-    #                   "location":input_list[3],
-    #                   "comments":input_list[4],
-    #                   "date_in":input_list[5],
-    #                   "date_out":input_list[6]}
-    # elif table is 'winedata':
-    #     input_dict = {"wine_id":input_list[0],
-    #                   "upc":input_list[1],
-    #                   "winery":input_list[2],
-    #                   "region":input_list[3],
-    #                   "name":input_list[4],
-    #                   "varietal":input_list[5],
-    #                   "wtype":input_list[6],
-    #                   "vintage":input_list[7],
-    #                   "msrp":input_list[8],
-    #                   "value":input_list[9]}
-    # elif table is 'userdata':
-    #     input_dict = {"user_id":input_list[0],
-    #                   "username":input_list[1],
-    #                   "password":input_list[2],
-    #                   "cellar_space":input_list[3]}
-    # else:
-    #     raise Exception('''Table does not exist! Please contact the devs about this... You really shouldn't see this.''')
 
+def cleanup_dbinput(input_dict):
     # if the term is not used, it is discarded from the dictionary
     terms = {}
     for wkey in input_dict:
@@ -49,7 +20,7 @@ def search_db(search_input, table='userinventory'):
     # it is critical that the list is complete, even if some
     # of the values are null
 
-    terms = cleanup_dbinput(search_input, table)
+    terms = cleanup_dbinput(search_input)
 
     # craft the sql query string
     arg = 'SELECT * FROM ' + table + ' WHERE '
@@ -69,7 +40,7 @@ def fetch_db(fetch_input, table='userinventory'):
     # fetches a row from the database
     # shoud be faster than searching, but only returns one row 
     # (so should only be used when one value is expected to be returned)
-    terms = cleanup_dbinput(fetch_input, table)
+    terms = cleanup_dbinput(fetch_input)
 
     arg = 'SELECT * FROM ' + table + ' WHERE '
     for term in terms:
@@ -101,7 +72,7 @@ def enter_db(entry_input, table='userinventory',ret_id=False):
     # it is critical that the list is complete, even if some
     # of the values are null
     db_enter = DatabaseManager()
-    terms = cleanup_dbinput(entry_input, table)
+    terms = cleanup_dbinput(entry_input)
 
     #arg = 'INSERT INTO ' + table + ' (upc, winery, region, name, varietal, wtype, vintage, msrp, value) VALUES (?,?,?,?,?,?,?,?,?)'
     arg = 'INSERT INTO ' + table + ' ('
@@ -114,7 +85,7 @@ def enter_db(entry_input, table='userinventory',ret_id=False):
 
     return db_enter.db_execute(arg, terms, ret_id)
 
-def drop_row(wine_id, table='userinventory'):
+def drop_row(wine_id, rowid=None, table='userinventory'):
     # drops a row from the database, if for example it is 
     # entered by mistake 
     # this function only takes a wine_id input, which forces
@@ -122,11 +93,15 @@ def drop_row(wine_id, table='userinventory'):
     # deleted
     # This also allows the table to be selected. By default,
     # the table is the user inventory (which is less dangerous)
-
+    terms = [wine_id]
     arg = 'DELETE FROM ' + table + ' WHERE wine_id = ?'
+    if rowid != None:
+        arg += ' AND rowid = ?'
+        terms.append(rowid)
 
+    terms = tuple(terms)
     db_drop = DatabaseManager()
-    db_drop.db_execute(arg, (wine_id,))
+    db_drop.db_execute(arg, terms)
 
 def update_winedata_row(update_input):
     # updates a specific row in a specified table
@@ -143,6 +118,30 @@ def update_winedata_row(update_input):
 
     db_update = DatabaseManager()
     db_update.db_execute(arg, terms)
+
+def update_userinv_row(update_input, rowid):
+    # Updates a userinventory row using the row id (so duplicates aren't
+    # affected). This will mostly be used for moving and checking out bottles
+    arg = 'UPDATE userinventory SET '
+    for term in update_input:
+        arg += term + ' = :' + term + ', '
+    arg = arg.rstrip(', ')
+    arg += ' WHERE rowid = ' + str(rowid)
+
+    inv_update = DatabaseManager()
+    inv_update.db_execute(arg, update_input)
+
+def get_rowid(entry_input, table='userinventory'):
+    # Returns the row id of the desired input
+    terms = cleanup_dbinput(entry_input)
+
+    arg = 'SELECT rowid FROM ' + table + ' WHERE '
+    for term in terms:
+        arg += '{0} = {1} AND '.format(term, ':' + term)
+    arg = arg.rstrip(' AND ')
+
+    getid = DatabaseManager()
+    return getid.db_fetch(arg, terms, 'one')[0]
 
 
 ####################################################################

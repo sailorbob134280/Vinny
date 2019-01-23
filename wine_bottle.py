@@ -1,6 +1,6 @@
 import os
 import datetime
-from data_tools import *
+from data_tools import search_db, fetch_db, lookup_db, enter_db, drop_row, update_winedata_row, update_userinv_row, get_rowid
 from barcode import generate
 
 
@@ -12,7 +12,7 @@ class Wine:
     def __init__(self, wine_info):
         self.wine_info = wine_info
         self.wine_search_flag = False
-        self.wine_id = self.get_wine_id()
+        # self.wine_id = self.get_wine_id()
         # wine_info = {"wine_id":None,
         #              "upc":'791863140506',
         #              "winery":'Burnt Bridge Cellars',
@@ -97,7 +97,7 @@ class Wine:
             return new_id
 
     def update_wine_db(self):
-        update_row(self.wine_info, 'winedata')
+        update_winedata_row(self.wine_info)
 
     def generate_label(self):
         # Function to generate a barcode for the wine based off the unique wine
@@ -113,6 +113,21 @@ class Wine:
             generate('ITF', tag_num, output=str(self.wine_id), writer_options = options)
         else:
             raise Exception('Cannot generate barcode because wine has no id')
+
+    def delete_wine(self):
+        # Deletes a wine from the database. Dangerous command. Use with care.
+        # Requires an explicit wine_id input to function. 
+        if 'wine_id' not in self.wine_info or self.wine_info['wine_id'] == None:
+            raise Exception('Must select a wine to delete!')
+        else:
+            print('''WARNING: You are about to delete this wine. This will also remove all 
+            references of it in your cellar. You cannot undo this.''')
+            answer = input('Continue? (y/n): ')
+            if answer.lower() == 'y':
+                drop_row(self.wine_info['wine_id'], table='winedata')
+                drop_row(self.wine_info['wine_id'])
+            else:
+                print('Action canceled')
 
     # def __del__(self):
     #     svg_filename = str(self.wine_id) + '.svg'
@@ -172,16 +187,11 @@ class Bottle(Wine):
             self.bottle_info['wine_id'] = bottle_id
         self.check_in()
         
-
     def check_in(self, new_location=None, new_bottle_size=None):
         # This method adds a wine to the inventory based on a selected wine_id. Since it will
         # only be called if there's a wine_id, it can be assumed that it exists. Meant to be 
         # called from the main inventory screen.
-        
-        # # TODO: Decide whether to enforce unique locations - https://trello.com/c/zTpPpFH5/7-decide-whether-to-enforce-unique-locations
-        # # while fetch_db({'location':new_location}) is not None:
-        # #     print('Error: Location is already occupied.')
-        # #     new_location = input('Please enter a new location: ')
+
         if new_location != None:
             self.bottle_info['location'] = new_location
         if new_bottle_size != None:
@@ -192,24 +202,57 @@ class Bottle(Wine):
 
     def check_out(self):
         # Checks out a bottle from the inventory (really just adds a date out
-        # entry)
-        self.bottle_info['date_out'] = '{date:%Y-%m-%d %H:%M:%S}'.format(date=datetime.datetime.now())
-        update_row(self.bottle_info)
+        # entry) based on the row id of the selected wine_id and location
+        row_id = get_rowid(self.bottle_info)
+        date_out = '{date:%Y-%m-%d %H:%M:%S}'.format(date=datetime.datetime.now())
+        update_dict = {'date_out':date_out}
+        update_userinv_row(update_dict, row_id)
 
-    
-wine_id = '000000000006'
+    def update_bottle(self, new_info):
+        # Updates the selected bottle with new information, such
+        # as location and bottle size
+        row_id = get_rowid(self.bottle_info)
+        if 'wine_id' in new_info:
+            del new_info['wine_id']
+        if 'date_in' in new_info:
+            del new_info['date_in']
+        self.bottle_info = new_info
+        update_userinv_row(self.bottle_info, row_id)
 
-wine_dict = {"wine_id":wine_id,
-             "upc":None,
-             "winery":'Turly',
-             "region":'Walla Walla',
-             "name":None,
-             "varietal":'Zinfandel',
-             "wtype":'Table',
-             "vintage":2011,
-             "msrp":'$40',
-             "value":'$25',
-             "comments":'Young vines'}
+    def delete_bottle(self):
+        # Deletes a bottle from the db. Less dangerous than deleting wines, 
+        # but still meant to be handled with care. Uses wine_id and other data
+        # to get row id, then uses that to delete the entry. 
+        if 'wine_id' not in self.bottle_info or self.bottle_info['wine_id'] == None:
+            raise Exception('Must select a bottle to delete!')
+        else:
+            print('''WARNING: You are about to delete this bottle. You cannot undo this.''')
+            answer = input('Continue? (y/n): ')
+            if answer.lower() == 'y':
+                row_id = get_rowid(self.bottle_info)
+                drop_row(self.wine_info['wine_id'], rowid=row_id)
+            else:
+                print('Action canceled')
+
+
+####################################################################
+############################ Test Code #############################
+####################################################################
+
+# wine_id = '000000000006'
+# wine_id = None
+
+# wine_dict = {"wine_id":wine_id,
+#              "upc":None,
+#              "winery":'Turly',
+#              "region":'Walla Walla',
+#              "name":None,
+#              "varietal":'Zinfandel',
+#              "wtype":'Table',
+#              "vintage":2011,
+#              "msrp":'$40',
+#              "value":'$25',
+#              "comments":'Young vines'}
 
 # wine_dict = {"wine_id":'000000000003',
 #              "upc":None,
@@ -222,15 +265,23 @@ wine_dict = {"wine_id":wine_id,
 #              "msrp":None,
 #              "value":None}
 
-bottle_dict = {"wine_id":wine_id,
-               "user_id":'000000000001',
-               "bottle_size":'Standard (750 mL)',
-               "location":'C6',
-               "date_in":None,
-               "date_out":None}
+# bottle_dict = {"wine_id":wine_id,
+#                "bottle_size":'Standard (750 mL)',
+#                "location":'C9',
+#                "date_in":None,
+#                "date_out":None}
 
-new_bottle = Bottle(wine_dict, bottle_dict)
+# new_bottle_dict = {"wine_id":None,
+#                "bottle_size":'Standard (750 mL)',
+#                "location":'B12',
+#                "date_in":None,
+#                "date_out":None}
+
+# new_bottle = Bottle(wine_dict, bottle_dict)
 # new_bottle.check_in()
 # new_bottle.add_wine_to_db()
 # new_bottle.add_new()
-new_bottle.check_out()
+# new_bottle.check_out()
+# new_bottle.update_bottle(new_bottle_dict)
+# new_bottle.delete_wine()
+# new_bottle.delete_bottle()
