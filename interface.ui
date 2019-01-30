@@ -23,7 +23,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QTabWidget" name="tabWidget">
+     <widget class="QTabWidget" name="main_tab">
       <property name="tabShape">
        <enum>QTabWidget::Triangular</enum>
       </property>
@@ -38,7 +38,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QGroupBox" name="groupBox_2">
+           <widget class="QGroupBox" name="bottle_lookup">
             <property name="title">
              <string>Bottle Lookup</string>
             </property>
@@ -81,7 +81,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="search">
+              <widget class="QPushButton" name="quick_search">
                <property name="text">
                 <string>Search</string>
                </property>
@@ -104,7 +104,7 @@
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <item>
-              <widget class="QComboBox" name="sortBy">
+              <widget class="QComboBox" name="sort_by">
                <property name="currentText">
                 <string>Winery</string>
                </property>
@@ -118,16 +118,6 @@
                </item>
                <item>
                 <property name="text">
-                 <string>AVA</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Name</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
                  <string>Varietal</string>
                 </property>
                </item>
@@ -136,10 +126,35 @@
                  <string>Vintage</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>Blend Name</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Type</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>MSRP</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Value</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>AVA</string>
+                </property>
+               </item>
               </widget>
              </item>
              <item>
-              <widget class="QRadioButton" name="radioButton_2">
+              <widget class="QRadioButton" name="sort_asc">
                <property name="text">
                 <string>Ascending</string>
                </property>
@@ -149,7 +164,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QRadioButton" name="radioButton">
+              <widget class="QRadioButton" name="sort_desc">
                <property name="text">
                 <string>Descending</string>
                </property>
@@ -188,21 +203,21 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
-           <widget class="QPushButton" name="pushButton_6">
+           <widget class="QPushButton" name="add_copy">
             <property name="text">
              <string>Add Copy</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_8">
+           <widget class="QPushButton" name="edit_bottle">
             <property name="text">
              <string>Edit Bottle</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_5">
+           <widget class="QPushButton" name="move_bottle">
             <property name="text">
              <string>Move Bottle</string>
             </property>
@@ -227,7 +242,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QTableView" name="tableView_2"/>
+           <widget class="QTableView" name="search_result_table"/>
           </item>
          </layout>
         </item>
@@ -238,7 +253,7 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_9">
            <item>
-            <widget class="QRadioButton" name="radioButton_3">
+            <widget class="QRadioButton" name="sel_location">
              <property name="text">
               <string>Location</string>
              </property>
@@ -248,27 +263,27 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_10"/>
+            <widget class="QLineEdit" name="location"/>
            </item>
            <item>
-            <widget class="QRadioButton" name="radioButton_4">
+            <widget class="QRadioButton" name="sel_quantity">
              <property name="text">
               <string>Quantity</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_11"/>
+            <widget class="QLineEdit" name="qty"/>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="add">
              <property name="text">
               <string>Add to Cellar</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_4">
+            <widget class="QPushButton" name="generate_barcode">
              <property name="text">
               <string>Generate Barcode</string>
              </property>
@@ -311,7 +326,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_3">
+              <widget class="QLineEdit" name="varietal">
                <property name="placeholderText">
                 <string/>
                </property>
@@ -325,7 +340,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_9"/>
+              <widget class="QLineEdit" name="upc"/>
              </item>
              <item>
               <widget class="QLabel" name="label_8">
@@ -361,7 +376,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_8"/>
+              <widget class="QLineEdit" name="value"/>
              </item>
             </layout>
            </item>
@@ -375,7 +390,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit">
+              <widget class="QLineEdit" name="winery">
                <property name="placeholderText">
                 <string/>
                </property>
@@ -389,7 +404,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_2"/>
+              <widget class="QLineEdit" name="blend_name"/>
              </item>
              <item>
               <widget class="QLabel" name="label_6">
@@ -399,7 +414,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_7"/>
+              <widget class="QLineEdit" name="vintage"/>
              </item>
              <item>
               <widget class="QLabel" name="label_14">
@@ -409,7 +424,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="comboBox_2">
+              <widget class="QComboBox" name="bottle_size">
                <property name="currentIndex">
                 <number>2</number>
                </property>
@@ -468,7 +483,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_4"/>
+              <widget class="QLineEdit" name="msrp"/>
              </item>
             </layout>
            </item>
@@ -480,7 +495,7 @@
             </widget>
            </item>
            <item row="4" column="0">
-            <widget class="QTextEdit" name="textEdit">
+            <widget class="QTextEdit" name="comments">
              <property name="placeholderText">
               <string/>
              </property>
@@ -489,7 +504,7 @@
            <item row="4" column="1">
             <layout class="QVBoxLayout" name="verticalLayout_7">
              <item>
-              <widget class="QCheckBox" name="checkBox">
+              <widget class="QCheckBox" name="cellar_only">
                <property name="text">
                 <string>Limit Search to My Cellar</string>
                </property>
@@ -499,21 +514,21 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton">
+              <widget class="QPushButton" name="search">
                <property name="text">
                 <string>Search</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_3">
+              <widget class="QPushButton" name="update">
                <property name="text">
                 <string>Update Bottle</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_7">
+              <widget class="QPushButton" name="move_bottle_2">
                <property name="text">
                 <string>Move Bottle</string>
                </property>
@@ -532,7 +547,7 @@
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QTableView" name="tableView"/>
+         <widget class="QTableView" name="history_table"/>
         </item>
        </layout>
       </widget>
@@ -595,6 +610,44 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="9"/>
+ <tabstops>
+  <tabstop>wine_id</tabstop>
+  <tabstop>location_field</tabstop>
+  <tabstop>quick_search</tabstop>
+  <tabstop>invTable</tabstop>
+  <tabstop>check_out</tabstop>
+  <tabstop>add_copy</tabstop>
+  <tabstop>edit_bottle</tabstop>
+  <tabstop>move_bottle</tabstop>
+  <tabstop>sort_by</tabstop>
+  <tabstop>sort_asc</tabstop>
+  <tabstop>sort_desc</tabstop>
+  <tabstop>refresh</tabstop>
+  <tabstop>main_tab</tabstop>
+  <tabstop>winery</tabstop>
+  <tabstop>lineEdit_5</tabstop>
+  <tabstop>blend_name</tabstop>
+  <tabstop>varietal</tabstop>
+  <tabstop>vintage</tabstop>
+  <tabstop>upc</tabstop>
+  <tabstop>bottle_size</tabstop>
+  <tabstop>comboBox</tabstop>
+  <tabstop>msrp</tabstop>
+  <tabstop>value</tabstop>
+  <tabstop>comments</tabstop>
+  <tabstop>cellar_only</tabstop>
+  <tabstop>search</tabstop>
+  <tabstop>update</tabstop>
+  <tabstop>move_bottle_2</tabstop>
+  <tabstop>sel_location</tabstop>
+  <tabstop>location</tabstop>
+  <tabstop>sel_quantity</tabstop>
+  <tabstop>qty</tabstop>
+  <tabstop>add</tabstop>
+  <tabstop>generate_barcode</tabstop>
+  <tabstop>search_result_table</tabstop>
+  <tabstop>history_table</tabstop>
+ </tabstops>
  <resources>
   <include location="resources/icons/icons.qrc"/>
  </resources>
@@ -602,7 +655,7 @@
   <connection>
    <sender>wine_id</sender>
    <signal>returnPressed()</signal>
-   <receiver>search</receiver>
+   <receiver>quick_search</receiver>
    <slot>animateClick()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -618,7 +671,7 @@
   <connection>
    <sender>location_field</sender>
    <signal>returnPressed()</signal>
-   <receiver>search</receiver>
+   <receiver>quick_search</receiver>
    <slot>animateClick()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -634,7 +687,7 @@
   <connection>
    <sender>refresh</sender>
    <signal>clicked()</signal>
-   <receiver>search</receiver>
+   <receiver>quick_search</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -648,9 +701,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox</sender>
+   <sender>cellar_only</sender>
    <signal>toggled(bool)</signal>
-   <receiver>pushButton</receiver>
+   <receiver>search</receiver>
    <slot>animateClick()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -664,4 +717,7 @@
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>quick_search_slot()</slot>
+ </slots>
 </ui>
