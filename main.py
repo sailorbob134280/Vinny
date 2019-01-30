@@ -1,9 +1,6 @@
 import PySide2
-<<<<<<< HEAD
 import wine_bottle
 from db_man import DatabaseManager
-=======
->>>>>>> b3d6173d6eddc5ed308fdb94fd8375d9fd727f3d
 from main_window import *
 
 class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
@@ -11,7 +8,6 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         super().__init__()
         self.setupUi(Vinny)
 
-<<<<<<< HEAD
         db_table_setup = DatabaseManager()
         col_names = db_table_setup.db_getcolnames('winedata')
         col_names.extend(db_table_setup.db_getcolnames('userinventory')[2:])
@@ -78,14 +74,6 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     # def generate_barcode(self):
     #     pass
     
-=======
-        QtCore.QObject.connect(self.quick_search, QtCore.SIGNAL("clicked()"), MainInterface.quick_search_slot)
-
-    @QtCore.Slot()
-    def quick_search_slot():
-        print('search pressed!')
-
->>>>>>> b3d6173d6eddc5ed308fdb94fd8375d9fd727f3d
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
