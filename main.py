@@ -8,21 +8,26 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         super().__init__()
         self.setupUi(Vinny)
 
+        db_table_setup = DatabaseManager()
+        col_names = db_table_setup.db_getcolnames('winedata')
+        col_names.extend(db_table_setup.db_getcolnames('userinventory')[2:])
+        self.InventoryTable.setColumnCount(len(col_names))
+        self.InventoryTable.setHorizontalHeaderLabels(col_names)
+
         self.InventorySearch.clicked.connect(self.quick_search)
+        self.InventoryCheckOut.clicked.connect(self.check_out)
 
     def refresh_tables(self):
         db_grab = DatabaseManager()
         inv_rows = db_grab.db_fetch('SELECT * FROM userinventory ORDER BY wine_id', rows='all')
 
-    # Iterate through each of the entries in the inventory For each
-    # entry, look it up in the winedata table and add create one 
-    # long list which the relevant data. This is a little slower,
-    # but more memory efficient. Write that to the extended page. 
+        self.InventoryTable.setRowCount(0)
         for i in range(len(inv_rows)):
             write_row = list(db_grab.db_fetch('SELECT * FROM winedata WHERE wine_id=?', (inv_rows[i][0],)))
             write_row.extend(inv_rows[i][2:])
-            print(write_row)
-
+            self.InventoryTable.insertRow(i)
+            for k, row_data in enumerate(write_row):
+                self.InventoryTable.setItem(i, k, QtWidgets.QTableWidgetItem(str(row_data)))
 
     @QtCore.Slot()
     def quick_search(self):
@@ -37,9 +42,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         #     print('Location: ' + self.ui.InventoryLocation.text())
         self.refresh_tables()
     
-    # @QtCore.Slot()
-    # def check_out(self):
-    #     pass
+    @QtCore.Slot()
+    def check_out(self):
+        self.InventoryTable.removeRow(self.InventoryTable.rowCount()-1)
 
     # @QtCore.Slot()
     # def add_copy(self):
