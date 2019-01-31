@@ -1,5 +1,5 @@
 import PySide2
-import wine_bottle
+from wine_bottle import *
 from db_man import DatabaseManager
 from main_window import *
 
@@ -8,39 +8,91 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         super().__init__()
         self.setupUi(Vinny)
 
-        db_table_setup = DatabaseManager()
-        col_names = db_table_setup.db_getcolnames('winedata')
-        col_names.extend(db_table_setup.db_getcolnames('userinventory')[2:])
-        self.InventoryTable.setColumnCount(len(col_names))
-        self.InventoryTable.setHorizontalHeaderLabels(col_names)
-
         self.InventorySearch.clicked.connect(self.quick_search)
         self.InventoryCheckOut.clicked.connect(self.check_out)
 
-    def refresh_tables(self):
-        db_grab = DatabaseManager()
-        inv_rows = db_grab.db_fetch('SELECT * FROM userinventory ORDER BY wine_id', rows='all')
+        self.inv_table_pop()
+
+    def translate_col_names(self, input_list):
+        # Translates code names to pretty names and back. It does this
+        # using a dict with both directions in it, since all entries are
+        # unique. Hacky? Yes. Does it work? Also yes. Does it really take
+        # up that much space? Nope. 
+        #
+        # Takes a list, outputs another list.
+        translate_dict = {'wine_id':'Wine ID',
+                          'upc':'UPC',
+                          'winery':'Winery',
+                          'region':'AVA',
+                          'name':'Blend Name',
+                          'varietal':'Varietal',
+                          'vintage':'Vintage',
+                          'wtype':'Type',
+                          'msrp':'MSRP',
+                          'value':'Value',
+                          'comments':'Comments',
+                          'bottle_size':'Bottle Size',
+                          'location':'Location',
+                          'date_in':'Date In',
+                          'date_out':'Date Out',
+                          'Wine ID':'wine_id',
+                          'UPC':'upc',
+                          'Winery':'winery',
+                          'AVA':'region',
+                          'Blend Name':'name',
+                          'Varietal':'varietal',
+                          'Vintage':'vintage',
+                          'Type':'wtype',
+                          'MSRP':'msrp',
+                          'Value':'value',
+                          'Comments':'comments',
+                          'Bottle Size':'bottle_size',
+                          'Location':'location',
+                          'Date In':'date_in',
+                          'Date Out':'date_out'}
+
+        output_list = []
+        for name in input_list:
+            output_list.append(translate_dict[name])
+        return output_list
+
+    def inv_table_pop(self, quick_search_dict=None):
+        db_table_setup = DatabaseManager()
+        col_names = db_table_setup.db_getcolnames('winedata')
+        col_names.extend(db_table_setup.db_getcolnames('userinventory')[1:])
+        self.InventoryTable.setColumnCount(len(col_names))
+        col_labels = self.translate_col_names(col_names)
+        self.InventoryTable.setHorizontalHeaderLabels(col_labels)
+        sort_term = self.translate_col_names([self.InventorySortBy.currentText()])[0]
+        if quick_search_dict == None:
+            arg = 'SELECT * FROM winedata JOIN userinventory USING (wine_id) WHERE '
+            arg += 'date_out IS NULL ORDER BY ' + sort_term
+            if self.InventorySortAsc.isChecked():
+                arg += ' ASC'
+            else:
+                arg += ' DESC'
+            inv_rows = list(db_table_setup.db_fetch(arg, rows='all'))
+        else:
+            
+            search_bottle = Bottle()
+            
 
         self.InventoryTable.setRowCount(0)
-        for i in range(len(inv_rows)):
-            write_row = list(db_grab.db_fetch('SELECT * FROM winedata WHERE wine_id=?', (inv_rows[i][0],)))
-            write_row.extend(inv_rows[i][2:])
-            self.InventoryTable.insertRow(i)
-            for k, row_data in enumerate(write_row):
-                self.InventoryTable.setItem(i, k, QtWidgets.QTableWidgetItem(str(row_data)))
+        for row_num, row in enumerate(inv_rows):
+            self.InventoryTable.insertRow(row_num)
+            for col_num, col_entry in enumerate(row):
+                self.InventoryTable.setItem(row_num, col_num, QtWidgets.QTableWidgetItem(str(col_entry)))
 
     @QtCore.Slot()
     def quick_search(self):
-        # if self.ui.InventoryWineID.text() == '' and self.ui.InventoryLocation.text() == '':
-        #     print('none')
-        # elif self.ui.InventoryWineID.text() != '' and self.ui.InventoryLocation.text() != '':
-        #     print('WineID: ' + self.ui.InventoryWineID.text())
-        #     print('Location: ' + self.ui.InventoryLocation.text())
-        # elif self.ui.InventoryWineID.text() != '':
-        #     print('WineID: ' + self.ui.InventoryWineID.text())
-        # elif self.ui.InventoryLocation.text() != '':
-        #     print('Location: ' + self.ui.InventoryLocation.text())
-        self.refresh_tables()
+        if self.InventoryWineID.text() == '' and self.InventoryLocation.text() == '':
+            self.inv_table_pop()
+        elif self.InventoryWineID.text() != '' and self.InventoryLocation.text() != '':
+            self.inv_table_pop(quick_search_dict={'wine_id':self.InventoryWineID.text(), 'location':self.InventoryLocation.text()})
+        elif self.InventoryWineID.text() != '':
+            self.inv_table_pop(quick_search_dict={'wine_id':self.InventoryWineID.text()})
+        elif self.InventoryLocation.text() != '':
+            self.inv_table_pop(quick_search_dict={'location':self.InventoryLocation.text()})
     
     @QtCore.Slot()
     def check_out(self):

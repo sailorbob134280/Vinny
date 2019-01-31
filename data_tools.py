@@ -38,8 +38,7 @@ def search_db(search_input, table='userinventory'):
 
 def fetch_db(fetch_input, table='userinventory'):
     # fetches a row from the database
-    # shoud be faster than searching, but only returns one row 
-    # (so should only be used when one value is expected to be returned)
+    # shoud be faster than searching since it doesn't have to guess
     terms = cleanup_dbinput(fetch_input)
 
     arg = 'SELECT * FROM ' + table + ' WHERE '
@@ -48,7 +47,7 @@ def fetch_db(fetch_input, table='userinventory'):
     arg = arg.rstrip(' AND ')
 
     fetch = DatabaseManager()
-    return fetch.db_fetch(arg, terms, 'one')
+    return fetch.db_fetch(arg, terms, 'all')
 
 def lookup_db(lookup_number, table='userinventory'):
     # This is a function to quickly lookup based on either a upc or wine_id
@@ -59,7 +58,7 @@ def lookup_db(lookup_number, table='userinventory'):
     result = lookup.db_fetch(arg, (lookup_number,), 'one')
     if result is None:
         arg = 'SELECT * FROM ' + table + ' WHERE wine_id=?'
-        return lookup.db_fetch(arg, (lookup_number,), 'one')
+        return lookup.db_fetch(arg, (lookup_number,), 'all')
     else:
         return result
 
@@ -149,7 +148,6 @@ def get_rowid(entry_input, table='userinventory'):
 ####################################################################
 
 # userinv_dict = {"wine_id":input_list[0],
-#                 "user_id":input_list[1],
 #                 "bottle_size":input_list[2],
 #                 "location":input_list[3],
 #                 "comments":input_list[4],
@@ -166,11 +164,6 @@ def get_rowid(entry_input, table='userinventory'):
 #                  "vintage":2012,
 #                  "msrp":'$35',
 #                  "value":'$35'}
-  
-# userdata_dict = {"user_id":input_list[0],
-#                  "username":input_list[1],
-#                  "password":input_list[2],
-#                  "cellar_space":input_list[3]}
 
 # enter_db(winedata_dict, 'winedata')
 # drop_row(winedata_dict['wine_id'], 'winedata')

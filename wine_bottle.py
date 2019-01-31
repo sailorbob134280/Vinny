@@ -1,5 +1,6 @@
 import os
 import datetime
+from db_man import *
 from data_tools import search_db, fetch_db, lookup_db, enter_db, drop_row, update_winedata_row, update_userinv_row, get_rowid
 from barcode import generate
 
@@ -40,26 +41,22 @@ class Wine:
         # Now we need to format it. Due to the way the output is formatted, we need
         # to ensure that it becomes a list of tuples, regardless of how many entries
         # there actually are. We also need to handle the case that there may not be 
-        # any matches at all.
+        # any matches at all. We also need to dynamically assign names because we can't
+        # guarantee the structure of the db
         if result is not None:
             self.wine_search_flag = True
+            db_names = DatabaseManager()
+            keys = db_names.db_getcolnames(table='winedata')
             if isinstance(result, tuple):
                 result = [result]
             res_list = []
-            for i in range(len(result)):
-                res_list.append({"wine_id":result[i][0],
-                                 "upc":result[i][1],
-                                 "winery":result[i][2],
-                                 "region":result[i][3],
-                                 "name":result[i][4],
-                                 "varietal":result[i][5],
-                                 "wtype":result[i][6],
-                                 "vintage":result[i][7],
-                                 "msrp":result[i][8],
-                                 "value":result[i][9]})
+            for res in result:
+                res_list.append(res)
         
             if len(res_list) is 1:
-                self.wine_info = res_list[0]
+                self.wine_info = {}
+                for i, key in enumerate(keys):
+                    self.wine_info.append({key:res_list[0][i]})
             return res_list
         else:
             return None
@@ -142,9 +139,17 @@ class Bottle(Wine):
         self.bottle_search_flag = False
     
     def search_bottle(self):
+        # Starts by searching for a matching wine. This will add the wine_id to the 
+        # bottle info as well. 
         if self.wine_search_flag is False:
-            super().search_wine()
+            wine_res_list = self.search_wine()
+        # assigns wine_id only if the exact wine is positively identified
+        if len(wine_res_list) == 1:
+            self.bottle_info['wine_id'] = self.wine_info[0]['wine_id']
+        else:
+            raise Exception("Multiple wines found, can't find a specific bottle")
 
+        # takes the path of least resistance to find the bottle or bottles we're looking for
         if 'wine_id' in self.bottle_info and self.bottle_info['wine_id'] is not None:
             result = fetch_db({'wine_id':self.bottle_info['wine_id']})
         elif 'location' in self.bottle_info and self.bottle_info['location'] is not None:
@@ -159,7 +164,6 @@ class Bottle(Wine):
             res_list = []
             for i in range(len(result)):
                 res_list.append({"wine_id":result[i][0],
-                                 "user_id":result[i][1],
                                  "bottle_size":result[i][2],
                                  "location":result[i][3],
                                  "comments":result[i][4],
@@ -167,7 +171,11 @@ class Bottle(Wine):
                                  "date_out":result[i][6]})
             
             if len(res_list) is 1:
-                self.bottle_info = res_list[0]
+                self.bottle_info = {"wine_id":result[i][0],
+                                    "bottle_size":result[i][1],
+                                    "location":result[i][2],
+                                    "date_in":result[i][3],
+                                    "date_out":result[i][4]}
             return res_list
         else:
             return None

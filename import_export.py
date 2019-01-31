@@ -16,7 +16,7 @@ def export_db(path):
     # Setup the pages to have the right headers. Grab lists of the col names and merge them
     db_export = DatabaseManager()
     col_keys = db_export.db_getcolnames('winedata')
-    col_keys.extend(db_export.db_getcolnames('userinventory')[2:])
+    col_keys.extend(db_export.db_getcolnames('userinventory')[1:])
     exp_full.append(col_keys)
 
     # Replace the 'location' tag with 'qty' and add it to the condensed table and remove the dates
