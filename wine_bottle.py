@@ -56,7 +56,7 @@ class Wine:
             if len(res_list) is 1:
                 self.wine_info = {}
                 for i, key in enumerate(keys):
-                    self.wine_info.append({key:res_list[0][i]})
+                    self.wine_info[key] = res_list[0][i]
             return res_list
         else:
             return None
@@ -133,49 +133,47 @@ class Wine:
 
 
 class Bottle(Wine):
-    def __init__(self, wine_info, bottle_info):
+    def __init__(self, wine_info, bottle_info=None):
         super().__init__(wine_info)
         self.bottle_info = bottle_info
+        if self.bottle_info == None:
+            self.bottle_info = {}
         self.bottle_search_flag = False
     
-    def search_bottle(self):
+    def search_bottle(self, in_cellar=True, sort_by=None):
         # Starts by searching for a matching wine. This will add the wine_id to the 
         # bottle info as well. 
         if self.wine_search_flag is False:
             wine_res_list = self.search_wine()
+        print(wine_res_list)
         # assigns wine_id only if the exact wine is positively identified
-        if len(wine_res_list) == 1:
-            self.bottle_info['wine_id'] = self.wine_info[0]['wine_id']
+        if wine_res_list != None and len(wine_res_list) == 1:
+            self.bottle_info['wine_id'] = self.wine_info['wine_id']
         else:
             raise Exception("Multiple wines found, can't find a specific bottle")
 
         # takes the path of least resistance to find the bottle or bottles we're looking for
         if 'wine_id' in self.bottle_info and self.bottle_info['wine_id'] is not None:
-            result = fetch_db({'wine_id':self.bottle_info['wine_id']})
+            result = fetch_db({'wine_id':self.bottle_info['wine_id']}, in_cellar=in_cellar, sort_by=sort_by)
         elif 'location' in self.bottle_info and self.bottle_info['location'] is not None:
-            result = fetch_db({'location':self.bottle_info['location']})
+            result = fetch_db({'location':self.bottle_info['location']}, in_cellar, sort_by)
         else:
-            result = search_db(self.bottle_info)
+            result = search_db(self.bottle_info, in_cellar, sort_by)
         
         if result is not None:
             self.bottle_search_flag = True
+            db_names = DatabaseManager()
+            keys = db_names.db_getcolnames(table='userinventory')
             if isinstance(result, tuple):
                 result = [result]
             res_list = []
-            for i in range(len(result)):
-                res_list.append({"wine_id":result[i][0],
-                                 "bottle_size":result[i][2],
-                                 "location":result[i][3],
-                                 "comments":result[i][4],
-                                 "date_in":result[i][5],
-                                 "date_out":result[i][6]})
+            for res in result:
+                res_list.append(res)
             
             if len(res_list) is 1:
-                self.bottle_info = {"wine_id":result[i][0],
-                                    "bottle_size":result[i][1],
-                                    "location":result[i][2],
-                                    "date_in":result[i][3],
-                                    "date_out":result[i][4]}
+                self.bottle_info = {}
+                for i, key in enumerate(keys):
+                    self.bottle_info[key] = res_list[0][i]
             return res_list
         else:
             return None
@@ -261,6 +259,7 @@ class Bottle(Wine):
 #              "msrp":'$40',
 #              "value":'$25',
 #              "comments":'Young vines'}
+# wine_dict = {"wine_id":wine_id}
 
 # wine_dict = {"wine_id":'000000000003',
 #              "upc":None,
@@ -293,3 +292,7 @@ class Bottle(Wine):
 # new_bottle.update_bottle(new_bottle_dict)
 # new_bottle.delete_wine()
 # new_bottle.delete_bottle()
+# new_bottle = Bottle(wine_dict, None)
+# print(new_bottle.search_bottle())
+# print(new_bottle.wine_info)
+# print(new_bottle.bottle_info)

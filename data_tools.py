@@ -10,7 +10,7 @@ def cleanup_dbinput(input_dict):
             terms[wkey] = input_dict[wkey]
     return terms
 
-def search_db(search_input, table='userinventory'):
+def search_db(search_input, table='userinventory', in_cellar=True, sort_by=None):
     # searches for a wine in the database that resembles the input
     # first, assign the inputs to a list to be cleaned up
     # this function takes a list of the following format:
@@ -23,10 +23,17 @@ def search_db(search_input, table='userinventory'):
     terms = cleanup_dbinput(search_input)
 
     # craft the sql query string
-    arg = 'SELECT * FROM ' + table + ' WHERE '
+    if table == 'both':
+        arg = 'SELECT * FROM winedata JOIN userinventory USING (wine_id) WHERE '
+    else:
+        arg = 'SELECT * FROM ' + table + ' WHERE '
     for term in terms:
         arg += '{0} LIKE {1} AND '.format(term, ':' + term)
     arg = arg.rstrip(' AND ')
+    if in_cellar == True and table != 'winedata':
+        arg += ' AND date_out IS NULL'
+    if sort_by != None:
+        arg += ' ORDER BY ' + sort_by
 
     # finally, call the search function from the db_man object
     db_search = DatabaseManager()
@@ -36,31 +43,45 @@ def search_db(search_input, table='userinventory'):
     else:
         return None
 
-def fetch_db(fetch_input, table='userinventory'):
+def fetch_db(fetch_input, table='userinventory', in_cellar=True, sort_by=None):
     # fetches a row from the database
     # shoud be faster than searching since it doesn't have to guess
     terms = cleanup_dbinput(fetch_input)
 
-    arg = 'SELECT * FROM ' + table + ' WHERE '
+    if table == 'both':
+        arg = 'SELECT * FROM winedata JOIN userinventory USING (wine_id) WHERE '
+    else:
+        arg = 'SELECT * FROM ' + table + ' WHERE '
     for term in terms:
         arg += '{0}={1} AND '.format(term, ':' + term)
     arg = arg.rstrip(' AND ')
+    if in_cellar == True and table != 'winedata':
+        arg += ' AND date_out IS NULL'
+    if sort_by != None:
+        arg += ' ORDER BY ' + sort_by
 
     fetch = DatabaseManager()
     return fetch.db_fetch(arg, terms, 'all')
 
-def lookup_db(lookup_number, table='userinventory'):
+def lookup_db(lookup_number, table='userinventory', in_cellar=True, sort_by=None):
     # This is a function to quickly lookup based on either a upc or wine_id
     # This is really similar to the fetch_db function (and may end up
     # replacing it).
     lookup = DatabaseManager()
-    arg = 'SELECT * FROM ' + table + ' WHERE upc=?'
-    result = lookup.db_fetch(arg, (lookup_number,), 'one')
-    if result is None:
-        arg = 'SELECT * FROM ' + table + ' WHERE wine_id=?'
-        return lookup.db_fetch(arg, (lookup_number,), 'all')
+    placeholders = [lookup_number]
+    if table == 'both':
+        arg = 'SELECT * FROM winedata JOIN userinventory USING (wine_id) WHERE '
     else:
-        return result
+        arg = 'SELECT * FROM ' + table + ' WHERE '
+    arg += 'wine_id=?'
+    if table != 'userinventory':
+        arg += ' OR upc=?'
+        placeholders.append(lookup_number)
+    if in_cellar == True and table != 'winedata':
+        arg += ' AND date_out IS NULL'
+    if sort_by != None:
+        arg += ' ORDER BY ' + sort_by
+    return lookup.db_fetch(arg, tuple(placeholders), 'all')
 
 def enter_db(entry_input, table='userinventory',ret_id=False):
     # enters a wine into the database

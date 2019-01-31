@@ -11,7 +11,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.InventorySearch.clicked.connect(self.quick_search)
         self.InventoryCheckOut.clicked.connect(self.check_out)
 
-        self.inv_table_pop()
+        self.inv_table_pop(None, None)
 
     def translate_col_names(self, input_list):
         # Translates code names to pretty names and back. It does this
@@ -56,7 +56,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             output_list.append(translate_dict[name])
         return output_list
 
-    def inv_table_pop(self, quick_search_dict=None):
+    def inv_table_pop(self, wine_id, location):
         db_table_setup = DatabaseManager()
         col_names = db_table_setup.db_getcolnames('winedata')
         col_names.extend(db_table_setup.db_getcolnames('userinventory')[1:])
@@ -64,7 +64,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         col_labels = self.translate_col_names(col_names)
         self.InventoryTable.setHorizontalHeaderLabels(col_labels)
         sort_term = self.translate_col_names([self.InventorySortBy.currentText()])[0]
-        if quick_search_dict == None:
+        print(wine_id)
+        print(location)
+        if wine_id == None and location == None:
             arg = 'SELECT * FROM winedata JOIN userinventory USING (wine_id) WHERE '
             arg += 'date_out IS NULL ORDER BY ' + sort_term
             if self.InventorySortAsc.isChecked():
@@ -73,9 +75,8 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                 arg += ' DESC'
             inv_rows = list(db_table_setup.db_fetch(arg, rows='all'))
         else:
-            
-            search_bottle = Bottle()
-            
+            find_bottles = Bottle({'wine_id':wine_id}, {'location':location})
+            inv_rows = find_bottles.search_bottle()
 
         self.InventoryTable.setRowCount(0)
         for row_num, row in enumerate(inv_rows):
@@ -85,14 +86,13 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
     @QtCore.Slot()
     def quick_search(self):
-        if self.InventoryWineID.text() == '' and self.InventoryLocation.text() == '':
-            self.inv_table_pop()
-        elif self.InventoryWineID.text() != '' and self.InventoryLocation.text() != '':
-            self.inv_table_pop(quick_search_dict={'wine_id':self.InventoryWineID.text(), 'location':self.InventoryLocation.text()})
-        elif self.InventoryWineID.text() != '':
-            self.inv_table_pop(quick_search_dict={'wine_id':self.InventoryWineID.text()})
-        elif self.InventoryLocation.text() != '':
-            self.inv_table_pop(quick_search_dict={'location':self.InventoryLocation.text()})
+        wine_id = None
+        location = None
+        if self.InventoryWineID.text() != '':
+            wine_id = self.InventoryWineID.text()
+        if self.InventoryLocation.text() != '':
+            location = self.InventoryLocation.text()
+        self.inv_table_pop(wine_id, location)
     
     @QtCore.Slot()
     def check_out(self):
