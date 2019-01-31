@@ -143,24 +143,26 @@ class Bottle(Wine):
     def search_bottle(self, in_cellar=True, sort_by=None):
         # Starts by searching for a matching wine. This will add the wine_id to the 
         # bottle info as well. 
-        if self.wine_search_flag is False:
+        wine_res_list = None
+        if self.wine_search_flag is False and self.wine_info != None:
             wine_res_list = self.search_wine()
         # assigns wine_id only if the exact wine is positively identified
         if wine_res_list != None and len(wine_res_list) == 1:
             self.bottle_info['wine_id'] = self.wine_info['wine_id']
-        else:
-            raise Exception("Multiple wines found, can't find a specific bottle")
 
         # takes the path of least resistance to find the bottle or bottles we're looking for
         if 'wine_id' in self.bottle_info and self.bottle_info['wine_id'] is not None:
             result = fetch_db({'wine_id':self.bottle_info['wine_id']}, in_cellar=in_cellar, sort_by=sort_by)
         elif 'location' in self.bottle_info and self.bottle_info['location'] is not None:
-            result = fetch_db({'location':self.bottle_info['location']}, in_cellar, sort_by)
+            result = fetch_db({'location':self.bottle_info['location']}, in_cellar=in_cellar, sort_by=sort_by)
         else:
             result = search_db(self.bottle_info, in_cellar, sort_by)
         
         if result is not None:
             self.bottle_search_flag = True
+            if wine_search_flag == False:
+                self.wine_info['wine_id'] = result[0]
+                self.search_wine()
             db_names = DatabaseManager()
             keys = db_names.db_getcolnames(table='userinventory')
             if isinstance(result, tuple):

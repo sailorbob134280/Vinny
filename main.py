@@ -75,7 +75,13 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             inv_rows = list(db_table_setup.db_fetch(arg, rows='all'))
         else:
             find_bottles = Bottle({'wine_id':wine_id}, {'location':location})
-            inv_rows = find_bottles.search_bottle()
+            bottles = find_bottles.search_bottle()
+            print(bottles)
+            inv_rows = []
+            for i, bottle in enumerate(bottles):
+                inv_rows.append(list(find_bottles.wine_info.values()))
+                inv_rows[i].extend(bottle[1:])
+            print(inv_rows)
 
         self.InventoryTable.setRowCount(0)
         for row_num, row in enumerate(inv_rows):
