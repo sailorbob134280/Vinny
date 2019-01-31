@@ -64,8 +64,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         col_labels = self.translate_col_names(col_names)
         self.InventoryTable.setHorizontalHeaderLabels(col_labels)
         sort_term = self.translate_col_names([self.InventorySortBy.currentText()])[0]
-        print(wine_id)
-        print(location)
+        
         if wine_id == None and location == None:
             arg = 'SELECT * FROM winedata JOIN userinventory USING (wine_id) WHERE '
             arg += 'date_out IS NULL ORDER BY ' + sort_term

@@ -145,7 +145,6 @@ class Bottle(Wine):
         # bottle info as well. 
         if self.wine_search_flag is False:
             wine_res_list = self.search_wine()
-        print(wine_res_list)
         # assigns wine_id only if the exact wine is positively identified
         if wine_res_list != None and len(wine_res_list) == 1:
             self.bottle_info['wine_id'] = self.wine_info['wine_id']
