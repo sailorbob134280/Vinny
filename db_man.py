@@ -46,11 +46,11 @@ class DatabaseManager:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
             cursor.execute(command, placeholders)
-            if rows is 'one' or rows is 1:
+            if rows is 'one' or rows == 1:
                 return cursor.fetchone()
             elif rows is 'all':
                 return cursor.fetchall()
-            elif isinstance(rows, not int) or rows is 0:
+            elif isinstance(rows, not int) or rows == 0:
                 raise FetchError('Rows must be one, all, or a non-zero integer')
             else:
                 return cursor.fetchmany(rows)

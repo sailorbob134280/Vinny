@@ -38,7 +38,7 @@ def search_db(search_input, table='userinventory', in_cellar=True, sort_by=None)
     # finally, call the search function from the db_man object
     db_search = DatabaseManager()
     result = db_search.db_fetch(arg, terms, 'all')
-    if len(result) is not 0:
+    if len(result) != 0:
         return result
     else:
         return None

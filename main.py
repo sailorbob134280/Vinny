@@ -74,7 +74,16 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                 arg += ' DESC'
             inv_rows = list(db_table_setup.db_fetch(arg, rows='all'))
         else:
-            find_bottles = Bottle({'wine_id':wine_id}, {'location':location})
+            if wine_id == None:
+                wine_info = None
+            else:
+                wine_info = {'wine_id':wine_id}
+            if location == None:
+                bottle_info = {'location':None}
+            else:
+                bottle_info = {'location':location}
+                
+            find_bottles = Bottle(wine_info=wine_info, bottle_info=bottle_info)
             bottles = find_bottles.search_bottle()
             print(bottles)
             inv_rows = []

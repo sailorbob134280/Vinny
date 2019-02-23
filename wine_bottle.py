@@ -157,11 +157,13 @@ class Bottle(Wine):
             result = fetch_db({'location':self.bottle_info['location']}, in_cellar=in_cellar, sort_by=sort_by)
         else:
             result = search_db(self.bottle_info, in_cellar, sort_by)
-        
+        print(result)
         if result is not None:
             self.bottle_search_flag = True
-            if wine_search_flag == False:
-                self.wine_info['wine_id'] = result[0]
+            if self.wine_search_flag == False:
+                if self.wine_info == None:
+                    self.wine_info = {}
+                self.wine_info['wine_id'] = result[0][0]
                 self.search_wine()
             db_names = DatabaseManager()
             keys = db_names.db_getcolnames(table='userinventory')
