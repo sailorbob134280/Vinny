@@ -157,7 +157,6 @@ class Bottle(Wine):
             result = fetch_db({'location':self.bottle_info['location']}, in_cellar=in_cellar, sort_by=sort_by)
         else:
             result = search_db(self.bottle_info, in_cellar, sort_by)
-        print(result)
         if result is not None:
             self.bottle_search_flag = True
             if self.wine_search_flag == False:
