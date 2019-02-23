@@ -110,7 +110,11 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     
     @QtCore.Slot()
     def check_out(self):
-        self.InventoryTable.removeRow(self.InventoryTable.rowCount()-1)
+        selection_row = self.InventoryTable.currentRow()
+        bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text()}
+        bottle_checkout = Bottle(wine_info=None, bottle_info=bottle_info)
+        bottle_checkout.check_out()
+        self.quick_search()
 
     # @QtCore.Slot()
     # def add_copy(self):
