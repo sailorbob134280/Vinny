@@ -76,7 +76,7 @@ class Wine:
             elif result is not None:
                 id_list = []
                 for i in range(len(result)):
-                    id_list.append(result[i]['wine_id'])
+                    id_list.append(result[i][int('wine_id')])
                 return id_list
             else:
                 return None
@@ -191,8 +191,8 @@ class Bottle(Wine):
                 raise Exception('Multiple wine entries found. Please be more specific.')
             elif bottle_id == None:
                 bottle_id = self.add_wine_to_db()
-            else:
-                self.bottle_info['wine_id'] = bottle_id
+            # else:
+            #     self.bottle_info['wine_id'] = bottle_id
             self.bottle_info['wine_id'] = bottle_id
         self.check_in()
         

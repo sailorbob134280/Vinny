@@ -1,4 +1,5 @@
 import PySide2
+from PySide2.QtWidgets import QInputDialog, QLineEdit
 from wine_bottle import *
 from db_man import DatabaseManager
 from main_window import *
@@ -10,6 +11,8 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
         self.InventorySearch.clicked.connect(self.quick_search)
         self.InventoryCheckOut.clicked.connect(self.check_out)
+
+        self.AddBottleAdd.clicked.connect(self.add_to_cellar)
 
         self.inv_table_pop(None, None)
 
@@ -136,9 +139,39 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     # def update_bottle(self):
     #     pass
     
-    # @QtCore.Slot()
-    # def add_to_cellar(self):
-    #     pass
+    @QtCore.Slot()
+    def add_to_cellar(self):
+        wine_info = {"upc":self.AddBottleUPC.text(),
+                     "winery":self.AddBottleWinery.text(),
+                     "region":self.AddBottleAVA.text(),
+                     "name":self.AddBottleBlendName.text(),
+                     "varietal":self.AddBottleVarietal.text(),
+                     "wtype":self.AddBottleType.currentText(),
+                     "vintage":self.AddBottleVintage.text(),
+                     "msrp":self.AddBottleMSRP.text(),
+                     "value":self.AddBottleCurrentValue.text(),
+                     "comments":self.AddBottleComments.toPlainText()}
+
+        bottle_info = {"bottle_size":self.AddBottleBottleSize.currentText()}
+        
+        for term in wine_info:
+            if wine_info[term] == '':
+                wine_info[term] = None
+        for term in bottle_info:
+            if bottle_info[term] == '':
+                bottle_info[term] = None
+
+        if self.AddBottleSelLocation.isChecked() == True:
+            bottle_info["location"] = self.AddBottleLocation.text()
+            new_bottle = Bottle(wine_info=wine_info, bottle_info=bottle_info)
+            new_bottle.add_new()
+        else:
+            for i in range(int(self.AddBottleQty.text())):
+                next_location, ok_pressed = QInputDialog.getText(self, "Bottle {0}".format(i+1), "Enter location for Bottle {0}:".format(i+1), QLineEdit.Normal, "")
+                if ok_pressed == True:
+                    bottle_info['location'] = next_location
+                    new_bottle = Bottle(wine_info=wine_info, bottle_info=bottle_info)
+                    new_bottle.add_new()
     
     # @QtCore.Slot()
     # def generate_barcode(self):
