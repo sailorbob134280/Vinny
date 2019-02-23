@@ -11,6 +11,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
         self.InventorySearch.clicked.connect(self.quick_search)
         self.InventoryCheckOut.clicked.connect(self.check_out)
+        self.InventoryMoveBottle.clicked.connect(self.move_bottle)
 
         self.AddBottleAdd.clicked.connect(self.add_to_cellar)
 
@@ -127,9 +128,15 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     # def edit_bottle(self):
     #     pass
     
-    # @QtCore.Slot()
-    # def move_bottle(self):
-    #     pass
+    @QtCore.Slot()
+    def move_bottle(self):
+        selection_row = self.InventoryTable.currentRow()
+        bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text()}
+        new_location, ok_pressed = QInputDialog.getText(self, 'Move Bottle', 'Enter new location:', QLineEdit.Normal, '')
+        if ok_pressed == True:
+            bottle = Bottle(wine_info=None, bottle_info=bottle_info)
+            bottle.update_bottle(new_info={'location':new_location})
+        self.quick_search()
     
     # @QtCore.Slot()
     # def deep_search(self):
