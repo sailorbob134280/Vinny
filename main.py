@@ -12,6 +12,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.InventorySearch.clicked.connect(self.quick_search)
         self.InventoryCheckOut.clicked.connect(self.check_out)
         self.InventoryMoveBottle.clicked.connect(self.move_bottle)
+        self.InventoryAddCopy.clicked.connect(self.add_copy)
 
         self.AddBottleAdd.clicked.connect(self.add_to_cellar)
 
@@ -120,10 +121,21 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         bottle_checkout.check_out()
         self.quick_search()
 
-    # @QtCore.Slot()
-    # def add_copy(self):
-    #     pass
-    
+    @QtCore.Slot()
+    def add_copy(self):
+        selection_row = self.InventoryTable.currentRow()
+        bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text()}
+        bottle_sizes = [self.AddBottleBottleSize.itemText(i) for i in range(self.AddBottleBottleSize.count())]
+        new_size, ok_pressed = QInputDialog.getItem(self, 'New Size', 'Select New Bottle Size:', bottle_sizes, 2, False)
+        if ok_pressed == True:
+            bottle_info['bottle_size'] = new_size
+        new_location, ok_pressed = QInputDialog.getText(self, 'New Location', 'Enter new location:', QLineEdit.Normal, '')
+        if ok_pressed == True:
+            bottle_info['location'] = new_location
+        new_bottle = Bottle(wine_info=None, bottle_info=bottle_info)
+        new_bottle.add_new()
+        self.quick_search()
+
     # @QtCore.Slot()
     # def edit_bottle(self):
     #     pass
@@ -179,6 +191,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                     bottle_info['location'] = next_location
                     new_bottle = Bottle(wine_info=wine_info, bottle_info=bottle_info)
                     new_bottle.add_new()
+        self.quick_search()
     
     # @QtCore.Slot()
     # def generate_barcode(self):
