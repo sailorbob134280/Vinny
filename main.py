@@ -14,7 +14,8 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.InventoryMoveBottle.clicked.connect(self.inv_move_bottle)
         self.InventoryAddCopy.clicked.connect(self.inv_add_copy)
 
-        self.AddBottleAdd.clicked.connect(self.add_to_cellar)
+        self.AddBottleSearch.clicked.connect(self.ab_deep_search)
+        self.AddBottleAdd.clicked.connect(self.ab_add_to_cellar)
 
         self.inv_table_pop(None, None)
 
@@ -149,17 +150,47 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             bottle = Bottle(wine_info=None, bottle_info=bottle_info)
             bottle.update_bottle(new_info={'location':new_location})
         self.quick_search()
-    
-    # @QtCore.Slot()
-    # def deep_search(self):
-    #     pass
+
+    @QtCore.Slot()
+    def ab_deep_search(self):
+        ab_table_setup = DatabaseManager()
+        col_names = ab_table_setup.db_getcolnames('winedata')
+        col_names.extend(ab_table_setup.db_getcolnames('userinventory')[1:])
+        self.AddBottleTable.setColumnCount(len(col_names))
+        col_labels = self.translate_col_names(col_names)
+        self.AddBottleTable.setHorizontalHeaderLabels(col_labels)
+
+        wine_info = {"upc":self.AddBottleUPC.text(),
+                     "winery":self.AddBottleWinery.text(),
+                     "region":self.AddBottleAVA.text(),
+                     "name":self.AddBottleBlendName.text(),
+                     "varietal":self.AddBottleVarietal.text(),
+                     "wtype":self.AddBottleType.currentText(),
+                     "vintage":self.AddBottleVintage.text(),
+                     "msrp":self.AddBottleMSRP.text(),
+                     "value":self.AddBottleCurrentValue.text(),
+                     "comments":self.AddBottleComments.toPlainText()}
+
+        for term in wine_info:
+            if wine_info[term] == '':
+                wine_info[term] = None
+
+        table_rows = search_db(wine_info, 'both', in_cellar=False)
+        print(table_rows)
+        self.AddBottleTable.setRowCount(0)
+        if table_rows != None:
+            for row_num, row in enumerate(table_rows):
+                self.AddBottleTable.insertRow(row_num)
+                for col_num, col in enumerate(row):
+                    self.AddBottleTable.setItem(row_num, col_num, QtWidgets.QTableWidgetItem(str(col)))
+
     
     # @QtCore.Slot()
     # def update_bottle(self):
     #     pass
     
     @QtCore.Slot()
-    def add_to_cellar(self):
+    def ab_add_to_cellar(self):
         wine_info = {"upc":self.AddBottleUPC.text(),
                      "winery":self.AddBottleWinery.text(),
                      "region":self.AddBottleAVA.text(),
