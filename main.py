@@ -10,9 +10,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.setupUi(Vinny)
 
         self.InventorySearch.clicked.connect(self.quick_search)
-        self.InventoryCheckOut.clicked.connect(self.check_out)
-        self.InventoryMoveBottle.clicked.connect(self.move_bottle)
-        self.InventoryAddCopy.clicked.connect(self.add_copy)
+        self.InventoryCheckOut.clicked.connect(self.inv_check_out)
+        self.InventoryMoveBottle.clicked.connect(self.inv_move_bottle)
+        self.InventoryAddCopy.clicked.connect(self.inv_add_copy)
 
         self.AddBottleAdd.clicked.connect(self.add_to_cellar)
 
@@ -114,7 +114,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.inv_table_pop(wine_id, location)
     
     @QtCore.Slot()
-    def check_out(self):
+    def inv_check_out(self):
         selection_row = self.InventoryTable.currentRow()
         bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text()}
         bottle_checkout = Bottle(wine_info=None, bottle_info=bottle_info)
@@ -122,7 +122,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.quick_search()
 
     @QtCore.Slot()
-    def add_copy(self):
+    def inv_add_copy(self):
         selection_row = self.InventoryTable.currentRow()
         bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text()}
         bottle_sizes = [self.AddBottleBottleSize.itemText(i) for i in range(self.AddBottleBottleSize.count())]
@@ -141,7 +141,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     #     pass
     
     @QtCore.Slot()
-    def move_bottle(self):
+    def inv_move_bottle(self):
         selection_row = self.InventoryTable.currentRow()
         bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text()}
         new_location, ok_pressed = QInputDialog.getText(self, 'Move Bottle', 'Enter new location:', QLineEdit.Normal, '')
