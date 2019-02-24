@@ -91,12 +91,10 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                 
             find_bottles = Bottle(wine_info=wine_info, bottle_info=bottle_info)
             bottles = find_bottles.search_bottle()
-            print(bottles)
             inv_rows = []
             for i, bottle in enumerate(bottles):
                 inv_rows.append(list(find_bottles.wine_info.values()))
                 inv_rows[i].extend(bottle[1:])
-            print(inv_rows)
 
         self.InventoryTable.setRowCount(0)
         for row_num, row in enumerate(inv_rows):
@@ -155,7 +153,6 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     def ab_deep_search(self):
         ab_table_setup = DatabaseManager()
         col_names = ab_table_setup.db_getcolnames('winedata')
-        col_names.extend(ab_table_setup.db_getcolnames('userinventory')[1:])
         self.AddBottleTable.setColumnCount(len(col_names))
         col_labels = self.translate_col_names(col_names)
         self.AddBottleTable.setHorizontalHeaderLabels(col_labels)
@@ -175,7 +172,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             if wine_info[term] == '':
                 wine_info[term] = None
 
-        table_rows = search_db(wine_info, 'both', in_cellar=False)
+        table_rows = search_db(wine_info, 'winedata', in_cellar=False)
         self.AddBottleTable.setRowCount(0)
         if table_rows != None:
             for row_num, row in enumerate(table_rows):
