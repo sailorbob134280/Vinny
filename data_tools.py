@@ -29,6 +29,7 @@ def search_db(search_input, table='userinventory', in_cellar=True, sort_by=None)
         arg = 'SELECT * FROM ' + table + ' WHERE '
     for term in terms:
         arg += '{0} LIKE {1} AND '.format(term, ':' + term)
+        terms[term] = '%' + terms[term] + '%'
     arg = arg.rstrip(' AND ')
     if in_cellar == True and table != 'winedata':
         arg += ' AND date_out IS NULL'
@@ -186,8 +187,10 @@ def get_rowid(entry_input, table='userinventory'):
 #                  "msrp":'$35',
 #                  "value":'$35'}
 
+# winedata_dict = {"winery":'ur'}
+
 # enter_db(winedata_dict, 'winedata')
 # drop_row(winedata_dict['wine_id'], 'winedata')
-# print(search_db(winedata_dict, 'winedata'))
+# print(search_db(winedata_dict, 'both'))
 # find_bottle = input('Enter a bottle ID: ')
 # print(lookup_db(find_bottle, 'winedata'))
