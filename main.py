@@ -176,7 +176,6 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                 wine_info[term] = None
 
         table_rows = search_db(wine_info, 'both', in_cellar=False)
-        print(table_rows)
         self.AddBottleTable.setRowCount(0)
         if table_rows != None:
             for row_num, row in enumerate(table_rows):
