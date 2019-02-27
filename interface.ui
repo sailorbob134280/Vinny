@@ -32,7 +32,7 @@
       </property>
       <widget class="QWidget" name="inventory">
        <attribute name="title">
-        <string>Inventory</string>
+        <string>Bottles</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
@@ -187,7 +187,11 @@
          </layout>
         </item>
         <item>
-         <widget class="QTableWidget" name="InventoryTable"/>
+         <widget class="QTableWidget" name="InventoryTable">
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QPushButton" name="InventoryCheckOut">
@@ -227,9 +231,9 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="find">
+      <widget class="QWidget" name="wines">
        <attribute name="title">
-        <string>Add Bottle</string>
+        <string>Wines</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="1" rowspan="2">
@@ -242,7 +246,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QTableWidget" name="AddBottleTable"/>
+           <widget class="QTableWidget" name="AddBottleTable">
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -307,7 +315,7 @@
              <item>
               <widget class="QLabel" name="label_7">
                <property name="text">
-                <string>American Viticulture Area</string>
+                <string>Region</string>
                </property>
               </widget>
              </item>
@@ -353,7 +361,17 @@
               <widget class="QComboBox" name="AddBottleType">
                <item>
                 <property name="text">
-                 <string>Table</string>
+                 <string>Red</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>White</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Rose</string>
                 </property>
                </item>
                <item>
@@ -364,6 +382,11 @@
                <item>
                 <property name="text">
                  <string>Sparkling</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Other...</string>
                 </property>
                </item>
               </widget>
@@ -379,6 +402,13 @@
               <widget class="QLineEdit" name="AddBottleCurrentValue"/>
              </item>
             </layout>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>Comments</string>
+             </property>
+            </widget>
            </item>
            <item row="2" column="0">
             <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -487,21 +517,7 @@
              </item>
             </layout>
            </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_13">
-             <property name="text">
-              <string>Comments</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QTextEdit" name="AddBottleComments">
-             <property name="placeholderText">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
+           <item row="5" column="1">
             <layout class="QVBoxLayout" name="verticalLayout_7">
              <item>
               <widget class="QCheckBox" name="AddBottleCellarOnly">
@@ -527,29 +543,42 @@
              <item>
               <widget class="QPushButton" name="AddBottleCheckOut">
                <property name="text">
-                <string>Check Out</string>
-               </property>
-               <property name="icon">
-                <iconset resource="resources/icons/icons.qrc">
-                 <normaloff>:/Wine/wine/icons8-wine-bottle-52.png</normaloff>:/Wine/wine/icons8-wine-bottle-52.png</iconset>
+                <string>Show Bottles</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QPushButton" name="AddBottleUpdate">
                <property name="text">
-                <string>Update Bottle</string>
+                <string>Update Wine</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QPushButton" name="AddBottleMove">
                <property name="text">
-                <string>Move Bottle</string>
+                <string>Clear Fields</string>
                </property>
               </widget>
              </item>
             </layout>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>Rating</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="AddBottleRating"/>
+           </item>
+           <item row="4" column="0" rowspan="2">
+            <widget class="QTextEdit" name="AddBottleComments">
+             <property name="placeholderText">
+              <string/>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -562,7 +591,11 @@
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QTableWidget" name="HistoryTable"/>
+         <widget class="QTableWidget" name="HistoryTable">
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -586,12 +619,24 @@
     <addaction name="actionImport"/>
     <addaction name="actionExport"/>
     <addaction name="separator"/>
-    <addaction name="actionSettings"/>
+    <addaction name="actionBackup_Database"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
      <string>Edit</string>
     </property>
+    <widget class="QMenu" name="menuDelete">
+     <property name="title">
+      <string>Delete...</string>
+     </property>
+     <addaction name="actionBottle"/>
+     <addaction name="actionWine"/>
+    </widget>
+    <addaction name="actionPreferences"/>
+    <addaction name="separator"/>
+    <addaction name="actionGenerate_Barcode"/>
+    <addaction name="separator"/>
+    <addaction name="menuDelete"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -621,6 +666,36 @@
    </property>
    <property name="text">
     <string>Export...</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionDelete_Wine">
+   <property name="text">
+    <string>Delete Wine</string>
+   </property>
+  </action>
+  <action name="actionWine">
+   <property name="text">
+    <string>Wine</string>
+   </property>
+  </action>
+  <action name="actionBottle">
+   <property name="text">
+    <string>Bottle</string>
+   </property>
+  </action>
+  <action name="actionGenerate_Barcode">
+   <property name="text">
+    <string>Generate Barcode</string>
+   </property>
+  </action>
+  <action name="actionBackup_Database">
+   <property name="text">
+    <string>Backup Database</string>
    </property>
   </action>
  </widget>
@@ -726,8 +801,168 @@
      <y>362</y>
     </hint>
     <hint type="destinationlabel">
-     <x>430</x>
-     <y>418</y>
+     <x>543</x>
+     <y>405</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddBottleWinery</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>AddBottleSearch</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>241</x>
+     <y>106</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>393</x>
+     <y>396</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddBottleBlendName</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>AddBottleSearch</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>216</x>
+     <y>158</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>319</x>
+     <y>396</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddBottleVintage</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>AddBottleSearch</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>184</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>322</x>
+     <y>396</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddBottleMSRP</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>AddBottleSearch</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>288</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>330</x>
+     <y>396</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddBottleAVA</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>AddBottleSearch</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>429</x>
+     <y>105</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>417</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddBottleVarietal</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>AddBottleSearch</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>416</x>
+     <y>159</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>417</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddBottleUPC</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>AddBottleSearch</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>418</x>
+     <y>200</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>417</x>
+     <y>392</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddBottleType</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>AddBottleSearch</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>417</x>
+     <y>235</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>417</x>
+     <y>398</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddBottleCurrentValue</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>AddBottleSearch</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>416</x>
+     <y>295</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>417</x>
+     <y>390</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddBottleRating</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>AddBottleSearch</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>420</x>
+     <y>334</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>417</x>
+     <y>390</y>
     </hint>
    </hints>
   </connection>
