@@ -70,9 +70,12 @@ class Wine:
             return self.wine_info['wine_id']
         else:
             result = self.search_wine()
-            if isinstance(result, list):
-                self.wine_info['wine_id'] = result[0]['wine_id']
+            print(result)
+            if isinstance(result, list) and result != []:
+                self.wine_info['wine_id'] = result[0][int(0)]
                 return self.wine_info['wine_id']
+            elif result == []:
+                return None
             elif result is not None:
                 id_list = []
                 for i in range(len(result)):

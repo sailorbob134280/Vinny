@@ -101,6 +101,26 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             self.InventoryTable.insertRow(row_num)
             for col_num, col_entry in enumerate(row):
                 self.InventoryTable.setItem(row_num, col_num, QtWidgets.QTableWidgetItem(str(col_entry)))
+        
+        self.history_table_pop()
+
+    def history_table_pop(self):
+        history_table_setup = DatabaseManager()
+        col_names = history_table_setup.db_getcolnames('winedata')
+        col_names.extend(history_table_setup.db_getcolnames('userinventory')[1:])
+        self.InventoryTable.setColumnCount(len(col_names))
+        col_labels = self.translate_col_names(col_names)
+        self.InventoryTable.setHorizontalHeaderLabels(col_labels)
+
+        arg = 'SELECT * FROM winedata JOIN userinventory USING (wine_id) WHERE date_out IS NOT NULL ORDER BY date_out'
+        hist_rows = list(history_table_setup.db_fetch(arg, rows='all'))
+
+        self.HistoryTable.setRowCount(0)
+        for row_num, row in enumerate(hist_rows):
+            self.HistoryTable.insertRow(row_num)
+            for col_num, col_entry in enumerate(row):
+                self.HistoryTable.setItem(row_num, col_num, QtWidgets.QTableWidgetItem(str(col_entry)))
+
 
     @QtCore.Slot()
     def quick_search(self):
