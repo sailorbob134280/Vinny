@@ -17,6 +17,12 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.AddBottleSearch.clicked.connect(self.ab_deep_search)
         self.AddBottleAdd.clicked.connect(self.ab_add_to_cellar)
 
+        init_col_names = DatabaseManager()
+        self.wine_col_names = init_col_names.db_getcolnames('winedata')
+        self.inv_col_names = init_col_names.db_getcolnames('userinventory')
+        self.combined_col_names = self.wine_col_names.copy()
+        self.combined_col_names.extend(self.inv_col_names[1:])
+        print(self.combined_col_names)
         self.inv_table_pop(None, None)
 
     def translate_col_names(self, input_list):
@@ -29,7 +35,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         translate_dict = {'wine_id':'Wine ID',
                           'upc':'UPC',
                           'winery':'Winery',
-                          'region':'AVA',
+                          'region':'Region',
                           'name':'Blend Name',
                           'varietal':'Varietal',
                           'vintage':'Vintage',
@@ -37,6 +43,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                           'msrp':'MSRP',
                           'value':'Value',
                           'comments':'Comments',
+                          'rating':'Rating',
                           'bottle_size':'Bottle Size',
                           'location':'Location',
                           'date_in':'Date In',
@@ -44,7 +51,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                           'Wine ID':'wine_id',
                           'UPC':'upc',
                           'Winery':'winery',
-                          'AVA':'region',
+                          'Region':'region',
                           'Blend Name':'name',
                           'Varietal':'varietal',
                           'Vintage':'vintage',
@@ -52,6 +59,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                           'MSRP':'msrp',
                           'Value':'value',
                           'Comments':'comments',
+                          'Rating':'rating',
                           'Bottle Size':'bottle_size',
                           'Location':'location',
                           'Date In':'date_in',
@@ -64,10 +72,8 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
     def inv_table_pop(self, wine_id, location):
         db_table_setup = DatabaseManager()
-        col_names = db_table_setup.db_getcolnames('winedata')
-        col_names.extend(db_table_setup.db_getcolnames('userinventory')[1:])
-        self.InventoryTable.setColumnCount(len(col_names))
-        col_labels = self.translate_col_names(col_names)
+        self.InventoryTable.setColumnCount(len(self.combined_col_names))
+        col_labels = self.translate_col_names(self.combined_col_names)
         self.InventoryTable.setHorizontalHeaderLabels(col_labels)
         sort_term = self.translate_col_names([self.InventorySortBy.currentText()])[0]
         
@@ -106,10 +112,8 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
     def history_table_pop(self):
         history_table_setup = DatabaseManager()
-        col_names = history_table_setup.db_getcolnames('winedata')
-        col_names.extend(history_table_setup.db_getcolnames('userinventory')[1:])
-        self.InventoryTable.setColumnCount(len(col_names))
-        col_labels = self.translate_col_names(col_names)
+        self.InventoryTable.setColumnCount(len(self.combined_col_names))
+        col_labels = self.translate_col_names(self.combined_col_names)
         self.InventoryTable.setHorizontalHeaderLabels(col_labels)
 
         arg = 'SELECT * FROM winedata JOIN userinventory USING (wine_id) WHERE date_out IS NOT NULL ORDER BY date_out'

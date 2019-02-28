@@ -148,7 +148,7 @@
                </item>
                <item>
                 <property name="text">
-                 <string>AVA</string>
+                 <string>Region</string>
                 </property>
                </item>
               </widget>
@@ -541,7 +541,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="AddBottleCheckOut">
+              <widget class="QPushButton" name="AddBottleShowBottles">
                <property name="text">
                 <string>Show Bottles</string>
                </property>
@@ -555,7 +555,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="AddBottleMove">
+              <widget class="QPushButton" name="AddBottleClearFields">
                <property name="text">
                 <string>Clear Fields</string>
                </property>
@@ -728,7 +728,7 @@
   <tabstop>AddBottleCellarOnly</tabstop>
   <tabstop>AddBottleSearch</tabstop>
   <tabstop>AddBottleUpdate</tabstop>
-  <tabstop>AddBottleMove</tabstop>
+  <tabstop>AddBottleClearFields</tabstop>
   <tabstop>AddBottleSelLocation</tabstop>
   <tabstop>AddBottleLocation</tabstop>
   <tabstop>AddBottleSelQty</tabstop>
