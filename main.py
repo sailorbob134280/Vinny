@@ -13,17 +13,22 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.InventoryCheckOut.clicked.connect(self.inv_check_out)
         self.InventoryMoveBottle.clicked.connect(self.inv_move_bottle)
         self.InventoryAddCopy.clicked.connect(self.inv_add_copy)
+        self.InventoryTable.cellClicked.connect(self.inv_get_bottle)
 
         self.AddBottleSearch.clicked.connect(self.ab_deep_search)
         self.AddBottleAdd.clicked.connect(self.ab_add_to_cellar)
 
+        # Get the names of the collumns at the beginning so we don't have to do that a million times
         init_col_names = DatabaseManager()
         self.wine_col_names = init_col_names.db_getcolnames('winedata')
         self.inv_col_names = init_col_names.db_getcolnames('userinventory')
         self.combined_col_names = self.wine_col_names.copy()
         self.combined_col_names.extend(self.inv_col_names[1:])
-        print(self.combined_col_names)
+        self.location_index  = self.combined_col_names.index('location')
         self.inv_table_pop(None, None)
+
+        # Create a new bottle object to be manipulated by the user 
+        self.bottle = Bottle({}, {})
 
     def translate_col_names(self, input_list):
         # Translates code names to pretty names and back. It does this
@@ -108,13 +113,14 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             for col_num, col_entry in enumerate(row):
                 self.InventoryTable.setItem(row_num, col_num, QtWidgets.QTableWidgetItem(str(col_entry)))
         
+        self.InventoryTable.selectRow(0)
         self.history_table_pop()
 
     def history_table_pop(self):
         history_table_setup = DatabaseManager()
-        self.InventoryTable.setColumnCount(len(self.combined_col_names))
+        self.HistoryTable.setColumnCount(len(self.combined_col_names))
         col_labels = self.translate_col_names(self.combined_col_names)
-        self.InventoryTable.setHorizontalHeaderLabels(col_labels)
+        self.HistoryTable.setHorizontalHeaderLabels(col_labels)
 
         arg = 'SELECT * FROM winedata JOIN userinventory USING (wine_id) WHERE date_out IS NOT NULL ORDER BY date_out'
         hist_rows = list(history_table_setup.db_fetch(arg, rows='all'))
@@ -125,6 +131,28 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             for col_num, col_entry in enumerate(row):
                 self.HistoryTable.setItem(row_num, col_num, QtWidgets.QTableWidgetItem(str(col_entry)))
 
+    @QtCore.Slot()
+    def inv_get_bottle(self):
+        # Activated when a table item is selected. Grabs all info about a specific bottle and stores
+        # it in the bottle object. 
+
+        # First, ensure that the dictionary is empty to prevent extra data being added
+        self.bottle.wine_info = {}
+        self.bottle.bottle_info = {}
+
+        # Get the current row that has been selected. 
+        selection_row = self.InventoryTable.currentRow()
+        # Highlight the whole row to be more visible (quality of life thing)
+        self.InventoryTable.selectRow(selection_row)
+
+        # Assign all items to the dictionary based on the col names
+        for i, term in enumerate(self.wine_col_names):
+            self.bottle.wine_info[term] = self.InventoryTable.item(selection_row, i).text()
+        # Bottle info needs to be offset since its at the end
+        for i, term in enumerate(self.inv_col_names):
+            self.bottle.bottle_info[term] = self.InventoryTable.item(selection_row, i + len(self.wine_col_names) - 1).text()
+        # wine_id only appears at the beginning, make sure it's editted properly
+        self.bottle.bottle_info['wine_id'] = self.bottle.wine_info['wine_id']
 
     @QtCore.Slot()
     def quick_search(self):
@@ -138,25 +166,27 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     
     @QtCore.Slot()
     def inv_check_out(self):
-        selection_row = self.InventoryTable.currentRow()
-        bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text()}
-        bottle_checkout = Bottle(wine_info=None, bottle_info=bottle_info)
-        bottle_checkout.check_out()
+        # selection_row = self.InventoryTable.currentRow()
+        # self.bottle.bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text(), 
+        #                            'location':self.InventoryTable.item(selection_row, self.location_index).text()}
+        # # bottle_checkout = Bottle(wine_info=None, bottle_info=bottle_info)
+        print(self.bottle.wine_info)
+        print(self.bottle.bottle_info)
+        self.bottle.check_out()
         self.quick_search()
 
     @QtCore.Slot()
     def inv_add_copy(self):
-        selection_row = self.InventoryTable.currentRow()
-        bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text()}
+        # selection_row = self.InventoryTable.currentRow()
+        # self.bottle.bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text()}
         bottle_sizes = [self.AddBottleBottleSize.itemText(i) for i in range(self.AddBottleBottleSize.count())]
         new_size, ok_pressed = QInputDialog.getItem(self, 'New Size', 'Select New Bottle Size:', bottle_sizes, 2, False)
         if ok_pressed == True:
-            bottle_info['bottle_size'] = new_size
+            self.bottle.bottle_info['bottle_size'] = new_size
         new_location, ok_pressed = QInputDialog.getText(self, 'New Location', 'Enter new location:', QLineEdit.Normal, '')
         if ok_pressed == True:
-            bottle_info['location'] = new_location
-        new_bottle = Bottle(wine_info=None, bottle_info=bottle_info)
-        new_bottle.add_new()
+            self.bottle.bottle_info['location'] = new_location
+        self.bottle.add_new()
         self.quick_search()
 
     # @QtCore.Slot()

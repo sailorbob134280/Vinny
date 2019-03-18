@@ -245,6 +245,10 @@ class Bottle(Wine):
             else:
                 print('Action canceled')
 
+    def clear_bottle(self):
+        self.bottle_info = {}
+        self.wine_info = {}
+
 
 ####################################################################
 ############################ Test Code #############################
