@@ -215,6 +215,7 @@ class Bottle(Wine):
         # Checks out a bottle from the inventory (really just adds a date out
         # entry) based on the row id of the selected wine_id and location
         row_id = get_rowid(self.bottle_info)
+        # row_id = get_rowid({'wine_id':self.bottle_info['wine_id'], 'location':self.bottle_info['location']})
         date_out = '{date:%Y-%m-%d %H:%M:%S}'.format(date=datetime.datetime.now())
         update_dict = {'date_out':date_out}
         update_userinv_row(update_dict, row_id)

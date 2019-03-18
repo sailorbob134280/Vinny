@@ -166,19 +166,11 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     
     @QtCore.Slot()
     def inv_check_out(self):
-        # selection_row = self.InventoryTable.currentRow()
-        # self.bottle.bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text(), 
-        #                            'location':self.InventoryTable.item(selection_row, self.location_index).text()}
-        # # bottle_checkout = Bottle(wine_info=None, bottle_info=bottle_info)
-        print(self.bottle.wine_info)
-        print(self.bottle.bottle_info)
         self.bottle.check_out()
         self.quick_search()
 
     @QtCore.Slot()
     def inv_add_copy(self):
-        # selection_row = self.InventoryTable.currentRow()
-        # self.bottle.bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text()}
         bottle_sizes = [self.AddBottleBottleSize.itemText(i) for i in range(self.AddBottleBottleSize.count())]
         new_size, ok_pressed = QInputDialog.getItem(self, 'New Size', 'Select New Bottle Size:', bottle_sizes, 2, False)
         if ok_pressed == True:
@@ -195,12 +187,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     
     @QtCore.Slot()
     def inv_move_bottle(self):
-        selection_row = self.InventoryTable.currentRow()
-        bottle_info = {'wine_id':self.InventoryTable.item(selection_row, 0).text()}
         new_location, ok_pressed = QInputDialog.getText(self, 'Move Bottle', 'Enter new location:', QLineEdit.Normal, '')
         if ok_pressed == True:
-            bottle = Bottle(wine_info=None, bottle_info=bottle_info)
-            bottle.update_bottle(new_info={'location':new_location})
+            self.bottle.update_bottle(new_info={'location':new_location})
         self.quick_search()
 
     @QtCore.Slot()

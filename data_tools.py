@@ -6,7 +6,7 @@ def cleanup_dbinput(input_dict):
     # if the term is not used, it is discarded from the dictionary
     terms = {}
     for wkey in input_dict:
-        if input_dict[wkey] != None:
+        if input_dict[wkey] != None and input_dict[wkey] != 'None':
             terms[wkey] = input_dict[wkey]
     return terms
 
