@@ -1,5 +1,5 @@
 {
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
-    "python.pythonPath": "C:\\Users\\jacks\\AppData\\Local\\Programs\\Python\\Python37-32\\VirtualEnvironments\\wineinv\\Scripts\\python.exe"
+    "python.pythonPath": "C:\\Program Files (x86)\\Python37-32\\python-virtual-environments\\wineinv\\Scripts\\python.exe"
 }

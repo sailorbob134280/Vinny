@@ -157,9 +157,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     def quick_search(self):
         wine_id = None
         location = None
-        if self.InventoryWineID.text() != '':
+        if self.InventoryWineID.text():
             wine_id = self.InventoryWineID.text()
-        if self.InventoryLocation.text() != '':
+        if self.InventoryLocation.text():
             location = self.InventoryLocation.text()
         self.inv_table_pop(wine_id, location)
     
@@ -193,12 +193,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
     @QtCore.Slot()
     def ab_deep_search(self):
-        # ab_table_setup = DatabaseManager()
-        # col_names = ab_table_setup.db_getcolnames('winedata')
-        # self.AddBottleTable.setColumnCount(len(col_names))
-        # col_labels = self.translate_col_names(col_names)
-        # self.AddBottleTable.setHorizontalHeaderLabels(col_labels)
-        self.AddBottleTable.setHorizontalHeaderLabels(self.wine_col_names)
+        col_labels = self.translate_col_names(self.wine_col_names)
+        self.AddBottleTable.setColumnCount(len(self.wine_col_names))
+        self.AddBottleTable.setHorizontalHeaderLabels(col_labels)
 
         wine_info = {"upc":self.AddBottleUPC.text(),
                      "winery":self.AddBottleWinery.text(),
@@ -212,12 +209,12 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                      "comments":self.AddBottleComments.toPlainText()}
 
         for term in wine_info:
-            if len(wine_info[term]) == 0:
+            if not wine_info[term]:
                 wine_info[term] = None
 
         table_rows = search_db(wine_info, 'winedata', in_cellar=False)
         self.AddBottleTable.setRowCount(0)
-        if table_rows != None:
+        if table_rows:
             for row_num, row in enumerate(table_rows):
                 self.AddBottleTable.insertRow(row_num)
                 for col_num, col in enumerate(row):
