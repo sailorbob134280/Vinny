@@ -96,7 +96,7 @@ class Wine:
             new_id = enter_db(self.wine_info, 'winedata', ret_id=True)
             return new_id
 
-    def update_wine_db(self):
+    def update_wine(self):
         update_winedata_row(self.wine_info)
 
     def generate_label(self):

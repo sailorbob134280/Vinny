@@ -21,6 +21,21 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.AddBottleAdd.clicked.connect(self.ab_add_to_cellar)
         self.AddBottleTable.doubleClicked.connect(self.ab_get_wine)
         self.AddBottleClearFields.clicked.connect(self.ab_clear_fields)
+        self.AddBottleUpdate.clicked.connect(self.ab_update_wine)
+
+        # Connect all fields in the wines tab to a function to detect modifications
+        self.ab_modified_flag = True
+        self.AddBottleUPC.textChanged.connect(self.ab_modified)
+        self.AddBottleWinery.textChanged.connect(self.ab_modified)
+        self.AddBottleAVA.textChanged.connect(self.ab_modified)
+        self.AddBottleBlendName.textChanged.connect(self.ab_modified)
+        self.AddBottleVarietal.textChanged.connect(self.ab_modified)
+        self.AddBottleType.currentIndexChanged.connect(self.ab_modified)
+        self.AddBottleVintage.textChanged.connect(self.ab_modified)
+        self.AddBottleMSRP.textChanged.connect(self.ab_modified)
+        self.AddBottleCurrentValue.textChanged.connect(self.ab_modified)
+        self.AddBottleComments.textChanged.connect(self.ab_modified)
+        self.AddBottleRating.textChanged.connect(self.ab_modified)
 
         # Get the names of the collumns at the beginning so we don't have to do that a million times
         self.db_manager = DatabaseManager()
@@ -161,6 +176,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.AddBottleComments.setText(wine_info['comments'])
         self.AddBottleRating.setText(wine_info['rating'])
 
+        # Set modified flag to false so it doesn't make duplicates
+        self.ab_modified_flag = False
+
     @QtCore.Slot()
     def inv_get_bottle(self):
         # Activated when a table item is selected. Grabs all info about a specific bottle and stores
@@ -247,6 +265,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                      "vintage":self.AddBottleVintage.text(),
                      "msrp":self.AddBottleMSRP.text(),
                      "value":self.AddBottleCurrentValue.text(),
+                     "rating":self.AddBottleRating.text(),
                      "comments":self.AddBottleComments.toPlainText()}
 
         # Filters out empty text boxes
@@ -293,9 +312,29 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
         self.ab_fill_fields(wine_info)
 
-    # @QtCore.Slot()
-    # def update_bottle(self):
-    #     pass
+    @QtCore.Slot()
+    def ab_modified(self):
+        self.ab_modified_flag = True
+
+    @QtCore.Slot()
+    def ab_update_wine(self):
+        if 'wine_id' in self.bottle.wine_info and self.ab_modified_flag == True:
+            wine_info = {"upc":self.AddBottleUPC.text(),
+                        "winery":self.AddBottleWinery.text(),
+                        "region":self.AddBottleAVA.text(),
+                        "name":self.AddBottleBlendName.text(),
+                        "varietal":self.AddBottleVarietal.text(),
+                        "wtype":self.AddBottleType.currentText(),
+                        "vintage":self.AddBottleVintage.text(),
+                        "msrp":self.AddBottleMSRP.text(),
+                        "value":self.AddBottleCurrentValue.text(),
+                        "rating":self.AddBottleRating.text(),
+                        "comments":self.AddBottleComments.toPlainText()}
+            for term in wine_info:
+                if term not in self.bottle.wine_info or wine_info[term] != self.bottle.wine_info[term]:
+                    self.bottle.wine_info[term] = wine_info[term]
+            self.bottle.update_wine()
+            self.inv_table_pop()
 
     @QtCore.Slot()
     def ab_clear_fields(self):
