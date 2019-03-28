@@ -129,10 +129,11 @@ class Wine:
             else:
                 print('Action canceled')
 
-    # def __del__(self):
-    #     svg_filename = str(self.wine_id) + '.svg'
-    #     if os.path.exists(svg_filename):
-    #         os.remove(svg_filename)
+    def __del__(self):
+        if 'wine_id' in self.wine_info:
+            svg_filename = str(self.wine_info['wine_id']) + '.svg'
+            if os.path.exists(svg_filename):
+                os.remove(svg_filename)
 
 
 class Bottle(Wine):

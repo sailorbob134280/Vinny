@@ -9,6 +9,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         super().__init__()
         self.setupUi(Vinny)
 
+        # Connect the buttons to their respective functions
         self.InventorySearch.clicked.connect(self.quick_search)
         self.InventoryCheckOut.clicked.connect(self.inv_check_out)
         self.InventoryMoveBottle.clicked.connect(self.inv_move_bottle)
@@ -17,6 +18,8 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
         self.AddBottleSearch.clicked.connect(self.ab_deep_search)
         self.AddBottleAdd.clicked.connect(self.ab_add_to_cellar)
+        self.AddBottleTable.doubleClicked.connect(self.ab_fill_fields)
+        self.AddBottleClearFields.clicked.connect(self.ab_clear_fields)
 
         # Get the names of the collumns at the beginning so we don't have to do that a million times
         init_col_names = DatabaseManager()
@@ -220,10 +223,69 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                 for col_num, col in enumerate(row):
                     self.AddBottleTable.setItem(row_num, col_num, QtWidgets.QTableWidgetItem(str(col)))
 
-    
+    @QtCore.Slot()
+    def ab_fill_fields(self):
+        # Activated when a row is double clicked on the wine table
+        # Autofills all the fields in the area to be modified
+
+        # Clear the bottle so that important stuff can be stored
+        self.bottle.clear_bottle()
+        
+        # Get current row and highlight the whole row
+        selection_row = self.AddBottleTable.currentRow()
+        self.AddBottleTable.selectRow(selection_row)
+
+        # Assign all items to the fields by iterating through
+        # and assigning to a dictionary
+        wine_info = {}
+        print(self.wine_col_names)
+        for i, term in enumerate(self.wine_col_names):
+            if self.AddBottleTable.item(selection_row, i).text() != 'None':
+                wine_info[term] = self.AddBottleTable.item(selection_row, i).text()
+            else:
+                wine_info[term] = ''
+        
+        self.AddBottleUPC.setText(wine_info['upc'])
+        self.AddBottleWinery.setText(wine_info['winery'])
+        self.AddBottleAVA.setText(wine_info['region'])
+        self.AddBottleBlendName.setText(wine_info['name'])
+        self.AddBottleVarietal.setText(wine_info['varietal'])
+        self.AddBottleType.setCurrentText(wine_info['wtype'])
+        self.AddBottleVintage.setText(wine_info['vintage'])
+        self.AddBottleMSRP.setText(wine_info['msrp'])
+        self.AddBottleCurrentValue.setText(wine_info['value'])
+        self.AddBottleComments.setText(wine_info['comments'])
+        self.AddBottleRating.setText(wine_info['rating'])
+
+        # Assign the wine_id to the current bottle object so we know it's 
+        # a duplicate
+        self.bottle.bottle_info['wine_id'] = self.AddBottleTable.item(selection_row, 0).text()
+        self.bottle.wine_info['wine_id'] = self.AddBottleTable.item(selection_row, 0).text()
+
     # @QtCore.Slot()
     # def update_bottle(self):
     #     pass
+
+    @QtCore.Slot()
+    def ab_clear_fields(self):
+        # Clear all fields, including the current bottle object
+        self.AddBottleUPC.clear()
+        self.AddBottleWinery.clear()
+        self.AddBottleAVA.clear()
+        self.AddBottleBlendName.clear()
+        self.AddBottleVarietal.clear()
+        self.AddBottleType.setCurrentIndex(0)
+        self.AddBottleVintage.clear()
+        self.AddBottleMSRP.clear()
+        self.AddBottleCurrentValue.clear()
+        self.AddBottleComments.clear()
+        self.AddBottleRating.clear()
+        self.AddBottleLocation.clear()
+        self.AddBottleQty.clear()
+
+        self.bottle.clear_bottle()
+
+        self.ab_deep_search()
     
     @QtCore.Slot()
     def ab_add_to_cellar(self):
