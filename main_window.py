@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'D:\Documents\GitHub\Wine-Inventory\interface.ui',
 # licensing of 'D:\Documents\GitHub\Wine-Inventory\interface.ui' applies.
 #
-# Created: Wed Feb 27 14:55:14 2019
+# Created: Wed Mar 27 20:07:01 2019
 #      by: pyside2-uic  running on PySide2 5.12.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_Vinny(object):
     def setupUi(self, Vinny):
         Vinny.setObjectName("Vinny")
-        Vinny.resize(1117, 816)
+        Vinny.resize(1198, 890)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/Wine/wine/icons8-bar-52.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Vinny.setWindowIcon(icon)
@@ -249,17 +249,10 @@ class Ui_Vinny(object):
         self.gridLayout_2.addLayout(self.verticalLayout_4, 2, 0, 1, 1)
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
-        self.AddBottleCellarOnly = QtWidgets.QCheckBox(self.groupBox_3)
-        self.AddBottleCellarOnly.setChecked(True)
-        self.AddBottleCellarOnly.setObjectName("AddBottleCellarOnly")
-        self.verticalLayout_7.addWidget(self.AddBottleCellarOnly)
         self.AddBottleSearch = QtWidgets.QPushButton(self.groupBox_3)
         self.AddBottleSearch.setIcon(icon1)
         self.AddBottleSearch.setObjectName("AddBottleSearch")
         self.verticalLayout_7.addWidget(self.AddBottleSearch)
-        self.AddBottleShowBottles = QtWidgets.QPushButton(self.groupBox_3)
-        self.AddBottleShowBottles.setObjectName("AddBottleShowBottles")
-        self.verticalLayout_7.addWidget(self.AddBottleShowBottles)
         self.AddBottleUpdate = QtWidgets.QPushButton(self.groupBox_3)
         self.AddBottleUpdate.setObjectName("AddBottleUpdate")
         self.verticalLayout_7.addWidget(self.AddBottleUpdate)
@@ -293,7 +286,7 @@ class Ui_Vinny(object):
         self.horizontalLayout_2.addWidget(self.main_tab)
         Vinny.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(Vinny)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1117, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1198, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -345,13 +338,12 @@ class Ui_Vinny(object):
         self.menubar.addAction(self.menuEdit.menuAction())
 
         self.retranslateUi(Vinny)
-        self.main_tab.setCurrentIndex(0)
+        self.main_tab.setCurrentIndex(1)
         self.InventorySortBy.setCurrentIndex(0)
         self.AddBottleBottleSize.setCurrentIndex(2)
         QtCore.QObject.connect(self.InventoryWineID, QtCore.SIGNAL("returnPressed()"), self.InventorySearch.animateClick)
         QtCore.QObject.connect(self.InventoryLocation, QtCore.SIGNAL("returnPressed()"), self.InventorySearch.animateClick)
         QtCore.QObject.connect(self.InventoryRefresh, QtCore.SIGNAL("clicked()"), self.InventorySearch.click)
-        QtCore.QObject.connect(self.AddBottleCellarOnly, QtCore.SIGNAL("toggled(bool)"), self.AddBottleSearch.animateClick)
         QtCore.QObject.connect(self.AddBottleWinery, QtCore.SIGNAL("textChanged(QString)"), self.AddBottleSearch.click)
         QtCore.QObject.connect(self.AddBottleBlendName, QtCore.SIGNAL("textChanged(QString)"), self.AddBottleSearch.click)
         QtCore.QObject.connect(self.AddBottleVintage, QtCore.SIGNAL("textChanged(QString)"), self.AddBottleSearch.click)
@@ -386,8 +378,7 @@ class Ui_Vinny(object):
         Vinny.setTabOrder(self.AddBottleType, self.AddBottleMSRP)
         Vinny.setTabOrder(self.AddBottleMSRP, self.AddBottleCurrentValue)
         Vinny.setTabOrder(self.AddBottleCurrentValue, self.AddBottleComments)
-        Vinny.setTabOrder(self.AddBottleComments, self.AddBottleCellarOnly)
-        Vinny.setTabOrder(self.AddBottleCellarOnly, self.AddBottleSearch)
+        Vinny.setTabOrder(self.AddBottleComments, self.AddBottleSearch)
         Vinny.setTabOrder(self.AddBottleSearch, self.AddBottleUpdate)
         Vinny.setTabOrder(self.AddBottleUpdate, self.AddBottleClearFields)
         Vinny.setTabOrder(self.AddBottleClearFields, self.AddBottleSelLocation)
@@ -422,7 +413,7 @@ class Ui_Vinny(object):
         self.InventoryRefresh.setText(QtWidgets.QApplication.translate("Vinny", "Refresh Inventory", None, -1))
         self.InventoryCheckOut.setText(QtWidgets.QApplication.translate("Vinny", "Check Out", None, -1))
         self.InventoryAddCopy.setText(QtWidgets.QApplication.translate("Vinny", "Add Copy", None, -1))
-        self.InventoryEditBottle.setText(QtWidgets.QApplication.translate("Vinny", "Edit Bottle", None, -1))
+        self.InventoryEditBottle.setText(QtWidgets.QApplication.translate("Vinny", "Edit Wine", None, -1))
         self.InventoryMoveBottle.setText(QtWidgets.QApplication.translate("Vinny", "Move Bottle", None, -1))
         self.main_tab.setTabText(self.main_tab.indexOf(self.inventory), QtWidgets.QApplication.translate("Vinny", "Bottles", None, -1))
         self.label_11.setText(QtWidgets.QApplication.translate("Vinny", "Matches", None, -1))
@@ -458,9 +449,7 @@ class Ui_Vinny(object):
         self.AddBottleBottleSize.setItemText(7, QtWidgets.QApplication.translate("Vinny", "Salmanazar (9.0 L)", None, -1))
         self.AddBottleBottleSize.setItemText(8, QtWidgets.QApplication.translate("Vinny", "Other...", None, -1))
         self.label_9.setText(QtWidgets.QApplication.translate("Vinny", "MSRP", None, -1))
-        self.AddBottleCellarOnly.setText(QtWidgets.QApplication.translate("Vinny", "Limit Search to My Cellar", None, -1))
         self.AddBottleSearch.setText(QtWidgets.QApplication.translate("Vinny", "Search", None, -1))
-        self.AddBottleShowBottles.setText(QtWidgets.QApplication.translate("Vinny", "Show Bottles", None, -1))
         self.AddBottleUpdate.setText(QtWidgets.QApplication.translate("Vinny", "Update Wine", None, -1))
         self.AddBottleClearFields.setText(QtWidgets.QApplication.translate("Vinny", "Clear Fields", None, -1))
         self.label_15.setText(QtWidgets.QApplication.translate("Vinny", "Rating", None, -1))

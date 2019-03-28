@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1117</width>
-    <height>816</height>
+    <width>1198</width>
+    <height>890</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="inventory">
        <attribute name="title">
@@ -216,7 +216,7 @@
           <item>
            <widget class="QPushButton" name="InventoryEditBottle">
             <property name="text">
-             <string>Edit Bottle</string>
+             <string>Edit Wine</string>
             </property>
            </widget>
           </item>
@@ -520,16 +520,6 @@
            <item row="5" column="1">
             <layout class="QVBoxLayout" name="verticalLayout_7">
              <item>
-              <widget class="QCheckBox" name="AddBottleCellarOnly">
-               <property name="text">
-                <string>Limit Search to My Cellar</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
               <widget class="QPushButton" name="AddBottleSearch">
                <property name="text">
                 <string>Search</string>
@@ -537,13 +527,6 @@
                <property name="icon">
                 <iconset resource="resources/icons/icons.qrc">
                  <normaloff>:/Actions/actions/search.svg</normaloff>:/Actions/actions/search.svg</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="AddBottleShowBottles">
-               <property name="text">
-                <string>Show Bottles</string>
                </property>
               </widget>
              </item>
@@ -608,7 +591,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1117</width>
+     <width>1198</width>
      <height>21</height>
     </rect>
    </property>
@@ -725,7 +708,6 @@
   <tabstop>AddBottleMSRP</tabstop>
   <tabstop>AddBottleCurrentValue</tabstop>
   <tabstop>AddBottleComments</tabstop>
-  <tabstop>AddBottleCellarOnly</tabstop>
   <tabstop>AddBottleSearch</tabstop>
   <tabstop>AddBottleUpdate</tabstop>
   <tabstop>AddBottleClearFields</tabstop>
@@ -787,22 +769,6 @@
     <hint type="destinationlabel">
      <x>932</x>
      <y>178</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>AddBottleCellarOnly</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>AddBottleSearch</receiver>
-   <slot>animateClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>435</x>
-     <y>362</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>543</x>
-     <y>405</y>
     </hint>
    </hints>
   </connection>
