@@ -118,17 +118,22 @@
                </item>
                <item>
                 <property name="text">
+                 <string>Region</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Blend Name</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
                  <string>Varietal</string>
                 </property>
                </item>
                <item>
                 <property name="text">
                  <string>Vintage</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Blend Name</string>
                 </property>
                </item>
                <item>
@@ -148,7 +153,12 @@
                </item>
                <item>
                 <property name="text">
-                 <string>Region</string>
+                 <string>Rating</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Date In</string>
                 </property>
                </item>
               </widget>
@@ -236,26 +246,14 @@
         <string>Wines</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="1" rowspan="2">
-         <layout class="QVBoxLayout" name="verticalLayout_6">
-          <item>
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>Matches</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QTableWidget" name="AddBottleTable">
-            <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
         <item row="1" column="0">
          <widget class="QGroupBox" name="groupBox_5">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Actions</string>
           </property>
@@ -304,6 +302,24 @@
           </layout>
          </widget>
         </item>
+        <item row="0" column="1" rowspan="2">
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Matches</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="AddBottleTable">
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
         <item row="0" column="0">
          <widget class="QGroupBox" name="groupBox_3">
           <property name="title">
@@ -314,6 +330,12 @@
             <layout class="QVBoxLayout" name="verticalLayout_5">
              <item>
               <widget class="QLabel" name="label_7">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
                 <string>Region</string>
                </property>
@@ -328,6 +350,12 @@
              </item>
              <item>
               <widget class="QLabel" name="label_5">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
                 <string>Varietal</string>
                </property>
@@ -342,6 +370,12 @@
              </item>
              <item>
               <widget class="QLabel" name="label_12">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
                 <string>UPC Code</string>
                </property>
@@ -352,6 +386,12 @@
              </item>
              <item>
               <widget class="QLabel" name="label_8">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
                 <string>Type</string>
                </property>
@@ -393,6 +433,12 @@
              </item>
              <item>
               <widget class="QLabel" name="label_10">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
                 <string>Current Value</string>
                </property>
@@ -401,19 +447,31 @@
              <item>
               <widget class="QLineEdit" name="AddBottleCurrentValue"/>
              </item>
+             <item>
+              <widget class="QLabel" name="label_15">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Rating</string>
+               </property>
+              </widget>
+             </item>
             </layout>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_13">
-             <property name="text">
-              <string>Comments</string>
-             </property>
-            </widget>
            </item>
            <item row="2" column="0">
             <layout class="QVBoxLayout" name="verticalLayout_4">
              <item>
               <widget class="QLabel" name="label_3">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
                 <string>Winery</string>
                </property>
@@ -428,6 +486,12 @@
              </item>
              <item>
               <widget class="QLabel" name="label_4">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
                 <string>Blend Name</string>
                </property>
@@ -438,6 +502,12 @@
              </item>
              <item>
               <widget class="QLabel" name="label_6">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
                 <string>Vintage</string>
                </property>
@@ -448,6 +518,12 @@
              </item>
              <item>
               <widget class="QLabel" name="label_14">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
                 <string>Bottle Size</string>
                </property>
@@ -507,6 +583,12 @@
              </item>
              <item>
               <widget class="QLabel" name="label_9">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
                 <string>MSRP</string>
                </property>
@@ -514,6 +596,19 @@
              </item>
              <item>
               <widget class="QLineEdit" name="AddBottleMSRP"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_13">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Comments</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -546,18 +641,17 @@
              </item>
             </layout>
            </item>
-           <item row="3" column="1">
-            <widget class="QLabel" name="label_15">
-             <property name="text">
-              <string>Rating</string>
-             </property>
-            </widget>
-           </item>
            <item row="4" column="1">
             <widget class="QLineEdit" name="AddBottleRating"/>
            </item>
            <item row="4" column="0" rowspan="2">
             <widget class="QTextEdit" name="AddBottleComments">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="placeholderText">
               <string/>
              </property>

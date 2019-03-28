@@ -22,6 +22,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.AddBottleTable.doubleClicked.connect(self.ab_get_wine)
         self.AddBottleClearFields.clicked.connect(self.ab_clear_fields)
         self.AddBottleUpdate.clicked.connect(self.ab_update_wine)
+        self.AddBottleUPC.returnPressed.connect(self.ab_upc_fill)
 
         # Connect all fields in the wines tab to a function to detect modifications
         self.ab_modified_flag = True
@@ -405,6 +406,10 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
         self.quick_search()
     
+    @QtCore.Slot()
+    def ab_upc_fill(self):
+        pass
+
     # @QtCore.Slot()
     # def generate_barcode(self):
     #     pass
