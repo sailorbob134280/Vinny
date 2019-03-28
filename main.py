@@ -133,6 +133,8 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                 bottle_info = {'location':location}
             
             # If there's a search term, it'll just use the integrated method in wine-bottle
+            
+            #TODO: Use main class object instead of creating one - https://trello.com/c/JqBK25a6/13-use-main-class-object-instead-of-creating-one
             find_bottles = Bottle(wine_info=wine_info, bottle_info=bottle_info)
             bottles = find_bottles.search_bottle()
             inv_rows = []
@@ -165,6 +167,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
     def ab_fill_fields(self, wine_info):
         # Takes an input dictionary and filles the add bottle fields
+        for term in wine_info:
+            wine_info[term] = str(wine_info[term])
+            
         self.AddBottleUPC.setText(wine_info['upc'])
         self.AddBottleWinery.setText(wine_info['winery'])
         self.AddBottleAVA.setText(wine_info['region'])
@@ -408,7 +413,11 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     
     @QtCore.Slot()
     def ab_upc_fill(self):
-        pass
+        upc = self.AddBottleUPC.text()
+        self.bottle.clear_bottle()
+        self.bottle.wine_info['upc'] = upc
+        self.bottle.search_wine()
+        self.ab_fill_fields(wine_info=self.bottle.wine_info)
 
     # @QtCore.Slot()
     # def generate_barcode(self):

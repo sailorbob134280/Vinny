@@ -28,7 +28,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="inventory">
        <attribute name="title">
@@ -246,7 +246,7 @@
         <string>Wines</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="1" column="0">
+        <item row="3" column="0">
          <widget class="QGroupBox" name="groupBox_5">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -302,7 +302,7 @@
           </layout>
          </widget>
         </item>
-        <item row="0" column="1" rowspan="2">
+        <item row="0" column="1" rowspan="4">
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
            <widget class="QLabel" name="label_11">
@@ -320,14 +320,78 @@
           </item>
          </layout>
         </item>
-        <item row="0" column="0">
+        <item row="1" column="0">
          <widget class="QGroupBox" name="groupBox_3">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Wine Information</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
+           <item row="4" column="0" rowspan="2">
+            <widget class="QTextEdit" name="AddBottleComments">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="placeholderText">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="label_15">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Rating</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_13">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Comments</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="AddBottleRating">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
            <item row="2" column="1">
             <layout class="QVBoxLayout" name="verticalLayout_5">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetFixedSize</enum>
+             </property>
              <item>
               <widget class="QLabel" name="label_7">
                <property name="sizePolicy">
@@ -447,23 +511,13 @@
              <item>
               <widget class="QLineEdit" name="AddBottleCurrentValue"/>
              </item>
-             <item>
-              <widget class="QLabel" name="label_15">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Rating</string>
-               </property>
-              </widget>
-             </item>
             </layout>
            </item>
            <item row="2" column="0">
             <layout class="QVBoxLayout" name="verticalLayout_4">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetFixedSize</enum>
+             </property>
              <item>
               <widget class="QLabel" name="label_3">
                <property name="sizePolicy">
@@ -597,25 +651,34 @@
              <item>
               <widget class="QLineEdit" name="AddBottleMSRP"/>
              </item>
-             <item>
-              <widget class="QLabel" name="label_13">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Comments</string>
-               </property>
-              </widget>
-             </item>
             </layout>
            </item>
            <item row="5" column="1">
             <layout class="QVBoxLayout" name="verticalLayout_7">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetNoConstraint</enum>
+             </property>
+             <item>
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
              <item>
               <widget class="QPushButton" name="AddBottleSearch">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
                 <string>Search</string>
                </property>
@@ -640,22 +703,6 @@
               </widget>
              </item>
             </layout>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="AddBottleRating"/>
-           </item>
-           <item row="4" column="0" rowspan="2">
-            <widget class="QTextEdit" name="AddBottleComments">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="placeholderText">
-              <string/>
-             </property>
-            </widget>
            </item>
           </layout>
          </widget>
@@ -790,7 +837,6 @@
   <tabstop>InventorySortAsc</tabstop>
   <tabstop>InventorySortDesc</tabstop>
   <tabstop>InventoryRefresh</tabstop>
-  <tabstop>main_tab</tabstop>
   <tabstop>AddBottleWinery</tabstop>
   <tabstop>AddBottleAVA</tabstop>
   <tabstop>AddBottleBlendName</tabstop>
@@ -801,7 +847,6 @@
   <tabstop>AddBottleType</tabstop>
   <tabstop>AddBottleMSRP</tabstop>
   <tabstop>AddBottleCurrentValue</tabstop>
-  <tabstop>AddBottleComments</tabstop>
   <tabstop>AddBottleSearch</tabstop>
   <tabstop>AddBottleUpdate</tabstop>
   <tabstop>AddBottleClearFields</tabstop>
