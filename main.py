@@ -106,7 +106,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             output_list.append(translate_dict[name])
         return output_list
 
-    def inv_table_pop(self, wine_id, location):
+    def inv_table_pop(self, wine_id=None, location=None):
         # Populates the inventory table. Called any time there is a possible change
         # Organizes the table based on expected length of the returned entries
         sort_term = self.translate_col_names([self.InventorySortBy.currentText()])[0]
