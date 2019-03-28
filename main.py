@@ -201,15 +201,19 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.quick_search()
 
     @QtCore.Slot()
-    def inv_add_copy(self):
+    def inv_add_copy(self, new_loc=None, new_size=None):
         # Adds a copy of the selected bottle by asking for a new size and location
         bottle_sizes = [self.AddBottleBottleSize.itemText(i) for i in range(self.AddBottleBottleSize.count())]
-        new_size, ok_pressed = QInputDialog.getItem(self, 'New Size', 'Select New Bottle Size:', bottle_sizes, 2, False)
-        if ok_pressed == True:
-            self.bottle.bottle_info['bottle_size'] = new_size
-        new_location, ok_pressed = QInputDialog.getText(self, 'New Location', 'Enter new location:', QLineEdit.Normal, '')
-        if ok_pressed == True:
-            self.bottle.bottle_info['location'] = new_location
+        if not new_size:
+            new_size, ok_pressed = QInputDialog.getItem(self, 'New Size', 'Select New Bottle Size:', bottle_sizes, 2, False)
+            if ok_pressed == True:
+                pass
+        self.bottle.bottle_info['bottle_size'] = new_size
+        if not new_loc:
+            new_loc, ok_pressed = QInputDialog.getText(self, 'New Location', 'Enter new location:', QLineEdit.Normal, '')
+            if ok_pressed == True:
+                pass
+        self.bottle.bottle_info['location'] = new_loc
         self.bottle.add_new()
         self.quick_search()
 
@@ -316,37 +320,50 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     
     @QtCore.Slot()
     def ab_add_to_cellar(self):
-        wine_info = {"upc":self.AddBottleUPC.text(),
-                     "winery":self.AddBottleWinery.text(),
-                     "region":self.AddBottleAVA.text(),
-                     "name":self.AddBottleBlendName.text(),
-                     "varietal":self.AddBottleVarietal.text(),
-                     "wtype":self.AddBottleType.currentText(),
-                     "vintage":self.AddBottleVintage.text(),
-                     "msrp":self.AddBottleMSRP.text(),
-                     "value":self.AddBottleCurrentValue.text(),
-                     "comments":self.AddBottleComments.toPlainText()}
-
-        bottle_info = {"bottle_size":self.AddBottleBottleSize.currentText()}
-        
-        for term in wine_info:
-            if wine_info[term] == '':
-                wine_info[term] = None
-        for term in bottle_info:
-            if bottle_info[term] == '':
-                bottle_info[term] = None
-
-        if self.AddBottleSelLocation.isChecked() == True:
-            bottle_info["location"] = self.AddBottleLocation.text()
-            new_bottle = Bottle(wine_info=wine_info, bottle_info=bottle_info)
-            new_bottle.add_new()
+        # Adds a new bottle to the cellar. If the wine_id exists, it's a copy
+        # and can be added as such. Otherwise a new bottle is added. 
+        if 'wine_id' in self.bottle.bottle_info or 'wine_id' in self.bottle.wine_info:
+            new_size = self.AddBottleBottleSize.currentText()
+            if self.AddBottleSelLocation.isChecked():
+                new_loc = self.AddBottleLocation.text()
+                self.inv_add_copy(new_size=new_size, new_loc=new_loc)
+                
+            else:
+                for i in range(int(self.AddBottleQty.text())):
+                   self.inv_add_copy(new_size=new_size)
         else:
-            for i in range(int(self.AddBottleQty.text())):
-                next_location, ok_pressed = QInputDialog.getText(self, "Bottle {0}".format(i+1), "Enter location for Bottle {0}:".format(i+1), QLineEdit.Normal, "")
-                if ok_pressed == True:
-                    bottle_info['location'] = next_location
-                    new_bottle = Bottle(wine_info=wine_info, bottle_info=bottle_info)
-                    new_bottle.add_new()
+            wine_info = {"upc":self.AddBottleUPC.text(),
+                        "winery":self.AddBottleWinery.text(),
+                        "region":self.AddBottleAVA.text(),
+                        "name":self.AddBottleBlendName.text(),
+                        "varietal":self.AddBottleVarietal.text(),
+                        "wtype":self.AddBottleType.currentText(),
+                        "vintage":self.AddBottleVintage.text(),
+                        "msrp":self.AddBottleMSRP.text(),
+                        "value":self.AddBottleCurrentValue.text(),
+                        "comments":self.AddBottleComments.toPlainText()}
+
+            bottle_info = {"bottle_size":self.AddBottleBottleSize.currentText()}
+            
+            for term in wine_info:
+                if wine_info[term] == '':
+                    wine_info[term] = None
+            for term in bottle_info:
+                if bottle_info[term] == '':
+                    bottle_info[term] = None
+
+            if self.AddBottleSelLocation.isChecked() == True:
+                bottle_info["location"] = self.AddBottleLocation.text()
+                new_bottle = Bottle(wine_info=wine_info, bottle_info=bottle_info)
+                new_bottle.add_new()
+            else:
+                for i in range(int(self.AddBottleQty.text())):
+                    next_location, ok_pressed = QInputDialog.getText(self, "Bottle {0}".format(i+1), "Enter location for Bottle {0}:".format(i+1), QLineEdit.Normal, "")
+                    if ok_pressed == True:
+                        bottle_info['location'] = next_location
+                        new_bottle = Bottle(wine_info=wine_info, bottle_info=bottle_info)
+                        new_bottle.add_new()
+
         self.quick_search()
     
     # @QtCore.Slot()
