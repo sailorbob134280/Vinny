@@ -44,7 +44,7 @@ def export_db(path):
     # but more memory efficient. Write that to the extended page. 
     for i in range(len(inv_rows)):
         write_row = list(db_export.db_fetch('SELECT * FROM winedata WHERE wine_id=?', (inv_rows[i][0],)))
-        write_row.extend(inv_rows[i][2:])
+        write_row.extend(inv_rows[i][1:])
         exp_full.append(write_row)
         # Remove the date in/out entries
         del write_row[date_index:date_index+2]
