@@ -36,10 +36,11 @@ def search_db(search_input, table='userinventory', in_cellar=True, sort_by=None)
     if sort_by != None:
         arg += ' ORDER BY ' + sort_by
 
+    print(arg)
     # finally, call the search function from the db_man object
     db_search = DatabaseManager()
     result = db_search.db_fetch(arg, terms, 'all')
-    if len(result) != 0:
+    if result:
         return result
     else:
         return None
@@ -116,7 +117,7 @@ def drop_row(wine_id, rowid=None, table='userinventory'):
     # the table is the user inventory (which is less dangerous)
     terms = [wine_id]
     arg = 'DELETE FROM ' + table + ' WHERE wine_id = ?'
-    if rowid != None:
+    if rowid:
         arg += ' AND rowid = ?'
         terms.append(rowid)
 

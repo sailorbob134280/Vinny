@@ -1,5 +1,5 @@
 import PySide2
-from PySide2.QtWidgets import QInputDialog, QLineEdit
+from PySide2.QtWidgets import QInputDialog, QLineEdit, QFileDialog, QMessageBox
 from wine_bottle import *
 from db_man import DatabaseManager
 from main_window import *
@@ -10,6 +10,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.setupUi(Vinny)
 
         # Connect the buttons to their respective functions
+        self.actionBottle.triggered.connect(self.delete_bottle)
+        self.actionWine.triggered.connect(self.delete_wine)
+        
         self.InventorySearch.clicked.connect(self.quick_search)
         self.InventoryCheckOut.clicked.connect(self.inv_check_out)
         self.InventoryMoveBottle.clicked.connect(self.inv_move_bottle)
@@ -23,6 +26,8 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.AddBottleClearFields.clicked.connect(self.ab_clear_fields)
         self.AddBottleUpdate.clicked.connect(self.ab_update_wine)
         self.AddBottleUPC.returnPressed.connect(self.ab_upc_fill)
+
+        self.HistoryTable.cellClicked.connect(self.hist_get_bottle)
 
         # Connect all fields in the wines tab to a function to detect modifications
         self.ab_modified_flag = True
@@ -112,9 +117,29 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         # Organizes the table based on expected length of the returned entries
         sort_term = self.translate_col_names([self.InventorySortBy.currentText()])[0]
         
+        if wine_id or location:
+            # If there's a search term, it'll just use the integrated method in wine-bottle
+            wine_info = {}
+            bottle_info = {}
+            if wine_id:
+                wine_info['wine_id'] = wine_id
+                bottle_info['wine_id'] = wine_id
+            if location:
+                bottle_info['location'] = location
+
+            self.bottle.clear_bottle()
+            self.bottle.wine_info = wine_info
+            self.bottle.bottle_info = bottle_info
+            bottles = self.bottle.search_bottle()
+            inv_rows = []
+            if bottles:
+                for i, bottle in enumerate(bottles):
+                    inv_rows.append(list(self.bottle.wine_info.values()))
+                    inv_rows[i].extend(bottle[1:])
+
         # Craft the SQL search query. I suspect having SQL doing the sorting is a tad faster.
         # If no terms specified, return all entries
-        if wine_id == None and location == None:
+        else:
             arg = 'SELECT * FROM winedata JOIN userinventory USING (wine_id) WHERE '
             arg += 'date_out IS NULL ORDER BY ' + sort_term
             if self.InventorySortAsc.isChecked():
@@ -122,35 +147,19 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             else:
                 arg += ' DESC'
             inv_rows = list(self.db_manager.db_fetch(arg, rows='all'))
-        else:
-            if wine_id == None:
-                wine_info = None
-            else:
-                wine_info = {'wine_id':wine_id}
-            if location == None:
-                bottle_info = {'location':None}
-            else:
-                bottle_info = {'location':location}
-            
-            # If there's a search term, it'll just use the integrated method in wine-bottle
-            
-            #TODO: Use main class object instead of creating one - https://trello.com/c/JqBK25a6/13-use-main-class-object-instead-of-creating-one
-            find_bottles = Bottle(wine_info=wine_info, bottle_info=bottle_info)
-            bottles = find_bottles.search_bottle()
-            inv_rows = []
-            for i, bottle in enumerate(bottles):
-                inv_rows.append(list(find_bottles.wine_info.values()))
-                inv_rows[i].extend(bottle[1:])
 
         # Iteratively fills the table
         self.InventoryTable.setRowCount(0)
-        for row_num, row in enumerate(inv_rows):
-            self.InventoryTable.insertRow(row_num)
-            for col_num, col_entry in enumerate(row):
-                self.InventoryTable.setItem(row_num, col_num, QtWidgets.QTableWidgetItem(str(col_entry)))
+        if inv_rows:
+            for row_num, row in enumerate(inv_rows):
+                self.InventoryTable.insertRow(row_num)
+                for col_num, col_entry in enumerate(row):
+                        self.InventoryTable.setItem(row_num, col_num, QtWidgets.QTableWidgetItem(str(col_entry)))
+            self.InventoryTable.selectRow(0)
+        else:
+            self.bottle.clear_bottle()
         
-        # Auto selects the top row and populates the history table as well
-        self.InventoryTable.selectRow(0)
+        # Populates the history table as well
         self.history_table_pop()
 
     def history_table_pop(self):
@@ -184,6 +193,28 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
         # Set modified flag to false so it doesn't make duplicates
         self.ab_modified_flag = False
+
+    @QtCore.Slot()
+    def hist_get_bottle(self):
+        # Activated when a table item is selected. Grabs all info about a specific bottle and stores
+        # it in the bottle object. 
+
+        # First, ensure that the dictionary is empty to prevent extra data being added
+        self.bottle.clear_bottle()
+
+        # Get the current row that has been selected. 
+        selection_row = self.HistoryTable.currentRow()
+        # Highlight the whole row to be more visible (quality of life thing)
+        self.HistoryTable.selectRow(selection_row)
+
+        # Assign all items to the dictionary based on the col names
+        for i, term in enumerate(self.wine_col_names):
+            self.bottle.wine_info[term] = self.HistoryTable.item(selection_row, i).text()
+        # Bottle info needs to be offset since its at the end
+        for i, term in enumerate(self.inv_col_names):
+            self.bottle.bottle_info[term] = self.HistoryTable.item(selection_row, i + len(self.wine_col_names) - 1).text()
+        # wine_id only appears at the beginning, make sure it's editted properly
+        self.bottle.bottle_info['wine_id'] = self.bottle.wine_info['wine_id']
 
     @QtCore.Slot()
     def inv_get_bottle(self):
@@ -418,6 +449,29 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.bottle.wine_info['upc'] = upc
         self.bottle.search_wine()
         self.ab_fill_fields(wine_info=self.bottle.wine_info)
+
+    @QtCore.Slot()
+    def delete_bottle(self):
+        # Deletes bottle from the database entirely. This is different
+        # from checking out a bottle because the entire thing is removed.
+        # This is permenant and dangerous, so it uses a message box to 
+        # confirm.
+        if 'wine_id' in self.bottle.bottle_info and self.bottle.bottle_info['wine_id'] != None:
+            msg_box = QMessageBox()
+            msg_box.setText("WARNING: You are about to delete this bottle from the database. You cannot undo this. Continue?")
+            msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+            msg_box.setDefaultButton(QMessageBox.Cancel)
+            msg_box.setIcon(QMessageBox.Warning)
+            ret = msg_box.exec_()
+        
+            if ret == QMessageBox.Ok:
+                self.bottle.delete_bottle()
+            else:
+                return
+
+    @QtCore.Slot()
+    def delete_wine(self):
+        self.bottle.delete_wine()
 
     # @QtCore.Slot()
     # def generate_barcode(self):
