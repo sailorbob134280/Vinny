@@ -1,8 +1,10 @@
 import PySide2
-from PySide2.QtWidgets import QInputDialog, QLineEdit, QFileDialog, QMessageBox
+from PySide2.QtWidgets import QInputDialog, QLineEdit, QFileDialog, QMessageBox, QFileDialog
 from wine_bottle import *
 from db_man import DatabaseManager
 from main_window import *
+import import_export
+
 
 class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     def __init__(self):
@@ -12,6 +14,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         # Connect the buttons to their respective functions
         self.actionBottle.triggered.connect(self.delete_bottle)
         self.actionWine.triggered.connect(self.delete_wine)
+        self.actionExport.triggered.connect(self.export_to_excel)
+        self.actionImport.triggered.connect(self.import_from_excel)
+        self.actionGenerate_Barcode.triggered.connect(self.generate_barcode)
         
         self.InventorySearch.clicked.connect(self.quick_search)
         self.InventoryCheckOut.clicked.connect(self.inv_check_out)
@@ -26,6 +31,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.AddBottleClearFields.clicked.connect(self.ab_clear_fields)
         self.AddBottleUpdate.clicked.connect(self.ab_update_wine)
         self.AddBottleUPC.returnPressed.connect(self.ab_upc_fill)
+        self.AddBottleGenerateBarcode.clicked.connect(self.generate_barcode)
 
         self.HistoryTable.cellClicked.connect(self.hist_get_bottle)
 
@@ -490,9 +496,18 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             
             self.inv_table_pop()
 
-    # @QtCore.Slot()
-    # def generate_barcode(self):
-    #     pass
+    @QtCore.Slot()
+    def export_to_excel(self):
+        path, _ = QFileDialog.getSaveFileName(self, "Export...", "", "Excel Files (*.xlsx)")
+        import_export.export_db(path)
+
+    @QtCore.Slot()
+    def import_from_excel(self):
+        pass
+
+    @QtCore.Slot()
+    def generate_barcode(self):
+        pass
     
 if __name__ == "__main__":
     import sys

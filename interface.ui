@@ -753,6 +753,10 @@
      <property name="title">
       <string>Delete...</string>
      </property>
+     <property name="icon">
+      <iconset resource="resources/icons/icons.qrc">
+       <normaloff>:/Places/places/gnome-stock-trash.svg</normaloff>:/Places/places/gnome-stock-trash.svg</iconset>
+     </property>
      <addaction name="actionBottle"/>
      <addaction name="actionWine"/>
     </widget>
@@ -793,6 +797,10 @@
    </property>
   </action>
   <action name="actionPreferences">
+   <property name="icon">
+    <iconset resource="resources/icons/icons.qrc">
+     <normaloff>:/Catagories/categories/applications-system.svg</normaloff>:/Catagories/categories/applications-system.svg</iconset>
+   </property>
    <property name="text">
     <string>Preferences</string>
    </property>
@@ -813,11 +821,19 @@
    </property>
   </action>
   <action name="actionGenerate_Barcode">
+   <property name="icon">
+    <iconset resource="resources/icons/icons.qrc">
+     <normaloff>:/Actions/actions/icons8-barcode-52.png</normaloff>:/Actions/actions/icons8-barcode-52.png</iconset>
+   </property>
    <property name="text">
     <string>Generate Barcode</string>
    </property>
   </action>
   <action name="actionBackup_Database">
+   <property name="icon">
+    <iconset resource="resources/icons/icons.qrc">
+     <normaloff>:/Places/places/gnome-mime-x-directory-smb-workgroup.svg</normaloff>:/Places/places/gnome-mime-x-directory-smb-workgroup.svg</iconset>
+   </property>
    <property name="text">
     <string>Backup Database</string>
    </property>
@@ -902,8 +918,8 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>998</x>
-     <y>176</y>
+     <x>1164</x>
+     <y>186</y>
     </hint>
     <hint type="destinationlabel">
      <x>932</x>
@@ -922,8 +938,8 @@
      <y>106</y>
     </hint>
     <hint type="destinationlabel">
-     <x>393</x>
-     <y>396</y>
+     <x>583</x>
+     <y>588</y>
     </hint>
    </hints>
   </connection>
@@ -938,8 +954,8 @@
      <y>158</y>
     </hint>
     <hint type="destinationlabel">
-     <x>319</x>
-     <y>396</y>
+     <x>583</x>
+     <y>588</y>
     </hint>
    </hints>
   </connection>
@@ -954,8 +970,8 @@
      <y>206</y>
     </hint>
     <hint type="destinationlabel">
-     <x>322</x>
-     <y>396</y>
+     <x>583</x>
+     <y>588</y>
     </hint>
    </hints>
   </connection>
@@ -970,8 +986,8 @@
      <y>288</y>
     </hint>
     <hint type="destinationlabel">
-     <x>330</x>
-     <y>396</y>
+     <x>583</x>
+     <y>588</y>
     </hint>
    </hints>
   </connection>
@@ -986,8 +1002,8 @@
      <y>105</y>
     </hint>
     <hint type="destinationlabel">
-     <x>417</x>
-     <y>401</y>
+     <x>583</x>
+     <y>588</y>
     </hint>
    </hints>
   </connection>
@@ -1002,8 +1018,8 @@
      <y>159</y>
     </hint>
     <hint type="destinationlabel">
-     <x>417</x>
-     <y>394</y>
+     <x>583</x>
+     <y>588</y>
     </hint>
    </hints>
   </connection>
@@ -1018,8 +1034,8 @@
      <y>200</y>
     </hint>
     <hint type="destinationlabel">
-     <x>417</x>
-     <y>392</y>
+     <x>583</x>
+     <y>588</y>
     </hint>
    </hints>
   </connection>
@@ -1030,12 +1046,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>417</x>
-     <y>235</y>
+     <x>583</x>
+     <y>258</y>
     </hint>
     <hint type="destinationlabel">
-     <x>417</x>
-     <y>398</y>
+     <x>583</x>
+     <y>588</y>
     </hint>
    </hints>
   </connection>
@@ -1050,8 +1066,8 @@
      <y>295</y>
     </hint>
     <hint type="destinationlabel">
-     <x>417</x>
-     <y>390</y>
+     <x>583</x>
+     <y>588</y>
     </hint>
    </hints>
   </connection>
@@ -1066,8 +1082,8 @@
      <y>334</y>
     </hint>
     <hint type="destinationlabel">
-     <x>417</x>
-     <y>390</y>
+     <x>583</x>
+     <y>588</y>
     </hint>
    </hints>
   </connection>

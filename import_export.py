@@ -27,7 +27,7 @@ def export_db(path):
     exp_condensed.append(col_keys)
 
     # now, grab everything from each table and store it in a list of lists
-    inv_rows = db_export.db_fetch('SELECT * FROM userinventory ORDER BY wine_id', rows='all')
+    inv_rows = db_export.db_fetch('SELECT * FROM userinventory WHERE date_out IS NULL ORDER BY wine_id', rows='all')
 
 
     # Add everything to the excel file sequentially

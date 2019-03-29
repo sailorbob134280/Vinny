@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'D:\Documents\GitHub\Wine-Inventory\interface.ui',
 # licensing of 'D:\Documents\GitHub\Wine-Inventory\interface.ui' applies.
 #
-# Created: Thu Mar 28 14:09:27 2019
+# Created: Fri Mar 29 15:00:29 2019
 #      by: pyside2-uic  running on PySide2 5.12.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -386,6 +386,9 @@ class Ui_Vinny(object):
         self.menuEdit = QtWidgets.QMenu(self.menubar)
         self.menuEdit.setObjectName("menuEdit")
         self.menuDelete = QtWidgets.QMenu(self.menuEdit)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/Places/places/gnome-stock-trash.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.menuDelete.setIcon(icon5)
         self.menuDelete.setObjectName("menuDelete")
         Vinny.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(Vinny)
@@ -395,16 +398,19 @@ class Ui_Vinny(object):
         self.actionSettings.setShortcutContext(QtCore.Qt.WidgetWithChildrenShortcut)
         self.actionSettings.setObjectName("actionSettings")
         self.actionImport = QtWidgets.QAction(Vinny)
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/Actions/actions/document-save-as.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionImport.setIcon(icon5)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(":/Actions/actions/document-save-as.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionImport.setIcon(icon6)
         self.actionImport.setObjectName("actionImport")
         self.actionExport = QtWidgets.QAction(Vinny)
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(":/Mimetypes/mimetypes/x-office-spreadsheet.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionExport.setIcon(icon6)
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(":/Mimetypes/mimetypes/x-office-spreadsheet.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionExport.setIcon(icon7)
         self.actionExport.setObjectName("actionExport")
         self.actionPreferences = QtWidgets.QAction(Vinny)
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap(":/Catagories/categories/applications-system.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionPreferences.setIcon(icon8)
         self.actionPreferences.setObjectName("actionPreferences")
         self.actionDelete_Wine = QtWidgets.QAction(Vinny)
         self.actionDelete_Wine.setObjectName("actionDelete_Wine")
@@ -413,8 +419,12 @@ class Ui_Vinny(object):
         self.actionBottle = QtWidgets.QAction(Vinny)
         self.actionBottle.setObjectName("actionBottle")
         self.actionGenerate_Barcode = QtWidgets.QAction(Vinny)
+        self.actionGenerate_Barcode.setIcon(icon4)
         self.actionGenerate_Barcode.setObjectName("actionGenerate_Barcode")
         self.actionBackup_Database = QtWidgets.QAction(Vinny)
+        icon9 = QtGui.QIcon()
+        icon9.addPixmap(QtGui.QPixmap(":/Places/places/gnome-mime-x-directory-smb-workgroup.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionBackup_Database.setIcon(icon9)
         self.actionBackup_Database.setObjectName("actionBackup_Database")
         self.menuFile.addAction(self.actionImport)
         self.menuFile.addAction(self.actionExport)
