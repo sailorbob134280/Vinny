@@ -220,32 +220,17 @@ class Bottle(Wine):
     def delete_wine(self):
         # Deletes a wine from the database. Dangerous command. Use with care.
         # Requires an explicit wine_id input to function. 
-        if 'wine_id' not in self.wine_info or self.wine_info['wine_id'] == None:
-            raise Exception('Must select a wine to delete!')
-        else:
-            print('''WARNING: You are about to delete this wine. This will also remove all 
-            references of it in your cellar. You cannot undo this.''')
-            answer = input('Continue? (y/n): ')
-            if answer.lower() == 'y':
-                drop_row(self.wine_info['wine_id'], table='winedata')
-                drop_row(self.wine_info['wine_id'])
-            else:
-                print('Action canceled')
+        drop_row(self.wine_info['wine_id'], table='winedata')
+        drop_row(self.wine_info['wine_id'])
+
 
     def delete_bottle(self):
         # Deletes a bottle from the db. Less dangerous than deleting wines, 
         # but still meant to be handled with care. Uses wine_id and other data
         # to get row id, then uses that to delete the entry. 
-        # if 'wine_id' not in self.bottle_info or self.bottle_info['wine_id'] == None:
-        #     raise Exception('Must select a bottle to delete!')
-        # else:
-        #     print('''WARNING: You are about to delete this bottle. You cannot undo this.''')
-        #     answer = input('Continue? (y/n): ')
-        #     if answer.lower() == 'y':
         row_id = get_rowid(self.bottle_info)
         drop_row(self.wine_info['wine_id'], rowid=row_id)
-            # else:
-            #     print('Action canceled')
+
 
     def clear_bottle(self):
         self.bottle_info = {}

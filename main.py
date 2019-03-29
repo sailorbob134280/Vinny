@@ -468,10 +468,27 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                 self.bottle.delete_bottle()
             else:
                 return
+            
+            self.inv_table_pop()
 
     @QtCore.Slot()
     def delete_wine(self):
-        self.bottle.delete_wine()
+        # Deletes wine from the database entirely. This is permenant and 
+        # dangerous, so it uses a message box to confirm.
+        if 'wine_id' in self.bottle.wine_info and self.bottle.wine_info['wine_id'] != None:
+            msg_box = QMessageBox()
+            msg_box.setText("WARNING: You are about to delete this wine from the database, along with all bottles of it. You cannot undo this. Continue?")
+            msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+            msg_box.setDefaultButton(QMessageBox.Cancel)
+            msg_box.setIcon(QMessageBox.Warning)
+            ret = msg_box.exec_()
+        
+            if ret == QMessageBox.Ok:
+                self.bottle.delete_wine()
+            else:
+                return
+            
+            self.inv_table_pop()
 
     # @QtCore.Slot()
     # def generate_barcode(self):
