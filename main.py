@@ -434,17 +434,20 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                 if bottle_info[term] == '':
                     bottle_info[term] = None
 
+            self.bottle.clear_bottle()
             if self.AddBottleSelLocation.isChecked() == True:
                 bottle_info["location"] = self.AddBottleLocation.text()
-                new_bottle = Bottle(wine_info=wine_info, bottle_info=bottle_info)
-                new_bottle.add_new()
+                self.bottle.wine_info = wine_info
+                self.bottle.bottle_info=bottle_info
+                self.bottle.add_new()
             else:
                 for i in range(int(self.AddBottleQty.text())):
                     next_location, ok_pressed = QInputDialog.getText(self, "Bottle {0}".format(i+1), "Enter location for Bottle {0}:".format(i+1), QLineEdit.Normal, "")
                     if ok_pressed == True:
                         bottle_info['location'] = next_location
-                        new_bottle = Bottle(wine_info=wine_info, bottle_info=bottle_info)
-                        new_bottle.add_new()
+                        self.bottle.wine_info = wine_info
+                        self.bottle.bottle_info=bottle_info
+                        self.bottle.add_new()
 
         self.quick_search()
     
@@ -503,7 +506,12 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
     @QtCore.Slot()
     def import_from_excel(self):
-        pass
+        msg_box = QMessageBox()
+        msg_box.setText("WARNING: You are about to delete this bottle from the database. You cannot undo this. Continue?")
+        msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        msg_box.setDefaultButton(QMessageBox.Cancel)
+        msg_box.setIcon(QMessageBox.Warning)
+        ret = msg_box.exec_()
 
     @QtCore.Slot()
     def generate_barcode(self):

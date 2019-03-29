@@ -179,8 +179,7 @@ class Bottle(Wine):
                 raise Exception('Multiple wine entries found. Please be more specific.')
             elif bottle_id == None:
                 bottle_id = self.add_wine_to_db()
-            # else:
-            #     self.bottle_info['wine_id'] = bottle_id
+                
             self.bottle_info['wine_id'] = bottle_id
         self.check_in()
         
