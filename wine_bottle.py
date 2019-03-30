@@ -70,7 +70,6 @@ class Wine:
             return self.wine_info['wine_id']
         else:
             result = self.search_wine()
-            print(result)
             if isinstance(result, list) and result != []:
                 self.wine_info['wine_id'] = result[0][int(0)]
                 return self.wine_info['wine_id']
@@ -173,7 +172,7 @@ class Bottle(Wine):
         # This method adds a wine to the inventory by first checking if the wine exists, 
         # adding it if it does not, acquiring the wine_id, then checking in a bottle of 
         # the new wine. Meant to be called from the advanced search screen.
-        if 'wine_id' not in self.bottle_info or self.bottle_info['wine_id'] is None:
+        if 'wine_id' not in self.bottle_info or self.bottle_info['wine_id'] == None:
             bottle_id = self.get_wine_id()
             if isinstance(bottle_id, list):
                 raise Exception('Multiple wine entries found. Please be more specific.')

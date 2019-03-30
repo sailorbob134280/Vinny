@@ -507,11 +507,25 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     @QtCore.Slot()
     def import_from_excel(self):
         msg_box = QMessageBox()
-        msg_box.setText("WARNING: You are about to delete this bottle from the database. You cannot undo this. Continue?")
-        msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        msg_box.setText("Use one of the available templates to import your collection from an Excel spreadsheet.")
+        msg_box.setInformativeText("Note: do not change the filename of the template.")
+        msg_box.setStandardButtons(QMessageBox.Open | QMessageBox.Cancel)
+        expanded = msg_box.addButton('Create Expanded...', QMessageBox.ApplyRole)
+        condensed = msg_box.addButton('Create Condensed...', QMessageBox.ApplyRole)
         msg_box.setDefaultButton(QMessageBox.Cancel)
-        msg_box.setIcon(QMessageBox.Warning)
         ret = msg_box.exec_()
+
+        if msg_box.clickedButton() == expanded:
+            path = QFileDialog.getExistingDirectory(self, "Select Directory for Template...")
+            path += '/'
+            import_export.generate_sheet(path, expanded=True)
+        elif msg_box.clickedButton() == condensed:
+            path = QFileDialog.getExistingDirectory(self, "Select Directory for Template...")
+            path += '/'
+            import_export.generate_sheet(path, expanded=False)
+        elif ret == QMessageBox.Open:
+            path = QFileDialog.getOpenFileName(self, "Select Filled-Out Template...")
+            import_export.import_db(path[0])
 
     @QtCore.Slot()
     def generate_barcode(self):

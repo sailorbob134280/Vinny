@@ -105,10 +105,10 @@ def import_db(path):
             input_dict[key] = import_rows[i+1][j].value
 
         for wine_key in wine_keys:
-            bottle.wine_info[wine_key] = input_dict[wine_key] if wine_key in input_dict else None
+            bottle.wine_info[wine_key] = str(input_dict[wine_key]) if wine_key in input_dict and input_dict[wine_key] != None else None
             
         for bottle_key in bottle_keys:
-            bottle.bottle_info[bottle_key] = input_dict[bottle_key] if bottle_key in input_dict else None
+            bottle.bottle_info[bottle_key] = str(input_dict[bottle_key]) if bottle_key in input_dict and input_dict[bottle_key] != None else None
         
         if 'expanded' in path[-23:-5]:
             bottle.add_new()
@@ -152,8 +152,9 @@ def generate_sheet(path, expanded=False):
 
 # Test Code
 if __name__ == "__main__":
-    path = 'template_condensed.xlsx'
+    # path = 'D:/Desktop/template_condensed.xlsx'
     # export_db(path)
-    import_db(path)
+    # import_db(path)
     # generate_sheet(path, expanded=False)
+
 

@@ -36,7 +36,6 @@ def search_db(search_input, table='userinventory', in_cellar=True, sort_by=None)
     if sort_by != None:
         arg += ' ORDER BY ' + sort_by
 
-    print(arg)
     # finally, call the search function from the db_man object
     db_search = DatabaseManager()
     result = db_search.db_fetch(arg, terms, 'all')
