@@ -1,5 +1,7 @@
 import os
+import shutil
 import datetime
+import tempfile
 from db_man import *
 from data_tools import search_db, fetch_db, lookup_db, enter_db, drop_row, update_winedata_row, update_userinv_row, get_rowid
 from barcode import generate
@@ -13,6 +15,11 @@ class Wine:
     def __init__(self, wine_info):
         self.wine_info = wine_info
         self.wine_search_flag = False
+        
+        # Create a temporary directory to hold generated barcodes. This will be removed
+        self.temp_dir = tempfile.mkdtemp()
+        print(self.temp_dir)
+
         # self.wine_id = self.get_wine_id()
         # wine_info = {"wine_id":None,
         #              "upc":'791863140506',
@@ -109,15 +116,12 @@ class Wine:
                     'module_height': 5,
                     'quiet_zone': 0,
                     'text_distance': 3}
-            generate('ITF', tag_num, output=str(self.wine_id), writer_options = options)
+            generate('ITF', tag_num, output=self.temp_dir + '/' + self.wine_id, writer_options = options)
         else:
             raise Exception('Cannot generate barcode because wine has no id')
 
     def __del__(self):
-        if 'wine_id' in self.wine_info:
-            svg_filename = str(self.wine_info['wine_id']) + '.svg'
-            if os.path.exists(svg_filename):
-                os.remove(svg_filename)
+        shutil.rmtree(self.temp_dir)
 
 
 class Bottle(Wine):

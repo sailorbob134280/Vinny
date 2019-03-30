@@ -535,7 +535,22 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
 
     @QtCore.Slot()
     def generate_barcode(self):
-        pass
+        msg_box = QMessageBox()
+        msg_box.setText("Lable has been created. Select one of the options below to continue:")
+        msg_box.setStandardButtons(QMessageBox.Save | QMessageBox.Cancel)
+        pr_button = msg_box.addButton('Print', QMessageBox.ApplyRole)
+        msg_box.setDefaultButton(QMessageBox.Cancel)
+        ret = msg_box.exec_()
+
+        if ret != QMessageBox.Cancel:
+            self.bottle.generate_label()
+            if msg_box.clickedButton() == pr_button:
+                pass
+            elif ret == QMessageBox.Save:
+                path = QFileDialog.getSaveFileName(self, "Save As...", '', 'Picture Files (*.svg)')[0]
+                shutil.copyfile(self.bottle.temp_dir + '/' + self.bottle.wine_id + '.svg', path)
+
+
     
 if __name__ == "__main__":
     import sys
