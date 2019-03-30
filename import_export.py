@@ -151,7 +151,7 @@ def generate_sheet(path, expanded=False):
     temp_wb.save(path)
 
 # Test Code
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # path = 'D:/Desktop/template_condensed.xlsx'
     # export_db(path)
     # import_db(path)
