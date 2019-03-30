@@ -4,6 +4,8 @@ from wine_bottle import *
 from db_man import DatabaseManager
 from main_window import *
 import import_export
+import shutil
+import os
 
 
 class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
@@ -17,6 +19,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.actionExport.triggered.connect(self.export_to_excel)
         self.actionImport.triggered.connect(self.import_from_excel)
         self.actionGenerate_Barcode.triggered.connect(self.generate_barcode)
+        self.actionBackup_Database.triggered.connect(self.backup_database)
         
         self.InventorySearch.clicked.connect(self.quick_search)
         self.InventoryCheckOut.clicked.connect(self.inv_check_out)
@@ -516,16 +519,19 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         ret = msg_box.exec_()
 
         if msg_box.clickedButton() == expanded:
-            path = QFileDialog.getExistingDirectory(self, "Select Directory for Template...")
-            path += '/'
+            path = QFileDialog.getExistingDirectory(self, "Select Directory for Template...") + '/'
             import_export.generate_sheet(path, expanded=True)
         elif msg_box.clickedButton() == condensed:
-            path = QFileDialog.getExistingDirectory(self, "Select Directory for Template...")
-            path += '/'
+            path = QFileDialog.getExistingDirectory(self, "Select Directory for Template...") + '/'
             import_export.generate_sheet(path, expanded=False)
         elif ret == QMessageBox.Open:
             path = QFileDialog.getOpenFileName(self, "Select Filled-Out Template...")
             import_export.import_db(path[0])
+
+    @QtCore.Slot()
+    def backup_database(self):
+        path = QFileDialog.getSaveFileName(self, "Backup...", '', 'Database Files (*.db)')
+        shutil.copyfile(os.getcwd() + '/wineinv_data.db', path[0])
 
     @QtCore.Slot()
     def generate_barcode(self):
