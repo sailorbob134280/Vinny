@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import sys
 from sqlite3 import Error
 
 
@@ -7,6 +8,13 @@ class DatabaseManager:
 
     def __init__(self, db_filename='wineinv_data.db'):
         self.db_filename = db_filename
+
+        try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+            self.current_path = sys._MEIPASS
+        except Exception:
+            self.current_path = os.path.abspath(".")
+
         self.db_path = os.getcwd() + '\\' + db_filename
 
     def verify_db(self):
@@ -16,7 +24,7 @@ class DatabaseManager:
                 conn = sqlite3.connect(self.db_path)
                 cursor = conn.cursor()
 
-                setup_file = open('wineinv_data.sql')
+                setup_file = open(self.current_path + '\\' + 'wineinv_data.sql')
                 setup_script = setup_file.read()
                 setup_file.close()
 
