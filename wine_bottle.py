@@ -133,7 +133,7 @@ class Wine:
 
     def print_label(self):
         # Prints the generated label for the wine as long as it has been generated
-        image = self.temp_dir + '/' + self.wine_id
+        image = self.temp_dir + '/' + self.wine_id + '.png'
         # If the image file doesn't exist, generate it first
         if not os.path.isfile(image):
             self.generate_label()
