@@ -4,7 +4,11 @@ block_cipher = None
 
 
 a = Analysis(['main.py'],
-             pathex=['C:\\Windows\\WinSxS\\x86_microsoft-windows-m..namespace-downlevel_31bf3856ad364e35_10.0.17134.1_none_50c6cb8431e7428f', 'D:\\Documents\\GitHub\\Wine-Inventory'],
+             pathex=['C:\\Windows\\WinSxS\\x86_microsoft-windows-m..namespace-downlevel_31bf3856ad364e35_10.0.17134.1_none_50c6cb8431e7428f', 
+		     'D:\\Documents\\GitHub\\Wine-Inventory', 
+		     'D:\\Documents\\GitHub\\Wine-Inventory\\win_build_dependencies', 
+		     'C:\\Program Files (x86)\\Python37-32\\python-virtual-environments\\wineinv\\Lib\\site-packages', 
+		     'C:\Program Files (x86)\Python37-32\Lib\site-packages'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -23,10 +27,10 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='main',
+          name='Vinny',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
           runtime_tmpdir=None,
-          console=False )
+          console=True )
