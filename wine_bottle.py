@@ -2,6 +2,10 @@ import os
 import shutil
 import datetime
 import tempfile
+import brother_ql
+import brother_ql.backends
+import brother_ql.backends.helpers
+import brother_ql.backends.pyusb
 from db_man import *
 from data_tools import search_db, fetch_db, lookup_db, enter_db, drop_row, update_winedata_row, update_userinv_row, get_rowid
 from barcode import generate
@@ -119,14 +123,25 @@ class Wine:
                     'quiet_zone': 0, 
                     'font_size': 14,
                     'text_distance': 0.25}
-            # output = self.temp_dir + '/' + self.wine_id
-            output = 'D:\Documents\GitHub\Wine-Inventory\\' + self.wine_id
+            output = self.temp_dir + '/' + self.wine_id
             writer = ImageWriter()
             writer.dpi = 600
             generate('ITF', tag_num, writer=writer , output=output, writer_options = options)
             return output
         else:
             raise Exception('Cannot generate barcode because wine has no id')
+
+    def print_label(self):
+        # Prints the generated label for the wine as long as it has been generated
+        image = self.temp_dir + '/' + self.wine_id
+        # If the image file doesn't exist, generate it first
+        if not os.path.isfile(image):
+            self.generate_label()
+        ql_printer = brother_ql.BrotherQLRaster(model='QL-500')
+        ql_printer.cut_at_end = False
+        brother_ql.create_label(ql_printer, image, label_size='12', cut=False, dither=True, compress=False, red=False, rotate=90)
+        printer = brother_ql.backends.pyusb.list_available_devices()[0]['identifier']
+        brother_ql.backends.helpers.send(ql_printer.data, printer_identifier=printer, backend_identifier='pyusb')
 
     def __del__(self):
         shutil.rmtree(self.temp_dir)
