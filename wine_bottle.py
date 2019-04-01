@@ -8,7 +8,7 @@ import brother_ql.backends.helpers
 import brother_ql.backends.pyusb
 from db_man import *
 from data_tools import search_db, fetch_db, lookup_db, enter_db, drop_row, update_winedata_row, update_userinv_row, get_rowid
-from barcode import generate
+from barcode import *
 from barcode.writer import ImageWriter
 
 
@@ -267,7 +267,7 @@ class Bottle(Wine):
 ############################ Test Code #############################
 ####################################################################
 
-wine_id = '000000000006'
+# wine_id = '000000000006'
 # wine_id = None
 
 # wine_dict = {"wine_id":wine_id,
@@ -281,8 +281,8 @@ wine_id = '000000000006'
 #              "msrp":'$40',
 #              "value":'$25',
 #              "comments":'Young vines'}
-wine_dict = {"wine_id":wine_id}
-bottle_dict = {}
+# wine_dict = {"wine_id":wine_id}
+# bottle_dict = {}
 
 # wine_dict = {"wine_id":'000000000003',
 #              "upc":None,
@@ -307,8 +307,8 @@ bottle_dict = {}
 #                "date_in":None,
 #                "date_out":None}
 
-new_bottle = Bottle(wine_dict, bottle_dict)
-new_bottle.generate_label()
+# new_bottle = Bottle(wine_dict, bottle_dict)
+# new_bottle.generate_label()
 # new_bottle.check_in()
 # new_bottle.add_wine_to_db()
 # new_bottle.add_new()
