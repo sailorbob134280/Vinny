@@ -543,14 +543,13 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         ret = msg_box.exec_()
 
         if ret != QMessageBox.Cancel:
-            self.bottle.generate_label()
+            barcode_img = self.bottle.generate_label()
             if msg_box.clickedButton() == pr_button:
                 pass
             elif ret == QMessageBox.Save:
-                path = QFileDialog.getSaveFileName(self, "Save As...", '', 'Picture Files (*.svg)')[0]
-                shutil.copyfile(self.bottle.temp_dir + '/' + self.bottle.wine_id + '.svg', path)
-
-
+                path = QFileDialog.getSaveFileName(self, "Save As...", '', 'Picture Files (*.png)')[0]
+                shutil.copyfile(barcode_img + '.png', path)
+                
     
 if __name__ == "__main__":
     import sys

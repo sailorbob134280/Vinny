@@ -5,6 +5,7 @@ import tempfile
 from db_man import *
 from data_tools import search_db, fetch_db, lookup_db, enter_db, drop_row, update_winedata_row, update_userinv_row, get_rowid
 from barcode import generate
+from barcode.writer import ImageWriter
 
 
 class Wine:
@@ -18,7 +19,6 @@ class Wine:
         
         # Create a temporary directory to hold generated barcodes. This will be removed
         self.temp_dir = tempfile.mkdtemp()
-        print(self.temp_dir)
 
         # self.wine_id = self.get_wine_id()
         # wine_info = {"wine_id":None,
@@ -108,15 +108,23 @@ class Wine:
     def generate_label(self):
         # Function to generate a barcode for the wine based off the unique wine
         # id. First, it grabs the wine_id however it needs to. Then, it generates
-        # a unique ITF barcode and stores it as an svg in the cwd. 
+        # a unique ITF barcode and stores it as an svg in the temp file and returns
+        # the file path
         self.wine_id = self.get_wine_id()
         if self.wine_id != None:
             tag_num = (12 - len(str(self.wine_id))) * '0' + str(self.wine_id)
-            options = {'dpi': 200,
-                    'module_height': 5,
-                    'quiet_zone': 0,
-                    'text_distance': 3}
-            generate('ITF', tag_num, output=self.temp_dir + '/' + self.wine_id, writer_options = options)
+            options = {'dpi': 162,
+                    'module_width': 0.25,
+                    'module_height': 12,
+                    'quiet_zone': 0, 
+                    'font_size': 14,
+                    'text_distance': 0.25}
+            # output = self.temp_dir + '/' + self.wine_id
+            output = 'D:\Documents\GitHub\Wine-Inventory\\' + self.wine_id
+            writer = ImageWriter()
+            writer.dpi = 600
+            generate('ITF', tag_num, writer=writer , output=output, writer_options = options)
+            return output
         else:
             raise Exception('Cannot generate barcode because wine has no id')
 
@@ -244,7 +252,7 @@ class Bottle(Wine):
 ############################ Test Code #############################
 ####################################################################
 
-# wine_id = '000000000006'
+wine_id = '000000000006'
 # wine_id = None
 
 # wine_dict = {"wine_id":wine_id,
@@ -258,7 +266,8 @@ class Bottle(Wine):
 #              "msrp":'$40',
 #              "value":'$25',
 #              "comments":'Young vines'}
-# wine_dict = {"wine_id":wine_id}
+wine_dict = {"wine_id":wine_id}
+bottle_dict = {}
 
 # wine_dict = {"wine_id":'000000000003',
 #              "upc":None,
@@ -283,7 +292,8 @@ class Bottle(Wine):
 #                "date_in":None,
 #                "date_out":None}
 
-# new_bottle = Bottle(wine_dict, bottle_dict)
+new_bottle = Bottle(wine_dict, bottle_dict)
+new_bottle.generate_label()
 # new_bottle.check_in()
 # new_bottle.add_wine_to_db()
 # new_bottle.add_new()
