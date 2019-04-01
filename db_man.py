@@ -9,6 +9,29 @@ class DatabaseManager:
         self.db_filename = db_filename
         self.db_path = os.getcwd() + '\\' + db_filename
 
+    def verify_db(self):
+        if not os.path.isfile(self.db_path):
+            conn = None
+            try:
+                conn = sqlite3.connect(self.db_path)
+                cursor = conn.cursor()
+
+                setup_file = open('wineinv_data.sql')
+                setup_script = setup_file.read()
+                setup_file.close()
+
+                cursor.executescript(setup_script)
+
+                conn.commit()
+
+            except Error as e:
+                print(e)
+                conn.rollback()
+
+            finally:
+                if conn != None:
+                    conn.close()
+
     def get_version(self):
         conn = None
         try:
@@ -68,9 +91,11 @@ class DatabaseManager:
             conn = sqlite3.connect(self.db_path)
             conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM ' + table)
-            row = cursor.fetchone()
-            return row.keys()
+            arg = 'PRAGMA table_info(' + table + ')'
+            cursor.execute(arg)
+            metadata = cursor.fetchall()
+            names = [i[1] for i in metadata]         
+            return names
         except Error as e:
             print(e)
             print('Transaction failed due to an error')

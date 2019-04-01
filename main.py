@@ -54,7 +54,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.AddBottleRating.textChanged.connect(self.ab_modified)
 
         # Get the names of the collumns at the beginning so we don't have to do that a million times
+        # Start by verifying that the database actually exists
         self.db_manager = DatabaseManager()
+        self.db_manager.verify_db()
         self.wine_col_names = self.db_manager.db_getcolnames('winedata')
         self.inv_col_names = self.db_manager.db_getcolnames('userinventory')
         self.combined_col_names = self.wine_col_names.copy()
