@@ -20,6 +20,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.actionImport.triggered.connect(self.import_from_excel)
         self.actionGenerate_Barcode.triggered.connect(self.generate_barcode)
         self.actionBackup_Database.triggered.connect(self.backup_database)
+        self.actionPreferences.triggered.connect(self.edit_preferences)
         
         self.InventorySearch.clicked.connect(self.quick_search)
         self.InventoryCheckOut.clicked.connect(self.inv_check_out)
@@ -549,7 +550,13 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             elif ret == QMessageBox.Save:
                 path = QFileDialog.getSaveFileName(self, "Save As...", '', 'Picture Files (*.png)')[0]
                 shutil.copyfile(barcode_img + '.png', path)
-                
+
+    @QtCore.Slot()
+    def edit_preferences(self):
+        msg_box = QMessageBox()
+        msg_box.setText('Coming soon!')
+        msg_box.setStandardButtons(QMessageBox.Ok)
+        msg_box.exec_()                
     
 if __name__ == "__main__":
     import sys
