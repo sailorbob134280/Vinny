@@ -1,4 +1,4 @@
-import PySide2
+import PySide2 
 from PySide2.QtWidgets import QInputDialog, QLineEdit, QFileDialog, QMessageBox, QFileDialog
 from wine_bottle import *
 from db_man import DatabaseManager
