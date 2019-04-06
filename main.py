@@ -206,6 +206,11 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         # Set modified flag to false so it doesn't make duplicates
         self.ab_modified_flag = False
 
+    def get_other_size(self):
+        new_size, ok_pressed = QInputDialog.getText(self, 'Other Size', 'Enter Custom Size:', QLineEdit.Normal, '')
+        if ok_pressed:
+            return new_size
+
     @QtCore.Slot()
     def hist_get_bottle(self):
         # Activated when a table item is selected. Grabs all info about a specific bottle and stores
@@ -275,6 +280,8 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             new_size, ok_pressed = QInputDialog.getItem(self, 'New Size', 'Select New Bottle Size:', bottle_sizes, 2, False)
             if ok_pressed == True:
                 pass
+            if new_size == 'Other...':
+                new_size = self.get_other_size()
         self.bottle.bottle_info['bottle_size'] = new_size
         if not new_loc:
             new_loc, ok_pressed = QInputDialog.getText(self, 'New Location', 'Enter new location:', QLineEdit.Normal, '')
@@ -410,8 +417,10 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     def ab_add_to_cellar(self):
         # Adds a new bottle to the cellar. If the wine_id exists, it's a copy
         # and can be added as such. Otherwise a new bottle is added. 
+        new_size = self.AddBottleBottleSize.currentText()
+        if new_size == 'Other...':
+            new_size = self.get_other_size()
         if 'wine_id' in self.bottle.bottle_info or 'wine_id' in self.bottle.wine_info:
-            new_size = self.AddBottleBottleSize.currentText()
             if self.AddBottleSelLocation.isChecked():
                 new_loc = self.AddBottleLocation.text()
                 self.inv_add_copy(new_size=new_size, new_loc=new_loc)
@@ -431,8 +440,13 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                         "value":self.AddBottleCurrentValue.text(),
                         "comments":self.AddBottleComments.toPlainText()}
 
-            bottle_info = {"bottle_size":self.AddBottleBottleSize.currentText()}
+            bottle_info = {"bottle_size":new_size}
             
+            if wine_info['wtype'] == 'Other...':
+                new_type, ok_pressed = QInputDialog.getText(self, 'Other Type', 'Enter Custom Type:', QLineEdit.Normal, '')
+                if ok_pressed:
+                    wine_info['wtype'] = new_type
+
             for term in wine_info:
                 if wine_info[term] == '':
                     wine_info[term] = None
@@ -559,7 +573,8 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         msg_box.setText('Coming soon!')
         msg_box.setStandardButtons(QMessageBox.Ok)
         msg_box.exec_()                
-    
+
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
