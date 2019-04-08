@@ -15,7 +15,7 @@ class DatabaseManager:
         except Exception:
             self.current_path = os.path.abspath(".")
 
-        self.db_path = os.getcwd() + '\\' + db_filename
+        self.db_path = os.getcwd() + '/' + db_filename
 
     def verify_db(self):
         if not os.path.isfile(self.db_path):
@@ -24,7 +24,7 @@ class DatabaseManager:
                 conn = sqlite3.connect(self.db_path)
                 cursor = conn.cursor()
 
-                setup_file = open(self.current_path + '\\' + 'wineinv_data.sql')
+                setup_file = open(self.current_path + '/' + 'wineinv_data.sql')
                 setup_script = setup_file.read()
                 setup_file.close()
 
