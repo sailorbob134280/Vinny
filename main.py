@@ -371,6 +371,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     @QtCore.Slot()
     def ab_modified(self):
         self.ab_modified_flag = True
+        self.bottle.clear_bottle()
 
     @QtCore.Slot()
     def ab_update_wine(self):
