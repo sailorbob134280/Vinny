@@ -460,7 +460,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                 bottle_info["location"] = self.AddBottleLocation.text()
                 self.bottle.wine_info = wine_info
                 self.bottle.bottle_info=bottle_info
-                self.bottle.add_new()
+                wine_id = self.bottle.add_new()
             else:
                 for i in range(int(self.AddBottleQty.text())):
                     next_location, ok_pressed = QInputDialog.getText(self, "Bottle {0}".format(i+1), "Enter location for Bottle {0}:".format(i+1), QLineEdit.Normal, "")
@@ -468,9 +468,10 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                         bottle_info['location'] = next_location
                         self.bottle.wine_info = wine_info
                         self.bottle.bottle_info=bottle_info
-                        self.bottle.add_new()
-
+                        wine_id = self.bottle.add_new()
+        self.bottle.clear_bottle()
         self.quick_search()
+        self.bottle.wine_info['wine_id'] = wine_id
     
     @QtCore.Slot()
     def ab_upc_fill(self):

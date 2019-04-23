@@ -121,7 +121,7 @@ class Wine:
                     'quiet_zone': 0, 
                     'font_size': 14,
                     'text_distance': 0.25}
-            output = self.temp_dir + '/' + self.wine_id
+            output = self.temp_dir + '/' + str(self.wine_id)
             writer = ImageWriter()
             writer.dpi = 600
             generate('ITF', tag_num, writer=writer , output=output, writer_options = options)
@@ -206,6 +206,7 @@ class Bottle(Wine):
                 
             self.bottle_info['wine_id'] = bottle_id
         self.check_in()
+        return bottle_id
         
     def check_in(self, new_location=None, new_bottle_size=None):
         # This method adds a wine to the inventory based on a selected wine_id. Since it will
