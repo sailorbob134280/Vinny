@@ -137,16 +137,14 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             # If there's a search term, it'll just use the integrated method in wine-bottle
             if wine_id:
                 bottles = lookup_db(wine_id, table='both')
-                print(bottles)
             else:
                 self.bottle.bottle_info['location'] = location
                 bottles = self.bottle.search_bottle()
-                print(bottles)
+
             inv_rows = []
             if bottles:
                 for i, bottle in enumerate(bottles):
                     inv_rows.append(list(self.bottle.wine_info.values()))
-                    # inv_rows[i].extend(bottle[1:])
                     inv_rows[i].extend(bottle)
 
         # Craft the SQL search query. I suspect having SQL doing the sorting is a tad faster.

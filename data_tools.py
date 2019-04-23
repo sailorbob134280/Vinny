@@ -60,7 +60,6 @@ def fetch_db(fetch_input, table='userinventory', in_cellar=True, sort_by=None):
         arg += ' AND date_out IS NULL'
     if sort_by != None:
         arg += ' ORDER BY ' + sort_by
-    print(arg)
     fetch = DatabaseManager()
     return fetch.db_fetch(arg, terms, 'all')
 
