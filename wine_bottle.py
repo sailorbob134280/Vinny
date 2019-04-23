@@ -142,6 +142,7 @@ class Wine:
         brother_ql.backends.helpers.send(ql_printer.data, printer_identifier=printer, backend_identifier='pyusb')
 
     def __del__(self):
+        # Clean up after ourselves by deleting the temporary directory for barcodes
         shutil.rmtree(self.temp_dir)
 
 
@@ -167,8 +168,6 @@ class Bottle(Wine):
         # takes the path of least resistance to find the bottle or bottles we're looking for
         if 'wine_id' in self.bottle_info and self.bottle_info['wine_id'] is not None:
             result = fetch_db({'wine_id':self.bottle_info['wine_id']}, in_cellar=in_cellar, sort_by=sort_by)
-        elif 'location' in self.bottle_info and self.bottle_info['location'] is not None:
-            result = fetch_db({'location':self.bottle_info['location']}, in_cellar=in_cellar, sort_by=sort_by)
         else:
             result = search_db(self.bottle_info, in_cellar=in_cellar, sort_by=sort_by)
         if result is not None:
