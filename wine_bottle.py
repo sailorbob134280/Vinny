@@ -40,10 +40,8 @@ class Wine:
         # This function is meant to take a partial wine dataset
         # and turn it into a full dataset (or as full as it's 
         # going to get). It simply updates the bottle's attributes.
-        # Ideally, this will be done with a upc/wine_id lookup:
-        if 'upc' in self.wine_info and self.wine_info['upc'] != None:
-            result = lookup_db(self.wine_info['upc'], 'winedata')
-        elif 'wine_id' in self.wine_info and self.wine_info['wine_id'] != None:
+        # Ideally, this will be done with a wine_id lookup:
+        if 'wine_id' in self.wine_info and self.wine_info['wine_id'] != None:
             result = lookup_db(self.wine_info['wine_id'], 'winedata')
         # If not, we'll try to find it with the search function. This may
         # return multiple entries, so we have to return them all (long-ass list)
