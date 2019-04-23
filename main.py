@@ -79,6 +79,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         # Populate the inventory table so it's ready to go at the start
         self.inv_table_pop(None, None)
 
+        # Disable the 'Generate Barcode' button until it's ready to be used
+        self.AddBottleGenerateBarcode.setEnabled(False)
+
     def translate_col_names(self, input_list):
         # Translates code names to pretty names and back. It does this
         # using a dict with both directions in it, since all entries are
@@ -372,6 +375,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     def ab_modified(self):
         self.ab_modified_flag = True
         self.bottle.clear_bottle()
+        self.AddBottleGenerateBarcode.setEnabled(False)
 
     @QtCore.Slot()
     def ab_update_wine(self):
@@ -411,6 +415,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.AddBottleQty.clear()
 
         self.bottle.clear_bottle()
+
+        # Disable the barcode button
+        self.AddBottleGenerateBarcode.setEnabled(False)
 
         self.ab_deep_search()
     
@@ -472,6 +479,9 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         self.bottle.clear_bottle()
         self.quick_search()
         self.bottle.wine_info['wine_id'] = wine_id
+
+        # Enable the barcode button now that there's a wine id
+        self.AddBottleGenerateBarcode.setEnabled(True)
     
     @QtCore.Slot()
     def ab_upc_fill(self):
