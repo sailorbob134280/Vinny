@@ -156,6 +156,7 @@ class Bottle(Wine):
     def search_bottle(self, in_cellar=True, sort_by=None):
         # Starts by searching for a matching wine. This will add the wine_id to the 
         # bottle info as well. 
+        print(self.bottle_info)
         wine_res_list = None
         if self.wine_search_flag is False and self.wine_info != None:
             wine_res_list = self.search_wine()

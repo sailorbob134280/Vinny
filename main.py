@@ -133,23 +133,13 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         sort_term = self.translate_col_names([self.InventorySortBy.currentText()])[0]
         
         if wine_id or location:
-            # If there's a search term, it'll just use the integrated method in wine-bottle
-            # wine_info = {}
-            # bottle_info = {}
-            # if wine_id:
-            #     wine_info['wine_id'] = wine_id
-            #     bottle_info['wine_id'] = wine_id
-            if location:
-                # bottle_info['location'] = location
-                self.bottle.bottle_info['location'] = location
-
             self.bottle.clear_bottle()
-            # self.bottle.wine_info = wine_info
-            # self.bottle.bottle_info = bottle_info
+            # If there's a search term, it'll just use the integrated method in wine-bottle
             if wine_id:
                 bottles = lookup_db(wine_id, table='both')
                 print(bottles)
             else:
+                self.bottle.bottle_info['location'] = location
                 bottles = self.bottle.search_bottle()
                 print(bottles)
             inv_rows = []
