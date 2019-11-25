@@ -73,14 +73,17 @@ def lookup_db(lookup_number, table='userinventory', in_cellar=True, sort_by=None
         arg = 'SELECT * FROM winedata JOIN userinventory USING (wine_id) WHERE '
     else:
         arg = 'SELECT * FROM ' + table + ' WHERE '
-    arg += 'wine_id=?'
+    arg += '(wine_id=?'
     if table != 'userinventory':
-        arg += ' OR upc=?'
+        arg += ' OR upc=?)'
         placeholders.append(lookup_number)
+    else: 
+        arg += ')'
     if in_cellar == True and table != 'winedata':
         arg += ' AND date_out IS NULL'
     if sort_by != None:
         arg += ' ORDER BY ' + sort_by
+    print(arg)
     return lookup.db_fetch(arg, tuple(placeholders), 'all')
 
 def enter_db(entry_input, table='userinventory',ret_id=False):

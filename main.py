@@ -140,7 +140,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             else:
                 self.bottle.bottle_info['location'] = location
                 bottles = self.bottle.search_bottle()
-
+            print(bottles)
             inv_rows = []
             if bottles:
                 for i, bottle in enumerate(bottles):
