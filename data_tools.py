@@ -83,7 +83,6 @@ def lookup_db(lookup_number, table='userinventory', in_cellar=True, sort_by=None
         arg += ' AND date_out IS NULL'
     if sort_by != None:
         arg += ' ORDER BY ' + sort_by
-    print(arg)
     return lookup.db_fetch(arg, tuple(placeholders), 'all')
 
 def enter_db(entry_input, table='userinventory',ret_id=False):
