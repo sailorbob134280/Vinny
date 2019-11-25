@@ -136,16 +136,14 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             self.bottle.clear_bottle()
             # If there's a search term, it'll just use the integrated method in wine-bottle
             if wine_id:
-                bottles = lookup_db(wine_id, table='both')
+                inv_rows = lookup_db(wine_id, table='both')
             else:
                 self.bottle.bottle_info['location'] = location
                 bottles = self.bottle.search_bottle()
-            print(bottles)
-            inv_rows = []
-            if bottles:
+                inv_rows = []
                 for i, bottle in enumerate(bottles):
                     inv_rows.append(list(self.bottle.wine_info.values()))
-                    inv_rows[i].extend(bottle)
+                    inv_rows[i].extend(bottle[1:])
 
         # Craft the SQL search query. I suspect having SQL doing the sorting is a tad faster.
         # If no terms specified, return all entries
@@ -470,10 +468,11 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                         bottle_info['location'] = next_location
                         self.bottle.wine_info = wine_info
                         self.bottle.bottle_info=bottle_info
-                        wine_id = self.bottle.add_new()
+                        # wine_id = self.bottle.add_new()
+                        self.bottle.add_new()
         self.bottle.clear_bottle()
         self.quick_search()
-        self.bottle.wine_info['wine_id'] = wine_id
+        # self.bottle.wine_info['wine_id'] = wine_id
 
         # Enable the barcode button now that there's a wine id
         self.AddBottleGenerateBarcode.setEnabled(True)
