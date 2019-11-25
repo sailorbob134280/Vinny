@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:\Documents\GitHub\Wine-Inventory\interface.ui',
-# licensing of 'D:\Documents\GitHub\Wine-Inventory\interface.ui' applies.
+# Form implementation generated from reading ui file 'interface.ui',
+# licensing of 'interface.ui' applies.
 #
-# Created: Fri Mar 29 15:00:29 2019
+# Created: Mon Nov 25 15:45:58 2019
 #      by: pyside2-uic  running on PySide2 5.12.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -64,6 +64,8 @@ class Ui_Vinny(object):
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.InventorySortBy = QtWidgets.QComboBox(self.groupBox)
         self.InventorySortBy.setObjectName("InventorySortBy")
+        self.InventorySortBy.addItem("")
+        self.InventorySortBy.addItem("")
         self.InventorySortBy.addItem("")
         self.InventorySortBy.addItem("")
         self.InventorySortBy.addItem("")
@@ -502,15 +504,17 @@ class Ui_Vinny(object):
         self.groupBox.setTitle(QtWidgets.QApplication.translate("Vinny", "Sort By:", None, -1))
         self.InventorySortBy.setCurrentText(QtWidgets.QApplication.translate("Vinny", "Winery", None, -1))
         self.InventorySortBy.setItemText(0, QtWidgets.QApplication.translate("Vinny", "Winery", None, -1))
-        self.InventorySortBy.setItemText(1, QtWidgets.QApplication.translate("Vinny", "Region", None, -1))
-        self.InventorySortBy.setItemText(2, QtWidgets.QApplication.translate("Vinny", "Blend Name", None, -1))
-        self.InventorySortBy.setItemText(3, QtWidgets.QApplication.translate("Vinny", "Varietal", None, -1))
-        self.InventorySortBy.setItemText(4, QtWidgets.QApplication.translate("Vinny", "Vintage", None, -1))
-        self.InventorySortBy.setItemText(5, QtWidgets.QApplication.translate("Vinny", "Type", None, -1))
-        self.InventorySortBy.setItemText(6, QtWidgets.QApplication.translate("Vinny", "MSRP", None, -1))
-        self.InventorySortBy.setItemText(7, QtWidgets.QApplication.translate("Vinny", "Value", None, -1))
-        self.InventorySortBy.setItemText(8, QtWidgets.QApplication.translate("Vinny", "Rating", None, -1))
-        self.InventorySortBy.setItemText(9, QtWidgets.QApplication.translate("Vinny", "Date In", None, -1))
+        self.InventorySortBy.setItemText(1, QtWidgets.QApplication.translate("Vinny", "Location", None, -1))
+        self.InventorySortBy.setItemText(2, QtWidgets.QApplication.translate("Vinny", "Wine ID", None, -1))
+        self.InventorySortBy.setItemText(3, QtWidgets.QApplication.translate("Vinny", "Region", None, -1))
+        self.InventorySortBy.setItemText(4, QtWidgets.QApplication.translate("Vinny", "Blend Name", None, -1))
+        self.InventorySortBy.setItemText(5, QtWidgets.QApplication.translate("Vinny", "Varietal", None, -1))
+        self.InventorySortBy.setItemText(6, QtWidgets.QApplication.translate("Vinny", "Vintage", None, -1))
+        self.InventorySortBy.setItemText(7, QtWidgets.QApplication.translate("Vinny", "Type", None, -1))
+        self.InventorySortBy.setItemText(8, QtWidgets.QApplication.translate("Vinny", "MSRP", None, -1))
+        self.InventorySortBy.setItemText(9, QtWidgets.QApplication.translate("Vinny", "Value", None, -1))
+        self.InventorySortBy.setItemText(10, QtWidgets.QApplication.translate("Vinny", "Rating", None, -1))
+        self.InventorySortBy.setItemText(11, QtWidgets.QApplication.translate("Vinny", "Date In", None, -1))
         self.InventorySortAsc.setText(QtWidgets.QApplication.translate("Vinny", "Ascending", None, -1))
         self.InventorySortDesc.setText(QtWidgets.QApplication.translate("Vinny", "Descending", None, -1))
         self.InventoryRefresh.setText(QtWidgets.QApplication.translate("Vinny", "Refresh Inventory", None, -1))

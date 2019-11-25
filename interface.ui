@@ -118,6 +118,16 @@
                </item>
                <item>
                 <property name="text">
+                 <string>Location</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Wine ID</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
                  <string>Region</string>
                 </property>
                </item>
