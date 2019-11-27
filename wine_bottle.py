@@ -203,7 +203,7 @@ class Bottle(Wine):
             elif bottle_id == None:
                 bottle_id = self.add_wine_to_db()
                 
-            self.bottle_info['wine_id'] = bottle_id
+        self.bottle_info['wine_id'] = bottle_id
         self.check_in()
         return bottle_id
         

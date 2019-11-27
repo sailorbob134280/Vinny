@@ -472,7 +472,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                         # self.bottle.add_new()
         self.bottle.clear_bottle()
         self.quick_search()
-        # self.bottle.wine_info['wine_id'] = wine_id
+        self.bottle.wine_info['wine_id'] = wine_id
 
         # Enable the barcode button now that there's a wine id
         self.AddBottleGenerateBarcode.setEnabled(True)
@@ -563,7 +563,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
         msg_box.setText("Lable has been created. Select one of the options below to continue:")
         msg_box.setStandardButtons(QMessageBox.Save | QMessageBox.Cancel)
         pr_button = msg_box.addButton('Print', QMessageBox.ApplyRole)
-        msg_box.setDefaultButton(QMessageBox.Cancel)
+        msg_box.setDefaultButton(pr_button)
         ret = msg_box.exec_()
 
         if ret != QMessageBox.Cancel:
