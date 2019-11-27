@@ -367,7 +367,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     @QtCore.Slot()
     def ab_modified(self):
         self.ab_modified_flag = True
-        self.bottle.clear_bottle()
+        # self.bottle.clear_bottle()
         self.AddBottleGenerateBarcode.setEnabled(False)
 
     @QtCore.Slot()
@@ -418,6 +418,8 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
     def ab_add_to_cellar(self):
         # Adds a new bottle to the cellar. If the wine_id exists, it's a copy
         # and can be added as such. Otherwise a new bottle is added. 
+        if self.ab_modified_flag == True:
+            self.bottle.clear_bottle()
         new_size = self.AddBottleBottleSize.currentText()
         if new_size == 'Other...':
             new_size = self.get_other_size()
