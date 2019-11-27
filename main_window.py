@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'interface.ui',
 # licensing of 'interface.ui' applies.
 #
-# Created: Mon Nov 25 15:45:58 2019
+# Created: Wed Nov 27 12:17:47 2019
 #      by: pyside2-uic  running on PySide2 5.12.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -481,7 +481,9 @@ class Ui_Vinny(object):
         Vinny.setTabOrder(self.AddBottleBottleSize, self.AddBottleType)
         Vinny.setTabOrder(self.AddBottleType, self.AddBottleMSRP)
         Vinny.setTabOrder(self.AddBottleMSRP, self.AddBottleCurrentValue)
-        Vinny.setTabOrder(self.AddBottleCurrentValue, self.AddBottleSearch)
+        Vinny.setTabOrder(self.AddBottleCurrentValue, self.AddBottleComments)
+        Vinny.setTabOrder(self.AddBottleComments, self.AddBottleRating)
+        Vinny.setTabOrder(self.AddBottleRating, self.AddBottleSearch)
         Vinny.setTabOrder(self.AddBottleSearch, self.AddBottleUpdate)
         Vinny.setTabOrder(self.AddBottleUpdate, self.AddBottleClearFields)
         Vinny.setTabOrder(self.AddBottleClearFields, self.AddBottleSelLocation)
@@ -490,8 +492,9 @@ class Ui_Vinny(object):
         Vinny.setTabOrder(self.AddBottleSelQty, self.AddBottleQty)
         Vinny.setTabOrder(self.AddBottleQty, self.AddBottleAdd)
         Vinny.setTabOrder(self.AddBottleAdd, self.AddBottleGenerateBarcode)
-        Vinny.setTabOrder(self.AddBottleGenerateBarcode, self.AddBottleTable)
-        Vinny.setTabOrder(self.AddBottleTable, self.HistoryTable)
+        Vinny.setTabOrder(self.AddBottleGenerateBarcode, self.HistoryTable)
+        Vinny.setTabOrder(self.HistoryTable, self.main_tab)
+        Vinny.setTabOrder(self.main_tab, self.AddBottleTable)
 
     def retranslateUi(self, Vinny):
         Vinny.setWindowTitle(QtWidgets.QApplication.translate("Vinny", "Vinny ", None, -1))
@@ -501,6 +504,7 @@ class Ui_Vinny(object):
         self.label.setText(QtWidgets.QApplication.translate("Vinny", "Or", None, -1))
         self.InventoryLocation.setPlaceholderText(QtWidgets.QApplication.translate("Vinny", "Location", None, -1))
         self.InventorySearch.setText(QtWidgets.QApplication.translate("Vinny", "Search", None, -1))
+        self.InventorySearch.setShortcut(QtWidgets.QApplication.translate("Vinny", "Ctrl+R", None, -1))
         self.groupBox.setTitle(QtWidgets.QApplication.translate("Vinny", "Sort By:", None, -1))
         self.InventorySortBy.setCurrentText(QtWidgets.QApplication.translate("Vinny", "Winery", None, -1))
         self.InventorySortBy.setItemText(0, QtWidgets.QApplication.translate("Vinny", "Winery", None, -1))
@@ -573,6 +577,8 @@ class Ui_Vinny(object):
         self.actionWine.setText(QtWidgets.QApplication.translate("Vinny", "Wine", None, -1))
         self.actionBottle.setText(QtWidgets.QApplication.translate("Vinny", "Bottle", None, -1))
         self.actionGenerate_Barcode.setText(QtWidgets.QApplication.translate("Vinny", "Generate Barcode", None, -1))
+        self.actionGenerate_Barcode.setShortcut(QtWidgets.QApplication.translate("Vinny", "Ctrl+P", None, -1))
         self.actionBackup_Database.setText(QtWidgets.QApplication.translate("Vinny", "Backup Database", None, -1))
+        self.actionBackup_Database.setShortcut(QtWidgets.QApplication.translate("Vinny", "Ctrl+S", None, -1))
 
 import icons_rc

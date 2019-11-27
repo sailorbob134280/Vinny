@@ -89,6 +89,9 @@
                 <iconset resource="resources/icons/icons.qrc">
                  <normaloff>:/Actions/actions/search.svg</normaloff>:/Actions/actions/search.svg</iconset>
                </property>
+               <property name="shortcut">
+                <string>Ctrl+R</string>
+               </property>
                <property name="checkable">
                 <bool>false</bool>
                </property>
@@ -838,6 +841,9 @@
    <property name="text">
     <string>Generate Barcode</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
   </action>
   <action name="actionBackup_Database">
    <property name="icon">
@@ -846,6 +852,9 @@
    </property>
    <property name="text">
     <string>Backup Database</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>
@@ -873,6 +882,8 @@
   <tabstop>AddBottleType</tabstop>
   <tabstop>AddBottleMSRP</tabstop>
   <tabstop>AddBottleCurrentValue</tabstop>
+  <tabstop>AddBottleComments</tabstop>
+  <tabstop>AddBottleRating</tabstop>
   <tabstop>AddBottleSearch</tabstop>
   <tabstop>AddBottleUpdate</tabstop>
   <tabstop>AddBottleClearFields</tabstop>
@@ -882,8 +893,9 @@
   <tabstop>AddBottleQty</tabstop>
   <tabstop>AddBottleAdd</tabstop>
   <tabstop>AddBottleGenerateBarcode</tabstop>
-  <tabstop>AddBottleTable</tabstop>
   <tabstop>HistoryTable</tabstop>
+  <tabstop>main_tab</tabstop>
+  <tabstop>AddBottleTable</tabstop>
  </tabstops>
  <resources>
   <include location="resources/icons/icons.qrc"/>
