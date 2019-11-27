@@ -468,8 +468,8 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                         bottle_info['location'] = next_location
                         self.bottle.wine_info = wine_info
                         self.bottle.bottle_info=bottle_info
-                        # wine_id = self.bottle.add_new()
-                        self.bottle.add_new()
+                        wine_id = self.bottle.add_new()
+                        # self.bottle.add_new()
         self.bottle.clear_bottle()
         self.quick_search()
         # self.bottle.wine_info['wine_id'] = wine_id

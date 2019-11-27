@@ -205,7 +205,8 @@ class Bottle(Wine):
                 
             self.bottle_info['wine_id'] = bottle_id
         self.check_in()
-        # return bottle_id
+        print(bottle_id)
+        return bottle_id
         
     def check_in(self, new_location=None, new_bottle_size=None):
         # This method adds a wine to the inventory based on a selected wine_id. Since it will
