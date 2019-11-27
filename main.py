@@ -140,13 +140,10 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             else:
                 self.bottle.bottle_info['location'] = location
                 bottles = self.bottle.search_bottle()
-                print(bottles)
                 inv_rows = []
                 for i, bottle in enumerate(bottles):
-                    print(bottle)
                     inv_rows.append(list(lookup_db(bottle[0], table='winedata')[0]))
                     inv_rows[i].extend(bottle[1:])
-                print(inv_rows)
 
         # Craft the SQL search query. I suspect having SQL doing the sorting is a tad faster.
         # If no terms specified, return all entries
@@ -166,7 +163,7 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
                 self.InventoryTable.insertRow(row_num)
                 for col_num, col_entry in enumerate(row):
                         self.InventoryTable.setItem(row_num, col_num, QtWidgets.QTableWidgetItem(str(col_entry)))
-            self.InventoryTable.selectRow(0)
+            # self.InventoryTable.selectRow(0)
         else:
             self.bottle.clear_bottle()
         
