@@ -140,10 +140,13 @@ class MainInterface(QtWidgets.QMainWindow, Ui_Vinny):
             else:
                 self.bottle.bottle_info['location'] = location
                 bottles = self.bottle.search_bottle()
+                print(bottles)
                 inv_rows = []
                 for i, bottle in enumerate(bottles):
-                    inv_rows.append(list(self.bottle.wine_info.values()))
+                    print(bottle)
+                    inv_rows.append(list(lookup_db(bottle[0], table='winedata')[0]))
                     inv_rows[i].extend(bottle[1:])
+                print(inv_rows)
 
         # Craft the SQL search query. I suspect having SQL doing the sorting is a tad faster.
         # If no terms specified, return all entries
